@@ -11,7 +11,7 @@
         .brand{font-size:1.1rem;font-weight:700;margin-bottom:1.5rem}.nav a{display:block;padding:.65rem .75rem;border-radius:.5rem;color:#e5e7eb;text-decoration:none;margin-bottom:.4rem}
         .nav a.active,.nav a:hover{background:#1f2937}.content{flex:1}.topbar{background:#fff;border-bottom:1px solid var(--border);padding:1rem 1.5rem;display:flex;justify-content:space-between;align-items:center}
         .main{padding:1.5rem}.card{background:var(--card);border:1px solid var(--border);border-radius:.75rem;padding:1.25rem;margin-bottom:1rem}
-        .card h2{margin-top:0;font-size:1.05rem}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}
+        .card h2{margin-top:0;font-size:1.05rem}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}.kpi-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:1rem}.kpi .value{font-size:1.5rem;font-weight:700}.kpi .label{font-size:.82rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}.chart-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}.toolbar{display:flex;gap:.5rem;flex-wrap:wrap}.pill{display:inline-block;padding:.2rem .5rem;border-radius:999px;background:#eef2ff;color:#3730a3;font-size:.78rem}
         label{display:block;font-weight:600;font-size:.9rem;margin-bottom:.35rem} input,textarea,select{width:100%;padding:.6rem .7rem;border:1px solid #d1d5db;border-radius:.5rem;font-size:.95rem}
         textarea{min-height:90px}
         .btn{background:var(--primary);color:#fff;border:none;border-radius:.5rem;padding:.55rem .85rem;cursor:pointer;font-size:.9rem;display:inline-block;text-decoration:none}
@@ -22,7 +22,7 @@
         .table th{font-size:.8rem;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
         .status{display:inline-block;padding:.2rem .55rem;border-radius:999px;font-size:.78rem;font-weight:600}
         .status-pending{background:#ede9fe;color:#5b21b6}.status-confirmed{background:#dbeafe;color:#1d4ed8}.status-completed{background:#dcfce7;color:#166534}.status-cancelled{background:#fee2e2;color:#b91c1c}.status-no-show{background:#e5e7eb;color:#374151}
-        @media (max-width: 900px){.sidebar{display:none}.grid{grid-template-columns:1fr}}
+        @media (max-width: 1100px){.kpi-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.chart-grid{grid-template-columns:1fr}}@media (max-width: 900px){.sidebar{display:none}.grid{grid-template-columns:1fr}}
     </style>
 </head>
 <body>
@@ -40,6 +40,7 @@
             <a href="{{ route('admin.categories.index') }}" class="{{ request()->routeIs('admin.categories.*') ? 'active' : '' }}">Categories</a>
             <a href="{{ route('admin.services.index') }}" class="{{ request()->routeIs('admin.services.*') ? 'active' : '' }}">Services</a>
             <a href="{{ route('admin.appointments.index') }}" class="{{ request()->routeIs('admin.appointments.*') ? 'active' : '' }}">Appointments</a>
+            <a href="{{ route('admin.reports.overview') }}" class="{{ request()->routeIs('admin.reports.*') ? 'active' : '' }}">Reports</a>
             <a href="{{ route('admin.calendar.index') }}" class="{{ request()->routeIs('admin.calendar.*') ? 'active' : '' }}">Calendar</a>
             <a href="{{ route('admin.availability.edit') }}" class="{{ request()->routeIs('admin.availability.*') ? 'active' : '' }}">Availability</a>
             <a href="{{ route('admin.blocked-dates.index') }}" class="{{ request()->routeIs('admin.blocked-dates.*') ? 'active' : '' }}">Blocked Dates</a>
@@ -69,5 +70,6 @@
         </main>
     </div>
 </div>
+@stack('scripts')
 </body>
 </html>

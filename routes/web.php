@@ -15,6 +15,13 @@ use App\Http\Controllers\Admin\FaqController;
 use App\Http\Controllers\Admin\GalleryItemController;
 use App\Http\Controllers\Admin\HomepageSectionController;
 use App\Http\Controllers\Admin\PolicyController;
+use App\Http\Controllers\Admin\Reports\AppointmentReportController;
+use App\Http\Controllers\Admin\Reports\ConsultationReportController;
+use App\Http\Controllers\Admin\Reports\OverviewReportController;
+use App\Http\Controllers\Admin\Reports\ReportExportController;
+use App\Http\Controllers\Admin\Reports\RevenueReportController;
+use App\Http\Controllers\Admin\Reports\ServicePerformanceReportController;
+use App\Http\Controllers\Admin\Reports\WhatsAppReportController;
 use App\Http\Controllers\Admin\ServiceCategoryController;
 use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\Admin\SettingsController;
@@ -125,6 +132,19 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('blocked-times', [BlockedTimeRangeController::class, 'index'])->name('blocked-times.index');
         Route::post('blocked-times', [BlockedTimeRangeController::class, 'store'])->name('blocked-times.store');
         Route::delete('blocked-times/{blockedTime}', [BlockedTimeRangeController::class, 'destroy'])->name('blocked-times.destroy');
+
+        Route::prefix('reports')->name('reports.')->group(function () {
+            Route::get('/', OverviewReportController::class)->name('overview');
+            Route::get('/appointments', AppointmentReportController::class)->name('appointments');
+            Route::get('/revenue', RevenueReportController::class)->name('revenue');
+            Route::get('/services', ServicePerformanceReportController::class)->name('services');
+            Route::get('/consultations', ConsultationReportController::class)->name('consultations');
+            Route::get('/whatsapp', WhatsAppReportController::class)->name('whatsapp');
+
+            Route::get('/exports/appointments', [ReportExportController::class, 'appointments'])->name('exports.appointments');
+            Route::get('/exports/consultations', [ReportExportController::class, 'consultations'])->name('exports.consultations');
+            Route::get('/exports/whatsapp', [ReportExportController::class, 'whatsapp'])->name('exports.whatsapp');
+        });
 
         Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
     });
