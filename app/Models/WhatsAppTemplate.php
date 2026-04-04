@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class WhatsAppTemplate extends Model
 {
+    protected $table = 'whatsapp_templates';
+
     public const KEYS = [
         'booking_confirmation',
         'booking_cancellation',
