@@ -17,8 +17,8 @@
     </div>
 </section>
 
-<section class="page-section" style="padding-top:0;">
-    <div class="card recommender-shell reveal" style="max-width:920px;margin:auto;">
+<section class="page-section section-tight-top">
+    <div class="card recommender-shell centered-card reveal">
         <div class="recommender-shell__intro">
             <h2>Your skin snapshot</h2>
             <p class="muted">Share a few details to receive thoughtful next-step guidance and suggested services.</p>
@@ -63,7 +63,7 @@
 
             <div class="form-span-full recommender-submit-row">
                 <button class="btn" type="submit">{{ __('consultation.get_recommendations') }}</button>
-                <p class="muted">You can still book manually any time if you prefer.</p>
+                <p class="form-note">You can still book manually any time if you prefer.</p>
             </div>
         </form>
 
@@ -73,19 +73,19 @@
     </div>
 
     @if($result)
-        <div class="card recommender-result reveal" style="max-width:920px;margin:1.2rem auto 0;">
+        <div class="card recommender-result centered-card reveal">
             <div class="recommender-result__header">
                 <p class="section-kicker">Recommendation</p>
                 <h2>{{ __('consultation.recommended_title') }}</h2>
             </div>
 
             @if(($result['status'] ?? '') === 'success')
-                <div class="result-summary">
+                <div class="result-summary soft-panel">
                     <h3>Summary</h3>
                     <p>{{ $result['explanation_summary'] ?? '' }}</p>
                 </div>
 
-                <div class="result-services">
+                <div class="result-services soft-panel">
                     <h3>{{ __('consultation.recommended_services') }}</h3>
                     <ul>
                         @forelse(($recommendedServices ?? []) as $service)
@@ -97,11 +97,11 @@
                 </div>
 
                 <div class="result-meta">
-                    <div>
+                    <div class="soft-panel">
                         <h4>{{ __('consultation.caution_notes') }}</h4>
                         <p>{{ $result['caution_notes'] ?? '—' }}</p>
                     </div>
-                    <div>
+                    <div class="soft-panel">
                         <h4>{{ __('consultation.next_step') }}</h4>
                         <p>{{ $result['suggested_next_step'] ?? '—' }}</p>
                     </div>
@@ -110,7 +110,7 @@
                 <div class="empty-state">{{ __('consultation.ai_unavailable') }}</div>
             @endif
 
-            <div class="btn-row" style="margin-top:1rem;">
+            <div class="btn-row result-actions">
                 <a class="btn" href="{{ route('booking.service') }}">{{ __('consultation.book_now') }}</a>
             </div>
         </div>
@@ -132,20 +132,17 @@
     .recommender-shell { display: grid; gap: 1.1rem; }
     .recommender-shell__intro h2,
     .recommender-result__header h2 { margin-bottom: .35rem; font-size: clamp(1.3rem, 2.4vw, 1.8rem); }
-    .field-help { color: var(--text-secondary); font-size: .8rem; line-height: 1.45; }
     .recommender-submit-row { display: grid; gap: .6rem; }
     .recommender-disclaimer {
         border-top: 1px solid var(--border);
         margin-top: .25rem;
         padding-top: .95rem;
     }
-    .recommender-result { display: grid; gap: 1rem; }
+    .recommender-result { display: grid; gap: 1rem; margin-top: 1.2rem; }
+    .result-actions { margin-top: 1rem; }
     .result-summary,
     .result-services,
     .result-meta > div {
-        border: 1px solid var(--border);
-        border-radius: 16px;
-        background: linear-gradient(140deg, #fffdfa 0%, #f8f2eb 100%);
         padding: .95rem 1rem;
     }
     .result-summary h3,

@@ -32,6 +32,8 @@
             --focus-ring: rgba(185, 144, 104, .35);
             --shadow-soft: 0 16px 44px rgba(47, 39, 34, .08);
             --shadow-lift: 0 22px 46px rgba(47, 39, 34, .12);
+            --radius-card: 22px;
+            --radius-control: 14px;
         }
         * { box-sizing: border-box; }
         html { scroll-behavior: smooth; }
@@ -129,6 +131,9 @@
         }
         .nav-link {
             color: var(--text-secondary);
+            min-height: 40px;
+            display: inline-flex;
+            align-items: center;
             font-size: .93rem;
             letter-spacing: .01em;
             padding: .55rem .8rem;
@@ -183,6 +188,7 @@
 
         .btn {
             display: inline-flex;
+            min-height: 44px;
             align-items: center;
             justify-content: center;
             border-radius: 999px;
@@ -212,6 +218,61 @@
             font-weight: 500;
         }
         .btn-row { display: flex; flex-wrap: wrap; gap: .75rem; }
+
+        .btn-soft:hover {
+            background: #ecdfd1;
+            border-color: var(--border-strong);
+            box-shadow: 0 10px 24px rgba(47, 39, 34, .1);
+        }
+        .btn-block { width: 100%; }
+
+        .section-intro {
+            max-width: 70ch;
+            display: grid;
+            gap: .65rem;
+            margin-bottom: 1rem;
+        }
+        .section-intro .section-title { margin-bottom: 0; }
+        .section-intro .muted { margin: 0; }
+
+        .centered-card {
+            max-width: var(--card-max, 920px);
+            margin-inline: auto;
+        }
+        .section-tight-top { padding-top: 0; }
+
+        .form-control,
+        select,
+        input,
+        textarea {
+            min-height: 44px;
+            border-radius: var(--radius-control);
+            transition: border-color .2s ease, box-shadow .2s ease, background-color .2s ease;
+        }
+        textarea { min-height: 128px; resize: vertical; }
+        input::placeholder,
+        textarea::placeholder { color: #9a8a7b; }
+        .field-help {
+            color: var(--text-secondary);
+            font-size: .8rem;
+            line-height: 1.45;
+        }
+        .form-note {
+            color: var(--text-secondary);
+            font-size: .9rem;
+            margin: 0;
+        }
+        .form-checkbox { width: auto; margin-top: .35rem; }
+
+        .soft-panel {
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            background: linear-gradient(140deg, #fffdfa 0%, #f8f2eb 100%);
+            padding: 1rem;
+        }
+        .stack-sm { display: grid; gap: .6rem; }
+        .stack-md { display: grid; gap: 1rem; }
+
 
         main.container {
             padding-top: 1.35rem;
@@ -243,7 +304,7 @@
         .muted { color: var(--text-secondary); }
         .card {
             background: var(--surface-strong);
-            border-radius: 22px;
+            border-radius: var(--radius-card);
             border: 1px solid var(--border);
             box-shadow: var(--shadow-soft);
             padding: 1.35rem;
@@ -262,7 +323,7 @@
         textarea {
             width: 100%;
             border: 1px solid var(--border-strong);
-            border-radius: 14px;
+            border-radius: var(--radius-control);
             padding: .78rem .92rem;
             background: #fffdfb;
             color: var(--text-primary);
@@ -275,6 +336,11 @@
             margin-bottom: .35rem;
         }
         .form-field { display: grid; gap: .35rem; }
+        :is(input, select, textarea):focus-visible {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(185, 144, 104, .14);
+            background: #fff;
+        }
         .form-span-full { grid-column: 1 / -1; }
         .error { color: #9f5748; font-size: .84rem; }
         .empty-state {
@@ -309,6 +375,8 @@
         }
         .footer-link {
             color: var(--text-secondary);
+            min-height: 34px;
+            align-items: center;
             display: inline-flex;
             margin-bottom: .5rem;
             transition: color .2s ease;
@@ -414,7 +482,7 @@
                 gap: .4rem;
             }
             .mobile-nav-links .nav-link {
-                border-radius: 14px;
+                border-radius: var(--radius-control);
                 padding: .68rem .85rem;
                 border: 1px solid var(--border);
                 background: rgba(255,255,255,.78);

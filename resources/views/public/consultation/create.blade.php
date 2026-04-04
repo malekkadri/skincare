@@ -12,8 +12,8 @@
     </div>
 </section>
 
-<section class="page-section" style="padding-top:0;">
-    <div class="card consultation-shell reveal" style="max-width:980px;margin:auto;">
+<section class="page-section section-tight-top">
+    <div class="card consultation-shell centered-card reveal" style="--card-max:980px;">
         <div class="form-progress" aria-hidden="true">
             <span class="is-active">1. Profile</span>
             <span class="is-active">2. Skin details</span>
@@ -53,9 +53,9 @@
             <div class="form-field form-span-full"><label>{{ __('consultation.preferred_goals') }}</label><textarea name="preferred_goals">{{ old('preferred_goals') }}</textarea></div>
             <div class="form-field form-span-full"><label>{{ __('consultation.additional_notes') }}</label><textarea name="additional_notes">{{ old('additional_notes') }}</textarea></div>
 
-            <div class="form-span-full consent-wrap">
+            <div class="form-span-full consent-wrap soft-panel">
                 <label class="consent-check">
-                    <input type="checkbox" name="consent" value="1" required style="width:auto;margin-top:.35rem;">
+                    <input type="checkbox" name="consent" value="1" required class="form-checkbox">
                     <span>{{ __('consultation.consent') }}</span>
                 </label>
                 <small class="field-help">Your information is used only to prepare your personalized consultation response.</small>
@@ -64,7 +64,7 @@
 
             <div class="form-span-full submit-wrap">
                 <button class="btn" type="submit">{{ __('consultation.submit') }}</button>
-                <p class="muted">You will be redirected to a confirmation page with your next action options.</p>
+                <p class="form-note">You will be redirected to a confirmation page with your next action options.</p>
             </div>
         </form>
 
@@ -94,15 +94,7 @@
         padding-top: .9rem;
     }
     .form-section h2 { margin-bottom: .3rem; font-size: clamp(1.2rem, 2vw, 1.55rem); }
-    .field-help { color: var(--text-secondary); font-size: .8rem; line-height: 1.4; }
-    .consent-wrap {
-        border: 1px solid var(--border);
-        border-radius: 16px;
-        background: linear-gradient(140deg, #fffdfa 0%, #f8f2eb 100%);
-        padding: .95rem 1rem;
-        display: grid;
-        gap: .45rem;
-    }
+    .consent-wrap { display: grid; gap: .45rem; }
     .consent-check {
         display: flex;
         gap: .5rem;

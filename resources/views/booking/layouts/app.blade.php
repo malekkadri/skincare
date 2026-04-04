@@ -9,21 +9,21 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #f7f3ee;
-            --bg-soft: #fbf8f4;
+            --bg: #f6f2ed;
+            --bg-soft: #fbf7f2;
             --surface: #fffdfb;
-            --surface-muted: #f8f2eb;
-            --accent: #b7885b;
+            --surface-muted: #f5ede4;
+            --accent: #b99068;
             --accent-soft: #efe2d4;
-            --text: #2b2723;
-            --muted: #73675d;
-            --line: #e7dbcf;
-            --line-strong: #dcc8b4;
+            --text: #2f2722;
+            --muted: #76685b;
+            --line: #e7ddd2;
+            --line-strong: #dacdbf;
             --ok: #2e6a4f;
             --danger: #a03333;
-            --radius-lg: 26px;
-            --radius-md: 18px;
-            --shadow: 0 18px 42px rgba(84, 67, 51, 0.07);
+            --radius-lg: 24px;
+            --radius-md: 16px;
+            --shadow: 0 16px 44px rgba(47, 39, 34, .08);
         }
 
         * { box-sizing: border-box; }
@@ -35,7 +35,7 @@
             background:
                 radial-gradient(1300px 500px at 30% -15%, #fcf8f3 0%, transparent 70%),
                 linear-gradient(180deg, #f8f5f1 0%, var(--bg) 45%, #f5f1ec 100%);
-            line-height: 1.5;
+            line-height: 1.65;
             -webkit-font-smoothing: antialiased;
         }
 
@@ -178,6 +178,7 @@
 
         input, select, textarea {
             width: 100%;
+            min-height: 44px;
             border: 1px solid #dfd4c9;
             border-radius: 14px;
             padding: .72rem .88rem;
@@ -185,6 +186,7 @@
             font: inherit;
             color: var(--text);
         }
+        textarea { min-height: 118px; resize: vertical; }
 
         input:focus-visible,
         select:focus-visible,
@@ -206,7 +208,9 @@
             background: linear-gradient(180deg, #c99f76 0%, var(--accent) 100%);
             color: #fff;
             border: 1px solid transparent;
-            padding: .72rem 1.15rem;
+            padding: .72rem 1.2rem;
+            min-height: 44px;
+            letter-spacing: .03em;
             border-radius: 999px;
             cursor: pointer;
             text-decoration: none;
@@ -217,11 +221,11 @@
             transition: transform .18s ease, box-shadow .18s ease, opacity .18s ease;
         }
 
-        .btn:hover { transform: translateY(-1px); box-shadow: 0 8px 18px rgba(150, 108, 68, .22); }
+        .btn:hover { transform: translateY(-1px); box-shadow: 0 12px 24px rgba(150, 108, 68, .24); }
         .btn:disabled { opacity: .55; cursor: not-allowed; transform: none; box-shadow: none; }
 
         .btn-soft {
-            background: #f4ebe3;
+            background: #efe3d6;
             color: var(--text);
             border-color: #ddcec1;
             box-shadow: none;
