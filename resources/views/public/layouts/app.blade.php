@@ -59,12 +59,20 @@
             align-items: center;
             justify-content: space-between;
             gap: 1rem;
-            flex-wrap: wrap;
             padding: .75rem 0;
+        }
+        .nav-main {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex: 1;
+            justify-content: flex-end;
         }
         .brand {
             font-family: 'Playfair Display', Georgia, serif;
             font-size: 1.45rem;
+            position: relative;
+            z-index: 2;
         }
         .menu {
             display: flex;
@@ -75,6 +83,17 @@
             font-size: .95rem;
         }
         .menu a:hover { color: var(--text-primary); }
+        .menu-toggle {
+            display: none;
+            border: 1px solid #ddd2c8;
+            background: #fffdfb;
+            color: var(--text-primary);
+            border-radius: 999px;
+            padding: .5rem .95rem;
+            font: inherit;
+            font-size: .9rem;
+            cursor: pointer;
+        }
         .btn {
             display: inline-flex;
             align-items: center;
@@ -171,8 +190,34 @@
         .footer-link { color: var(--text-secondary); display: block; margin-bottom: .45rem; }
         .footer-link:hover { color: var(--text-primary); }
         @media (max-width: 900px) {
-            .site-nav { justify-content: center; }
-            .menu { justify-content: center; }
+            .site-nav {
+                min-height: auto;
+                flex-wrap: wrap;
+                align-items: flex-start;
+            }
+            .menu-toggle {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                margin-left: auto;
+            }
+            .nav-main {
+                width: 100%;
+                flex-direction: column;
+                align-items: stretch;
+                display: none;
+                padding-top: .25rem;
+            }
+            .site-nav.is-open .nav-main { display: flex; }
+            .menu {
+                justify-content: flex-start;
+                gap: .75rem 1rem;
+            }
+            .menu a { display: inline-block; }
+            .menu-actions {
+                padding-top: .35rem;
+                border-top: 1px solid #e8e1d9;
+            }
             .footer-grid,
             .grid-3,
             .grid-2 { grid-template-columns: 1fr; }
@@ -182,21 +227,24 @@
 </head>
 <body>
 <header class="site-header">
-    <div class="container site-nav">
+    <div class="container site-nav" id="siteNav">
         <a class="brand" href="{{ route('home') }}">{{ $settings->site_name ?? 'Skin by Noor' }}</a>
+        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="navMain" id="menuToggle">Menu</button>
 
-        <nav class="menu" aria-label="Primary navigation">
-            <a href="{{ route('about') }}">{{ __('public.nav.about') }}</a>
-            <a href="{{ route('services.index') }}">{{ __('public.nav.services') }}</a>
-            <a href="{{ route('gallery') }}">{{ __('public.nav.gallery') }}</a>
-            <a href="{{ route('testimonials') }}">{{ __('public.nav.testimonials') }}</a>
-            <a href="{{ route('contact') }}">{{ __('public.nav.contact') }}</a>
-        </nav>
+        <div class="nav-main" id="navMain">
+            <nav class="menu" aria-label="Primary navigation">
+                <a href="{{ route('about') }}">{{ __('public.nav.about') }}</a>
+                <a href="{{ route('services.index') }}">{{ __('public.nav.services') }}</a>
+                <a href="{{ route('gallery') }}">{{ __('public.nav.gallery') }}</a>
+                <a href="{{ route('testimonials') }}">{{ __('public.nav.testimonials') }}</a>
+                <a href="{{ route('contact') }}">{{ __('public.nav.contact') }}</a>
+            </nav>
 
-        <div class="menu">
-            <form method="POST" action="{{ route('preferences.locale') }}">@csrf<input type="hidden" name="locale" value="fr"><button class="btn {{ app()->getLocale()==='fr' ? '' : 'btn-soft' }}" type="submit">FR</button></form>
-            <form method="POST" action="{{ route('preferences.locale') }}">@csrf<input type="hidden" name="locale" value="en"><button class="btn {{ app()->getLocale()==='en' ? '' : 'btn-soft' }}" type="submit">EN</button></form>
-            <a class="btn" href="{{ route('booking.service') }}">{{ __('public.nav.book_now') }}</a>
+            <div class="menu menu-actions">
+                <form method="POST" action="{{ route('preferences.locale') }}">@csrf<input type="hidden" name="locale" value="fr"><button class="btn {{ app()->getLocale()==='fr' ? '' : 'btn-soft' }}" type="submit">FR</button></form>
+                <form method="POST" action="{{ route('preferences.locale') }}">@csrf<input type="hidden" name="locale" value="en"><button class="btn {{ app()->getLocale()==='en' ? '' : 'btn-soft' }}" type="submit">EN</button></form>
+                <a class="btn" href="{{ route('booking.service') }}">{{ __('public.nav.book_now') }}</a>
+            </div>
         </div>
     </div>
 </header>
@@ -226,5 +274,17 @@
         </div>
     </div>
 </footer>
+<script>
+    (() => {
+        const nav = document.getElementById('siteNav');
+        const toggle = document.getElementById('menuToggle');
+        if (!nav || !toggle) return;
+
+        toggle.addEventListener('click', () => {
+            const isOpen = nav.classList.toggle('is-open');
+            toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        });
+    })();
+</script>
 </body>
 </html>
