@@ -4,6 +4,21 @@
 @section('header', 'Business Dashboard')
 
 @section('content')
+    <div class="card" style="background:linear-gradient(135deg,#1e1b4b 0%,#3730a3 45%,#4f46e5 100%);color:#eef2ff;border:none;">
+        <div style="display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;align-items:flex-end;">
+            <div>
+                <h2 style="margin-bottom:.4rem;color:#fff;">Welcome to your admin hub</h2>
+                <p style="margin:0;max-width:760px;color:#dbeafe;">Monitor bookings, team operations, and automation health in one streamlined workspace.</p>
+            </div>
+            <div class="toolbar">
+                <a href="{{ route('admin.appointments.create') }}" class="btn" style="background:#fff;color:#312e81;">+ New Appointment</a>
+                @if(auth()->user()?->hasPermission('manage_services'))
+                    <a href="{{ route('admin.services.create') }}" class="btn" style="background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.35);">+ New Service</a>
+                @endif
+            </div>
+        </div>
+    </div>
+
     <div class="kpi-grid">
         @foreach([
             ['Appointments Today', $dashboard['kpis']['appointments_today']],
@@ -24,10 +39,27 @@
         @endforeach
     </div>
 
-    <div class="card">
-        <h2>Automation Status</h2>
-        <p><span class="pill">{{ $settings->whatsapp_automation_enabled ? 'Enabled' : 'Disabled' }}</span></p>
-        <p class="muted">Pause until: {{ $settings->automation_pause_until?->timezone('Africa/Tunis')->format('Y-m-d H:i') ?? 'Not paused' }}</p>
+    <div class="grid">
+        <div class="card">
+            <h2>Automation Status</h2>
+            <p><span class="pill">{{ $settings->whatsapp_automation_enabled ? 'Enabled' : 'Disabled' }}</span></p>
+            <p class="muted">Pause until: {{ $settings->automation_pause_until?->timezone('Africa/Tunis')->format('Y-m-d H:i') ?? 'Not paused' }}</p>
+            @if(auth()->user()?->hasPermission('manage_whatsapp'))
+                <a href="{{ route('admin.whatsapp.settings.edit') }}" class="btn" style="margin-top:.2rem;">Manage WhatsApp</a>
+            @endif
+        </div>
+
+        <div class="card">
+            <h2>Quick Actions</h2>
+            <div class="toolbar">
+                <a href="{{ route('admin.calendar.index') }}" class="btn btn-secondary">Open Calendar</a>
+                <a href="{{ route('admin.consultations.index') }}" class="btn btn-secondary">View Consultations</a>
+                @if(auth()->user()?->hasPermission('view_reports'))
+                    <a href="{{ route('admin.reports.overview') }}" class="btn btn-secondary">Open Reports</a>
+                @endif
+            </div>
+            <p class="muted" style="margin-top:.75rem;">Tip: use the grouped sidebar sections for faster navigation by workflow.</p>
+        </div>
     </div>
 
     <div class="chart-grid">
@@ -48,7 +80,8 @@
 
         new Chart(document.getElementById('appointmentsByDay'), {
             type: 'line',
-            data: {labels: appointmentsByDay.map(i => i.day), datasets: [{label: 'Appointments', data: appointmentsByDay.map(i => i.total), borderColor: '#7c3aed', tension: .3}]}
+            data: {labels: appointmentsByDay.map(i => i.day), datasets: [{label: 'Appointments', data: appointmentsByDay.map(i => i.total), borderColor: '#7c3aed', tension: .3}]},
+            options: {plugins: {legend: {display: false}}}
         });
 
         const revenueBuckets = [...new Set(revenueTrend.map(i => i.day))];
@@ -56,6 +89,7 @@
             const found = revenueTrend.find(item => item.day === day && item.booked_currency === currency);
             return found ? Number(found.total) : 0;
         });
+
         new Chart(document.getElementById('revenueTrend'), {
             type: 'line',
             data: {labels: revenueBuckets, datasets: [
@@ -67,7 +101,7 @@
         new Chart(document.getElementById('topServices'), {
             type: 'bar',
             data: {labels: topServices.map(i => i.service_name), datasets: [{label: 'Bookings', data: topServices.map(i => i.total), backgroundColor: '#8b5cf6'}]},
-            options: {indexAxis: 'y'}
+            options: {indexAxis: 'y', plugins: {legend: {display: false}}}
         });
 
         new Chart(document.getElementById('statusDistribution'), {
