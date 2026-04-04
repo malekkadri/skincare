@@ -1,41 +1,250 @@
 @extends('booking.layouts.app')
 
 @section('content')
-<div class="card" style="max-width:640px;">
-    <h3 class="title">Select a date</h3>
-    <p class="subtitle">Choose a day first and we’ll instantly check how many time slots are available.</p>
-    <form method="POST" action="{{ route('booking.date.save') }}">
+<div class="card booking-step-date" style="max-width:680px;" data-step-date>
+    <div class="step-intro date-step-intro">
+        <p class="step-kicker">{{ __('booking.step_date') }}</p>
+        <h1 class="title step-title">Choose your preferred date</h1>
+        <p class="subtitle step-subtitle">Pick a day that feels right for you. We’ll check available times instantly so you can continue with confidence.</p>
+    </div>
+
+    <form method="POST" action="{{ route('booking.date.save') }}" data-date-form>
         @csrf
-        <label>Date</label>
-        <input
-            type="date"
-            id="appointment_date"
-            name="appointment_date"
-            min="{{ now()->toDateString() }}"
-            value="{{ old('appointment_date', $wizard['appointment_date']) }}"
-            required
-        >
-        @error('appointment_date')
-            <p class="field-error">{{ $message }}</p>
-        @enderror
-        <div id="availability_hint" class="subtitle" style="margin-top:.8rem;margin-bottom:0;"></div>
-        <button class="btn" style="margin-top:1rem">{{ __('booking.continue') }}</button>
+
+        <div class="date-selection-shell">
+            <label for="appointment_date">Date</label>
+            <input
+                type="date"
+                id="appointment_date"
+                name="appointment_date"
+                min="{{ now()->toDateString() }}"
+                value="{{ old('appointment_date', $wizard['appointment_date']) }}"
+                required
+                aria-describedby="date-reassurance availability_hint selected_date_summary"
+            >
+
+            @error('appointment_date')
+                <p class="field-error">{{ $message }}</p>
+            @enderror
+
+            <p id="date-reassurance" class="date-reassurance">Appointments are confirmed only after your final review. You can still adjust the time in the next step.</p>
+
+            <p id="selected_date_summary" class="selected-date-summary" aria-live="polite"></p>
+
+            <p
+                id="availability_hint"
+                class="availability-hint"
+                role="status"
+                aria-live="polite"
+                aria-atomic="true"
+                data-state="idle"
+            ></p>
+        </div>
+
+        <div class="date-step-footer">
+            <p class="date-footer-note">Need flexibility? Choose the closest date now—you can explore available time slots right after this.</p>
+            <button class="btn date-continue" type="submit" data-date-continue>{{ __('booking.continue') }}</button>
+        </div>
     </form>
 </div>
+
+<style>
+    .booking-step-date {
+        padding: clamp(1.1rem, 2.3vw, 1.75rem);
+    }
+
+    .date-step-intro {
+        margin-bottom: 1.15rem;
+    }
+
+    .step-kicker {
+        display: inline-flex;
+        align-items: center;
+        margin: 0 0 .4rem;
+        font-size: .74rem;
+        letter-spacing: .14em;
+        text-transform: uppercase;
+        color: #897768;
+        font-weight: 600;
+    }
+
+    .step-title {
+        margin: 0 0 .35rem;
+        font-size: clamp(1.35rem, 1.1rem + 1vw, 2rem);
+    }
+
+    .step-subtitle {
+        margin-bottom: 0;
+        max-width: 62ch;
+    }
+
+    .date-selection-shell {
+        border: 1px solid #e8dacd;
+        border-radius: 20px;
+        background: linear-gradient(180deg, #fffdfb 0%, #fbf6f0 100%);
+        padding: clamp(.95rem, 2.1vw, 1.2rem);
+        box-shadow: inset 0 1px 0 rgba(255,255,255,.65);
+    }
+
+    .date-selection-shell input[type="date"] {
+        min-height: 48px;
+        border-color: #d9c7b6;
+        background: #fffdfa;
+    }
+
+    .date-selection-shell input[type="date"]:focus-visible {
+        outline-color: rgba(183, 136, 91, .55);
+        box-shadow: 0 0 0 3px rgba(183, 136, 91, .14);
+    }
+
+    .date-reassurance {
+        margin: .75rem 0 0;
+        color: #75685d;
+        font-size: .85rem;
+    }
+
+    .selected-date-summary {
+        display: none;
+        margin: .8rem 0 0;
+        padding: .7rem .82rem;
+        border-radius: 14px;
+        border: 1px solid #e2d1bf;
+        background: #fdf8f2;
+        color: #6f5d4d;
+        font-size: .88rem;
+    }
+
+    .selected-date-summary.is-visible {
+        display: block;
+    }
+
+    .availability-hint {
+        margin: .72rem 0 0;
+        padding: .72rem .82rem;
+        border-radius: 14px;
+        border: 1px solid transparent;
+        background: #faf6f1;
+        color: #75685c;
+        font-size: .88rem;
+        min-height: 2.45rem;
+        display: flex;
+        align-items: center;
+    }
+
+    .availability-hint[data-state="idle"] {
+        background: #faf6f1;
+        border-color: #ece1d5;
+        color: #7c6f63;
+    }
+
+    .availability-hint[data-state="loading"] {
+        background: #f7f1ea;
+        border-color: #e8d8c9;
+        color: #7c6650;
+    }
+
+    .availability-hint[data-state="available"] {
+        background: #f2f8f4;
+        border-color: #cde3d5;
+        color: #345e49;
+    }
+
+    .availability-hint[data-state="empty"] {
+        background: #fdf6ef;
+        border-color: #ecd9c7;
+        color: #7a604a;
+    }
+
+    .availability-hint[data-state="error"] {
+        background: #fdf2f2;
+        border-color: #efc9c9;
+        color: #8a4444;
+    }
+
+    .date-step-footer {
+        margin-top: 1.05rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: .9rem;
+        flex-wrap: wrap;
+    }
+
+    .date-footer-note {
+        margin: 0;
+        color: #75695d;
+        font-size: .86rem;
+        max-width: 46ch;
+    }
+
+    .date-continue {
+        min-width: 176px;
+        min-height: 46px;
+        padding-inline: 1.4rem;
+    }
+
+    .date-continue:disabled {
+        opacity: .58;
+    }
+
+    @media (max-width: 760px) {
+        .date-step-footer {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .date-continue {
+            width: 100%;
+        }
+    }
+</style>
+
 <script>
 (() => {
     const dateInput = document.getElementById('appointment_date');
     const hint = document.getElementById('availability_hint');
+    const summary = document.getElementById('selected_date_summary');
+    const continueButton = document.querySelector('[data-date-continue]');
     const serviceId = @json($wizard['service']?->id);
     const endpoint = @json(route('booking.available-slots'));
 
-    const updateHint = async () => {
-        if (!dateInput.value || !serviceId) {
-            hint.textContent = '';
+    const setHint = (message, state) => {
+        hint.textContent = message;
+        hint.dataset.state = state;
+    };
+
+    const updateSelectedDateSummary = () => {
+        if (!dateInput.value) {
+            summary.textContent = '';
+            summary.classList.remove('is-visible');
+            continueButton.disabled = true;
+            setHint('Choose a date to preview availability.', 'idle');
             return;
         }
 
-        hint.textContent = 'Checking available time slots...';
+        const date = new Date(`${dateInput.value}T00:00:00`);
+        const formattedDate = Number.isNaN(date.getTime())
+            ? dateInput.value
+            : new Intl.DateTimeFormat(document.documentElement.lang || undefined, {
+                weekday: 'long',
+                month: 'long',
+                day: 'numeric',
+                year: 'numeric',
+            }).format(date);
+
+        summary.textContent = `Selected date: ${formattedDate}`;
+        summary.classList.add('is-visible');
+        continueButton.disabled = false;
+    };
+
+    const updateHint = async () => {
+        updateSelectedDateSummary();
+
+        if (!dateInput.value || !serviceId) {
+            return;
+        }
+
+        setHint('Checking available time slots...', 'loading');
 
         try {
             const query = new URLSearchParams({ service_id: String(serviceId), date: dateInput.value });
@@ -43,18 +252,18 @@
             const payload = await response.json();
             const slots = Array.isArray(payload.slots) ? payload.slots : [];
 
-            hint.textContent = slots.length
-                ? `${slots.length} slot${slots.length > 1 ? 's' : ''} available on this day.`
-                : 'No slots available on this day. Try another date.';
+            if (slots.length) {
+                setHint(`${slots.length} slot${slots.length > 1 ? 's' : ''} available on this day.`, 'available');
+            } else {
+                setHint('No slots available on this day. Try another date.', 'empty');
+            }
         } catch (error) {
-            hint.textContent = 'Unable to check slots right now. You can still continue and try the next step.';
+            setHint('Unable to check slots right now. You can still continue and try the next step.', 'error');
         }
     };
 
     dateInput.addEventListener('change', updateHint);
-    if (dateInput.value) {
-        updateHint();
-    }
+    updateHint();
 })();
 </script>
 @endsection
