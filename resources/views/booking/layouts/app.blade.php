@@ -19,6 +19,7 @@
         .hero { background: linear-gradient(135deg, #f6efe8 0%, #fbf9f6 100%); border:1px solid #e7dcd1; border-radius:26px; padding:1.6rem; margin-bottom: 1rem; }
         .btn { background: var(--accent); color:#fff; border:1px solid transparent; padding:.72rem 1.1rem; border-radius:999px; cursor:pointer; text-decoration:none; display:inline-flex; align-items:center; justify-content:center; }
         .btn-soft { background: var(--secondary); color: var(--text); border-color:#ddd2c8; }
+        .btn:disabled { opacity:.55; cursor:not-allowed; }
         .grid { display:grid; gap:1rem; }
         .grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
         input,select,textarea { width:100%; border:1px solid #ded4ca; border-radius:14px; padding:.7rem .85rem; background:#fffdfb; font:inherit; color:var(--text); }
@@ -27,6 +28,10 @@
         .step { text-align:center; padding:.45rem .6rem; border-radius:999px; background:#f1e9e1; color:#7b6651; font-size:.8rem; }
         .active { background: var(--accent); color: #fff; }
         .service-card { padding: 1rem; border: 1px solid #eaded3; border-radius: 16px; background: #fffcf9; }
+        .field-error { color: #a03333; font-size: .83rem; margin-top: .35rem; }
+        .notice { padding: .85rem 1rem; border-radius: 14px; margin-bottom: 1rem; border: 1px solid #efd8c7; background: #fef4ec; color: #704f37; }
+        .title { margin: 0 0 .35rem; }
+        .subtitle { color: #766558; margin: 0 0 1.2rem; font-size: .95rem; }
         @media (max-width: 760px) {
             .grid-2 { grid-template-columns: 1fr; }
             .steps { grid-template-columns: 1fr; }
@@ -54,6 +59,15 @@
             <span class="step {{ request()->routeIs('booking.review*') ? 'active' : '' }}">5. {{ __('booking.step_review') }}</span>
         </div>
     </div>
+
+    @if(session('error'))
+        <div class="notice">{{ session('error') }}</div>
+    @endif
+    @if($errors->any())
+        <div class="notice">
+            <strong>Please check the form and try again.</strong>
+        </div>
+    @endif
 
     @yield('content')
 </div>

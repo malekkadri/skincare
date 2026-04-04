@@ -11,7 +11,7 @@ class SelectDateStepRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'appointment_date' => ['required', 'date_format:Y-m-d'],
+            'appointment_date' => ['required', 'date_format:Y-m-d', 'after_or_equal:today'],
         ];
     }
 }
