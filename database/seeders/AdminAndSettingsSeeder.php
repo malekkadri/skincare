@@ -56,6 +56,16 @@ class AdminAndSettingsSeeder extends Seeder
                 'hero_subtitle_en' => 'Expert care for healthy and radiant skin.',
                 'hero_button_text_fr' => 'Prendre rendez-vous',
                 'hero_button_text_en' => 'Book Now',
+                'hero_secondary_button_text_fr' => 'WhatsApp',
+                'hero_secondary_button_text_en' => 'WhatsApp',
+                'hero_secondary_button_url' => '/contact',
+                'contact_page_title_fr' => 'Contactez-nous',
+                'contact_page_title_en' => 'Contact Us',
+                'contact_intro_fr' => 'Pour toute question, écrivez-nous sur WhatsApp.',
+                'contact_intro_en' => 'For any question, message us on WhatsApp.',
+                'map_embed_url' => 'https://maps.google.com',
+                'opening_hours_fr' => 'Lun-Sam: 09:00-19:00',
+                'opening_hours_en' => 'Mon-Sat: 09:00-19:00',
             ]
         );
     }

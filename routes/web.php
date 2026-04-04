@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AboutPageController;
 use App\Http\Controllers\Admin\AppointmentController;
 use App\Http\Controllers\Admin\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Admin\AvailabilityController as AdminAvailabilityController;
@@ -7,20 +8,32 @@ use App\Http\Controllers\Admin\BlockedDateController;
 use App\Http\Controllers\Admin\BlockedTimeRangeController;
 use App\Http\Controllers\Admin\CalendarController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\FaqController;
+use App\Http\Controllers\Admin\GalleryItemController;
+use App\Http\Controllers\Admin\HomepageSectionController;
+use App\Http\Controllers\Admin\PolicyController;
 use App\Http\Controllers\Admin\ServiceCategoryController;
 use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\Admin\SettingsController;
+use App\Http\Controllers\Admin\TestimonialController;
 use App\Http\Controllers\Admin\WhatsAppSettingsController;
 use App\Http\Controllers\Admin\WhatsAppTemplateController;
 use App\Http\Controllers\Booking\AvailabilityController;
 use App\Http\Controllers\Booking\BookingWizardController;
 use App\Http\Controllers\PublicPreferenceController;
+use App\Http\Controllers\PublicSiteController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('public.preferences')->group(function () {
-    Route::get('/', function () {
-        return view('welcome');
-    });
+    Route::get('/', [PublicSiteController::class, 'home'])->name('home');
+    Route::get('/about', [PublicSiteController::class, 'about'])->name('about');
+    Route::get('/services', [PublicSiteController::class, 'services'])->name('services.index');
+    Route::get('/services/{slug}', [PublicSiteController::class, 'service'])->name('services.show');
+    Route::get('/gallery', [PublicSiteController::class, 'gallery'])->name('gallery');
+    Route::get('/testimonials', [PublicSiteController::class, 'testimonials'])->name('testimonials');
+    Route::get('/faq', [PublicSiteController::class, 'faq'])->name('faq');
+    Route::get('/contact', [PublicSiteController::class, 'contact'])->name('contact');
+    Route::get('/policies/{policy}', [PublicSiteController::class, 'policy'])->name('policies.show');
 
     Route::post('/preferences/locale', [PublicPreferenceController::class, 'locale'])->name('preferences.locale');
     Route::post('/preferences/currency', [PublicPreferenceController::class, 'currency'])->name('preferences.currency');
@@ -53,6 +66,11 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         Route::get('/settings', [SettingsController::class, 'edit'])->name('settings.edit');
         Route::put('/settings', [SettingsController::class, 'update'])->name('settings.update');
+        Route::get('/homepage', [HomepageSectionController::class, 'index'])->name('homepage.index');
+        Route::get('/homepage/{homepage}/edit', [HomepageSectionController::class, 'edit'])->name('homepage.edit');
+        Route::put('/homepage/{homepage}', [HomepageSectionController::class, 'update'])->name('homepage.update');
+        Route::get('/about', [AboutPageController::class, 'edit'])->name('about.edit');
+        Route::put('/about', [AboutPageController::class, 'update'])->name('about.update');
 
         Route::get('/whatsapp/settings', [WhatsAppSettingsController::class, 'edit'])->name('whatsapp.settings.edit');
         Route::put('/whatsapp/settings', [WhatsAppSettingsController::class, 'update'])->name('whatsapp.settings.update');
@@ -61,6 +79,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         Route::resource('categories', ServiceCategoryController::class)->except('show');
         Route::resource('services', ServiceController::class)->except('show');
+        Route::resource('gallery', GalleryItemController::class)->except('show')->parameter('gallery', 'gallery');
+        Route::resource('testimonials', TestimonialController::class)->except('show');
+        Route::resource('faq', FaqController::class)->except('show');
+        Route::resource('policies', PolicyController::class)->except('show');
 
         Route::resource('appointments', AppointmentController::class)->except('destroy');
         Route::patch('appointments/{appointment}/status', [AppointmentController::class, 'updateStatus'])->name('appointments.status');

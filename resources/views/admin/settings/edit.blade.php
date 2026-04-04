@@ -108,6 +108,20 @@
         </div>
     </section>
 
+
+    <section class="card">
+        <h2>Contact Page Content</h2>
+        <div class="grid">
+            <div><label>Contact Title (FR)</label><input type="text" name="contact_page_title_fr" value="{{ old('contact_page_title_fr', $settings->contact_page_title_fr) }}"></div>
+            <div><label>Contact Title (EN)</label><input type="text" name="contact_page_title_en" value="{{ old('contact_page_title_en', $settings->contact_page_title_en) }}"></div>
+            <div><label>Contact Intro (FR)</label><textarea name="contact_intro_fr">{{ old('contact_intro_fr', $settings->contact_intro_fr) }}</textarea></div>
+            <div><label>Contact Intro (EN)</label><textarea name="contact_intro_en">{{ old('contact_intro_en', $settings->contact_intro_en) }}</textarea></div>
+            <div><label>Map Embed URL</label><input type="url" name="map_embed_url" value="{{ old('map_embed_url', $settings->map_embed_url) }}"></div>
+            <div><label>Opening Hours (FR)</label><textarea name="opening_hours_fr">{{ old('opening_hours_fr', $settings->opening_hours_fr) }}</textarea></div>
+            <div><label>Opening Hours (EN)</label><textarea name="opening_hours_en">{{ old('opening_hours_en', $settings->opening_hours_en) }}</textarea></div>
+        </div>
+    </section>
+
     <button class="btn" type="submit">Save Settings</button>
 </form>
 @endsection
