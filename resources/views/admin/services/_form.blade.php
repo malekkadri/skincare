@@ -124,3 +124,31 @@
     <button type="submit" class="btn">{{ $isEdit ? 'Update Service' : 'Create Service' }}</button>
     <a href="{{ route('admin.services.index') }}" class="btn btn-secondary" style="text-decoration:none;">Cancel</a>
 </div>
+
+<div class="card" style="margin-top:1rem;">
+    <h2>SEO</h2>
+    <div class="grid">
+        <div>
+            <label for="meta_title_fr">Meta Title (FR)</label>
+            <input id="meta_title_fr" name="meta_title_fr" value="{{ old('meta_title_fr', $service->meta_title_fr) }}">
+            @error('meta_title_fr') <div class="error">{{ $message }}</div> @enderror
+        </div>
+        <div>
+            <label for="meta_title_en">Meta Title (EN)</label>
+            <input id="meta_title_en" name="meta_title_en" value="{{ old('meta_title_en', $service->meta_title_en) }}">
+            @error('meta_title_en') <div class="error">{{ $message }}</div> @enderror
+        </div>
+    </div>
+    <div class="grid">
+        <div>
+            <label for="meta_description_fr">Meta Description (FR)</label>
+            <textarea id="meta_description_fr" name="meta_description_fr">{{ old('meta_description_fr', $service->meta_description_fr) }}</textarea>
+            @error('meta_description_fr') <div class="error">{{ $message }}</div> @enderror
+        </div>
+        <div>
+            <label for="meta_description_en">Meta Description (EN)</label>
+            <textarea id="meta_description_en" name="meta_description_en">{{ old('meta_description_en', $service->meta_description_en) }}</textarea>
+            @error('meta_description_en') <div class="error">{{ $message }}</div> @enderror
+        </div>
+    </div>
+</div>

@@ -1,0 +1,1 @@
+<!doctype html><html><head><title>Server error - Skin by Noor</title></head><body style='font-family:Inter,system-ui;padding:2rem;'><h1>Something went wrong</h1><p>Our team has been notified. Please try again later.</p><a href='{{ route('home') }}'>Back to home</a></body></html>

@@ -18,6 +18,12 @@ class Setting extends Model
         'hero_title_fr','hero_title_en','hero_subtitle_fr','hero_subtitle_en','hero_button_text_fr','hero_button_text_en',
         'hero_secondary_button_text_fr','hero_secondary_button_text_en','hero_secondary_button_url',
         'contact_page_title_fr','contact_page_title_en','contact_intro_fr','contact_intro_en','map_embed_url','opening_hours_fr','opening_hours_en',
+        'seo_home_title_fr','seo_home_title_en','seo_home_description_fr','seo_home_description_en',
+        'seo_services_title_fr','seo_services_title_en','seo_services_description_fr','seo_services_description_en',
+        'seo_gallery_title_fr','seo_gallery_title_en','seo_gallery_description_fr','seo_gallery_description_en',
+        'seo_testimonials_title_fr','seo_testimonials_title_en','seo_testimonials_description_fr','seo_testimonials_description_en',
+        'seo_faq_title_fr','seo_faq_title_en','seo_faq_description_fr','seo_faq_description_en',
+        'seo_contact_title_fr','seo_contact_title_en','seo_contact_description_fr','seo_contact_description_en',
         'ai_enabled','ai_provider','ai_api_key','ai_model','ai_base_url','ai_temperature','ai_timeout_seconds',
         'ai_enable_consultation_summary','ai_enable_service_recommendation','ai_enable_admin_content_helper',
     ];
@@ -41,6 +47,11 @@ class Setting extends Model
         return $this->{$field} ?? null;
     }
 
+    public function seo(string $pageKey, string $field = 'title', ?string $locale = null): ?string
+    {
+        return $this->localized("seo_{$pageKey}_{$field}", $locale);
+    }
+
     public static function current(): self
     {
         return static::query()->firstOrCreate([], [
@@ -53,6 +64,8 @@ class Setting extends Model
             'max_whatsapp_retry_attempts' => 3,'whatsapp_retry_backoff_minutes' => 10,
             'ai_enabled' => false,'ai_provider' => 'grok','ai_model' => 'grok-2-latest','ai_timeout_seconds' => 25,'ai_temperature' => 0.30,
             'ai_enable_consultation_summary' => true,'ai_enable_service_recommendation' => true,'ai_enable_admin_content_helper' => true,
+            'seo_home_title_fr' => 'Skin by Noor | Soins de la peau', 'seo_home_title_en' => 'Skin by Noor | Skincare in Tunisia',
+            'seo_services_title_fr' => 'Services Skin by Noor', 'seo_services_title_en' => 'Skin by Noor Services',
         ]);
     }
 }

@@ -10,7 +10,7 @@ class EnsureUserIsAdmin
 {
     public function handle(Request $request, Closure $next): Response
     {
-        if (! $request->user() || ! $request->user()->is_admin) {
+        if (! $request->user() || ! $request->user()->is_admin || ! $request->user()->is_active) {
             abort(403, 'You do not have access to this area.');
         }
 
