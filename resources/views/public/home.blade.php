@@ -128,16 +128,16 @@
     :description="$sections['hero']->localized_content ?? $settings->localized('hero_subtitle') ?? 'Signature facials and advanced skin rituals designed around your skin goals.'"
     image="https://images.unsplash.com/photo-1612817288484-6f916006741a?auto=format&fit=crop&w=1200&q=80"
     :cta-url="route('booking.service')"
-    cta-label="Book Now"
+    cta-label="{{ __('public.home.hero_cta') }}"
 />
 
 <section class="page-section" style="padding-top:0">
     <div class="features-bar">
         @foreach([
-            ['Quick booking', '◌'],
-            ['Premium care', '✦'],
-            ['Natural products', '❋'],
-            ['Trusted clients', '♡'],
+            [__('public.home.feature_quick_booking'), '◌'],
+            [__('public.home.feature_premium_care'), '✦'],
+            [__('public.home.feature_natural_products'), '❋'],
+            [__('public.home.feature_trusted_clients'), '♡'],
         ] as [$feature, $icon])
             <div class="feature-pill">
                 <span class="feature-icon" aria-hidden="true">{{ $icon }}</span>
@@ -151,29 +151,29 @@
     <div class="about-grid">
         <img class="about-image" src="https://images.unsplash.com/photo-1522337094846-8a818d7b90d3?auto=format&fit=crop&w=900&q=80" alt="Skincare portrait">
         <div>
-            <p class="section-kicker">About</p>
-            <h2 class="section-title">Who are we</h2>
-            <p class="muted">At Skin by Noor, we combine modern techniques with gentle rituals to help your skin glow naturally. Every appointment is crafted with intention, comfort, and precision.</p>
-            <a class="btn btn-soft" href="{{ route('about') }}">Discover Our Story</a>
+            <p class="section-kicker">{{ __('public.home.about_kicker') }}</p>
+            <h2 class="section-title">{{ __('public.home.about_title') }}</h2>
+            <p class="muted">{{ __('public.home.about_body') }}</p>
+            <a class="btn btn-soft" href="{{ route('about') }}">{{ __('public.home.about_cta') }}</a>
         </div>
     </div>
 </section>
 
 <section class="page-section">
-    <p class="section-kicker">Services</p>
-    <h2 class="section-title">Signature treatments</h2>
+    <p class="section-kicker">{{ __('public.home.services_kicker') }}</p>
+    <h2 class="section-title">{{ __('public.home.services_title') }}</h2>
     <div class="services-grid">
         @forelse($featuredServices as $service)
             <x-service-card :service="$service" />
         @empty
-            <article class="card" style="padding:1.2rem">Services will appear here once published.</article>
+            <article class="card" style="padding:1.2rem">{{ __('public.home.services_empty') }}</article>
         @endforelse
     </div>
 </section>
 
 <section class="page-section">
-    <p class="section-kicker">Gallery</p>
-    <h2 class="section-title">Glow moments</h2>
+    <p class="section-kicker">{{ __('public.home.gallery_kicker') }}</p>
+    <h2 class="section-title">{{ __('public.home.gallery_title') }}</h2>
     <div class="gallery-grid">
         @forelse($featuredGallery as $img)
             <div class="gallery-item card">
@@ -184,28 +184,28 @@
                 @endif
             </div>
         @empty
-            <article class="card" style="padding:1.2rem">Gallery images will appear here once published.</article>
+            <article class="card" style="padding:1.2rem">{{ __('public.home.gallery_empty') }}</article>
         @endforelse
     </div>
 </section>
 
 <section class="page-section">
-    <p class="section-kicker">Testimonials</p>
-    <h2 class="section-title">Loved by our clients</h2>
+    <p class="section-kicker">{{ __('public.home.testimonials_kicker') }}</p>
+    <h2 class="section-title">{{ __('public.home.testimonials_title') }}</h2>
     <div class="testimonials-grid">
         @forelse($featuredTestimonials as $testimonial)
             <x-testimonial-card :testimonial="$testimonial" />
         @empty
-            <article class="card" style="padding:1.2rem">Testimonials will appear here after client feedback is published.</article>
+            <article class="card" style="padding:1.2rem">{{ __('public.home.testimonials_empty') }}</article>
         @endforelse
     </div>
 </section>
 
 <section class="page-section">
     <div class="cta-block">
-        <h2 class="section-title">Book your skincare experience</h2>
-        <p class="muted">Reserve your spot for personalized treatment and calm, luxury care.</p>
-        <a class="btn" href="{{ route('booking.service') }}">Start Booking</a>
+        <h2 class="section-title">{{ __('public.home.cta_title') }}</h2>
+        <p class="muted">{{ __('public.home.cta_text') }}</p>
+        <a class="btn" href="{{ route('booking.service') }}">{{ __('public.home.cta_button') }}</a>
     </div>
 </section>
 @endsection

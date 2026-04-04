@@ -46,7 +46,7 @@
 document.querySelectorAll('form[data-submit-once]').forEach((form) => {
     form.addEventListener('submit', () => {
         const button = form.querySelector('button[type="submit"]');
-        if (button) { button.disabled = true; button.textContent = 'Submitting...'; }
+        if (button) { button.disabled = true; button.textContent = @json(__('public.common.submitting')); }
     }, { once: true });
 });
 </script>

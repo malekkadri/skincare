@@ -186,17 +186,17 @@
         <a class="brand" href="{{ route('home') }}">{{ $settings->site_name ?? 'Skin by Noor' }}</a>
 
         <nav class="menu" aria-label="Primary navigation">
-            <a href="{{ route('about') }}">About</a>
-            <a href="{{ route('services.index') }}">Services</a>
-            <a href="{{ route('gallery') }}">Gallery</a>
-            <a href="{{ route('testimonials') }}">Testimonials</a>
-            <a href="{{ route('contact') }}">Contact</a>
+            <a href="{{ route('about') }}">{{ __('public.nav.about') }}</a>
+            <a href="{{ route('services.index') }}">{{ __('public.nav.services') }}</a>
+            <a href="{{ route('gallery') }}">{{ __('public.nav.gallery') }}</a>
+            <a href="{{ route('testimonials') }}">{{ __('public.nav.testimonials') }}</a>
+            <a href="{{ route('contact') }}">{{ __('public.nav.contact') }}</a>
         </nav>
 
         <div class="menu">
-            <form method="POST" action="{{ route('preferences.locale') }}">@csrf<input type="hidden" name="locale" value="fr"><button class="btn btn-soft" type="submit">FR</button></form>
-            <form method="POST" action="{{ route('preferences.locale') }}">@csrf<input type="hidden" name="locale" value="en"><button class="btn btn-soft" type="submit">EN</button></form>
-            <a class="btn" href="{{ route('booking.service') }}">Book Now</a>
+            <form method="POST" action="{{ route('preferences.locale') }}">@csrf<input type="hidden" name="locale" value="fr"><button class="btn {{ app()->getLocale()==='fr' ? '' : 'btn-soft' }}" type="submit">FR</button></form>
+            <form method="POST" action="{{ route('preferences.locale') }}">@csrf<input type="hidden" name="locale" value="en"><button class="btn {{ app()->getLocale()==='en' ? '' : 'btn-soft' }}" type="submit">EN</button></form>
+            <a class="btn" href="{{ route('booking.service') }}">{{ __('public.nav.book_now') }}</a>
         </div>
     </div>
 </header>
@@ -209,19 +209,19 @@
     <div class="container footer-grid">
         <div>
             <h3>{{ $settings->site_name ?? 'Skin by Noor' }}</h3>
-            <p class="muted">{{ $settings->localized('site_tagline') ?: 'Elevated skincare rituals designed for healthy, luminous skin.' }}</p>
+            <p class="muted">{{ $settings->localized('site_tagline') ?: __('public.footer.tagline') }}</p>
         </div>
         <div>
-            <h4>Explore</h4>
-            <a class="footer-link" href="{{ route('about') }}">Who are we</a>
-            <a class="footer-link" href="{{ route('services.index') }}">Services</a>
-            <a class="footer-link" href="{{ route('booking.service') }}">Book appointment</a>
+            <h4>{{ __('public.footer.explore') }}</h4>
+            <a class="footer-link" href="{{ route('about') }}">{{ __('public.footer.who_we_are') }}</a>
+            <a class="footer-link" href="{{ route('services.index') }}">{{ __('public.nav.services') }}</a>
+            <a class="footer-link" href="{{ route('booking.service') }}">{{ __('public.footer.book_appointment') }}</a>
         </div>
         <div>
-            <h4>Contact</h4>
-            <a class="footer-link" href="{{ route('contact') }}">Contact page</a>
+            <h4>{{ __('public.footer.contact') }}</h4>
+            <a class="footer-link" href="{{ route('contact') }}">{{ __('public.footer.contact_page') }}</a>
             @if(filled($settings->whatsapp_number))
-                <a class="btn" target="_blank" href="https://wa.me/{{ preg_replace('/\D+/', '', $settings->whatsapp_number) }}">WhatsApp Us</a>
+                <a class="btn" target="_blank" href="https://wa.me/{{ preg_replace('/\D+/', '', $settings->whatsapp_number) }}">{{ __('public.footer.whatsapp') }}</a>
             @endif
         </div>
     </div>
