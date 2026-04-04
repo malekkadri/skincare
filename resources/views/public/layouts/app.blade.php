@@ -16,31 +16,38 @@
     <meta name="twitter:description" content="{{ $seo->description ?? ($settings->localized('site_tagline') ?? '') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #f8f4ef;
-            --secondary: #efe7de;
-            --accent: #c8a27a;
-            --accent-deep: #ab7e57;
-            --text-primary: #2d2621;
-            --text-secondary: #776a60;
-            --card: #fffaf5;
-            --ring: rgba(200, 162, 122, .35);
+            --bg: #f6f2ed;
+            --surface: #fdfaf7;
+            --surface-strong: #fff;
+            --surface-soft: #f2eae1;
+            --border: #e7ddd2;
+            --border-strong: #dacdbf;
+            --accent: #b99068;
+            --accent-deep: #926947;
+            --text-primary: #2f2722;
+            --text-secondary: #76685b;
+            --focus-ring: rgba(185, 144, 104, .35);
+            --shadow-soft: 0 16px 44px rgba(47, 39, 34, .08);
+            --shadow-lift: 0 22px 46px rgba(47, 39, 34, .12);
         }
         * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
         body {
             margin: 0;
             background:
-                radial-gradient(circle at 10% 15%, rgba(232, 211, 190, .35), transparent 42%),
-                radial-gradient(circle at 85% 25%, rgba(241, 230, 217, .4), transparent 34%),
+                radial-gradient(circle at 6% 12%, rgba(226, 206, 188, .28), transparent 40%),
+                radial-gradient(circle at 92% 24%, rgba(240, 227, 213, .33), transparent 34%),
                 var(--bg);
             color: var(--text-primary);
             font-family: 'Inter', system-ui, sans-serif;
             line-height: 1.7;
             min-height: 100vh;
-            overflow-x: hidden;
+            overflow-x: clip;
         }
+        body.menu-open { overflow: hidden; }
         h1, h2, h3, h4 {
             font-family: 'Playfair Display', Georgia, serif;
             letter-spacing: .02em;
@@ -49,104 +56,202 @@
         }
         a { color: inherit; text-decoration: none; }
         .container {
-            width: min(1200px, calc(100% - 2.5rem));
+            width: min(1240px, calc(100% - 2.5rem));
             margin-inline: auto;
         }
+
         .site-header {
             position: sticky;
             top: 0;
-            z-index: 20;
-            backdrop-filter: blur(14px);
-            background: rgba(250, 246, 241, .82);
-            border-bottom: 1px solid #e8e1d9;
+            z-index: 40;
+            backdrop-filter: blur(18px);
+            background: rgba(248, 243, 237, .88);
+            border-bottom: 1px solid rgba(218, 205, 191, .72);
         }
         .site-nav {
-            min-height: 84px;
-            display: flex;
+            min-height: 92px;
+            display: grid;
+            grid-template-columns: auto 1fr auto;
             align-items: center;
-            justify-content: space-between;
-            gap: 1rem;
-            flex-wrap: wrap;
-            padding: .75rem 0;
+            gap: 1.5rem;
+            padding: .95rem 0;
         }
         .brand {
+            display: inline-grid;
+            gap: .2rem;
+            align-items: baseline;
+        }
+        .brand-title {
             font-family: 'Playfair Display', Georgia, serif;
-            font-size: 1.45rem;
+            font-size: clamp(1.25rem, 2vw, 1.6rem);
+            letter-spacing: .04em;
+            line-height: 1.1;
         }
-        .menu {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-            align-items: center;
+        .brand-subtitle {
+            text-transform: uppercase;
+            letter-spacing: .23em;
+            font-size: .64rem;
             color: var(--text-secondary);
-            font-size: .95rem;
+            margin-left: .03em;
         }
-        .menu a:hover { color: var(--text-primary); }
+
+        .menu-toggle {
+            display: none;
+            border: 1px solid var(--border-strong);
+            background: rgba(255,255,255,.65);
+            color: var(--text-primary);
+            border-radius: 999px;
+            padding: .58rem .95rem;
+            font-size: .9rem;
+            font-weight: 600;
+            align-items: center;
+            gap: .5rem;
+            cursor: pointer;
+        }
+        .menu-toggle-lines {
+            display: inline-grid;
+            gap: 3px;
+        }
+        .menu-toggle-lines span {
+            width: 16px;
+            height: 1.5px;
+            border-radius: 99px;
+            background: currentColor;
+            display: block;
+        }
+
+        .nav-links {
+            justify-self: center;
+            display: flex;
+            align-items: center;
+            gap: .35rem;
+            flex-wrap: wrap;
+        }
+        .nav-link {
+            color: var(--text-secondary);
+            font-size: .93rem;
+            letter-spacing: .01em;
+            padding: .55rem .8rem;
+            border-radius: 999px;
+            border: 1px solid transparent;
+            transition: color .2s ease, background-color .2s ease, border-color .2s ease;
+        }
+        .nav-link:hover {
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, .7);
+            border-color: rgba(218, 205, 191, .8);
+        }
+        .nav-link[aria-current="page"] {
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, .88);
+            border-color: var(--border-strong);
+            box-shadow: 0 6px 16px rgba(47, 39, 34, .06);
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: .55rem;
+        }
+        .locale-switcher {
+            display: inline-flex;
+            background: rgba(255, 255, 255, .72);
+            border: 1px solid var(--border-strong);
+            border-radius: 999px;
+            padding: .22rem;
+            gap: .2rem;
+        }
+        .locale-switcher form { margin: 0; }
+        .locale-pill {
+            border: 0;
+            border-radius: 999px;
+            background: transparent;
+            color: var(--text-secondary);
+            font-size: .76rem;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            font-weight: 600;
+            min-width: 2.4rem;
+            padding: .42rem .62rem;
+            cursor: pointer;
+        }
+        .locale-pill.is-active {
+            background: #fff;
+            color: var(--text-primary);
+            box-shadow: 0 7px 16px rgba(47, 39, 34, .08);
+        }
+
         .btn {
             display: inline-flex;
             align-items: center;
             justify-content: center;
             border-radius: 999px;
             border: 1px solid transparent;
-            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-deep) 100%);
             color: #fff;
-            padding: .72rem 1.4rem;
-            font-size: .94rem;
-            transition: transform .2s ease, box-shadow .2s ease, opacity .2s ease;
-            box-shadow: 0 12px 30px rgba(200, 162, 122, .25);
+            padding: .74rem 1.35rem;
+            font-size: .88rem;
+            font-weight: 600;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            transition: transform .22s ease, box-shadow .22s ease, opacity .2s ease;
+            box-shadow: 0 14px 30px rgba(185, 144, 104, .28);
             cursor: pointer;
-            position: relative;
-            overflow: hidden;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-deep) 100%);
         }
-        .btn::after {
-            content: "";
-            position: absolute;
-            inset: 0;
-            transform: translateX(-110%);
-            background: linear-gradient(100deg, transparent 25%, rgba(255, 255, 255, .35), transparent 75%);
-            transition: transform .7s ease;
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 18px 34px rgba(185, 144, 104, .34);
         }
-        .btn:hover { transform: translateY(-1px); opacity: .96; }
-        .btn:hover::after { transform: translateX(110%); }
         .btn-soft {
-            background: var(--secondary);
-            border-color: #ddd2c8;
+            background: var(--surface-soft);
             color: var(--text-primary);
+            border-color: var(--border-strong);
             box-shadow: none;
+            text-transform: none;
+            letter-spacing: normal;
+            font-weight: 500;
         }
         .btn-row { display: flex; flex-wrap: wrap; gap: .75rem; }
-        .page-section { padding: 88px 0; }
+
+        main.container {
+            padding-top: 1.35rem;
+            padding-bottom: 2.4rem;
+        }
+        .page-section { padding: clamp(4rem, 8vw, 6.4rem) 0; }
         .page-hero {
-            border-radius: 30px;
-            padding: clamp(2rem, 4.5vw, 4rem);
-            background: linear-gradient(135deg, #f6efe8 0%, #fbf9f6 100%);
-            border: 1px solid #e7dcd1;
-            margin-top: 1.25rem;
+            border-radius: 32px;
+            padding: clamp(2rem, 4.8vw, 4.25rem);
+            background: linear-gradient(145deg, #f8f1e9 0%, #fcfaf8 100%);
+            border: 1px solid var(--border);
+            margin-top: 1.4rem;
+            box-shadow: var(--shadow-soft);
         }
         .section-title {
-            font-size: clamp(1.8rem, 2.5vw, 2.6rem);
-            margin-bottom: .75rem;
+            font-size: clamp(1.9rem, 2.8vw, 2.85rem);
+            margin-bottom: .8rem;
             font-weight: 500;
+            line-height: 1.2;
         }
         .section-kicker {
             text-transform: uppercase;
             letter-spacing: .2em;
-            font-size: .74rem;
+            font-size: .72rem;
             color: var(--text-secondary);
             margin-bottom: .5rem;
+            font-weight: 600;
         }
         .muted { color: var(--text-secondary); }
         .card {
-            background: var(--card);
+            background: var(--surface-strong);
             border-radius: 22px;
-            border: 1px solid #ede5dd;
-            box-shadow: 0 18px 45px rgba(95, 81, 69, .08);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-soft);
             padding: 1.35rem;
             transition: transform .28s ease, box-shadow .28s ease;
         }
         .card:hover {
             transform: translateY(-4px);
-            box-shadow: 0 26px 50px rgba(95, 81, 69, .12);
+            box-shadow: var(--shadow-lift);
         }
         .grid { display: grid; gap: 1.2rem; }
         .grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -156,7 +261,7 @@
         input,
         textarea {
             width: 100%;
-            border: 1px solid #ded4ca;
+            border: 1px solid var(--border-strong);
             border-radius: 14px;
             padding: .78rem .92rem;
             background: #fffdfb;
@@ -180,38 +285,92 @@
             color: var(--text-secondary);
             background: #fbf8f4;
         }
+
         .site-footer {
-            margin-top: 40px;
-            border-top: 1px solid #e9dfd6;
-            padding: 64px 0;
-            background: linear-gradient(180deg, #f3eee8 0%, #efe7de 100%);
+            margin-top: 2rem;
+            border-top: 1px solid var(--border-strong);
+            padding: clamp(3.2rem, 7vw, 5rem) 0 1.1rem;
+            background: linear-gradient(180deg, #f2ebe3 0%, #ece3d8 100%);
         }
         .footer-grid {
             display: grid;
-            gap: 1.5rem;
-            grid-template-columns: 1.4fr 1fr 1fr;
+            gap: 1.8rem;
+            grid-template-columns: 1.6fr 1fr 1fr 1.15fr;
+            align-items: start;
         }
-        .footer-link { color: var(--text-secondary); display: block; margin-bottom: .45rem; }
+        .footer-title {
+            font-size: 1.06rem;
+            margin-bottom: .55rem;
+        }
+        .footer-meta {
+            font-size: .9rem;
+            color: var(--text-secondary);
+            margin: .3rem 0;
+        }
+        .footer-link {
+            color: var(--text-secondary);
+            display: inline-flex;
+            margin-bottom: .5rem;
+            transition: color .2s ease;
+        }
         .footer-link:hover { color: var(--text-primary); }
+        .footer-note {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(218, 205, 191, .85);
+            font-size: .82rem;
+            color: var(--text-secondary);
+            display: flex;
+            flex-wrap: wrap;
+            gap: .75rem 1.4rem;
+            justify-content: space-between;
+        }
+        .footer-social {
+            display: flex;
+            gap: .55rem;
+            flex-wrap: wrap;
+        }
+        .footer-social a {
+            width: 2rem;
+            height: 2rem;
+            border-radius: 999px;
+            border: 1px solid var(--border-strong);
+            background: rgba(255,255,255,.65);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-primary);
+            font-size: .8rem;
+            font-weight: 700;
+        }
         .lux-divider {
             height: 1px;
-            width: min(240px, 45vw);
-            background: linear-gradient(90deg, transparent 0%, rgba(200, 162, 122, .75) 50%, transparent 100%);
-            margin: 0 auto 1.25rem;
+            width: min(260px, 50vw);
+            background: linear-gradient(90deg, transparent 0%, rgba(185, 144, 104, .8) 50%, transparent 100%);
+            margin: 0 0 1.25rem;
         }
+
         .reveal {
             opacity: 0;
-            transform: translateY(18px);
+            transform: translateY(20px) scale(.99);
             transition: opacity .75s ease, transform .75s ease;
+            transition-delay: var(--reveal-delay, 0s);
         }
         .reveal.is-visible {
             opacity: 1;
-            transform: translateY(0);
+            transform: translateY(0) scale(1);
         }
-        .is-gold-focus:focus-visible {
-            outline: 2px solid var(--ring);
+
+        :is(a, button, input, textarea, select).is-gold-focus:focus-visible,
+        :is(a, button, input, textarea, select):focus-visible {
+            outline: 2px solid var(--focus-ring);
             outline-offset: 3px;
         }
+
+        .mobile-panel {
+            display: none;
+        }
+
         @media (prefers-reduced-motion: reduce) {
             *, *::before, *::after {
                 animation: none !important;
@@ -220,36 +379,134 @@
             }
             .reveal { opacity: 1; transform: none; }
         }
+
+        @media (max-width: 1080px) {
+            .site-nav {
+                grid-template-columns: auto auto;
+                grid-template-areas:
+                    "brand toggle"
+                    "desktop desktop";
+                align-items: center;
+            }
+            .brand { grid-area: brand; }
+            .menu-toggle {
+                grid-area: toggle;
+                justify-self: end;
+                display: inline-flex;
+            }
+            .nav-links,
+            .nav-actions {
+                display: none;
+            }
+            .mobile-panel {
+                display: grid;
+                gap: 1rem;
+                padding: 1rem;
+                margin-bottom: .65rem;
+                border: 1px solid var(--border-strong);
+                background: rgba(253, 250, 247, .98);
+                border-radius: 20px;
+                box-shadow: var(--shadow-soft);
+            }
+            .mobile-panel[hidden] { display: none; }
+            .mobile-nav-links {
+                display: grid;
+                gap: .4rem;
+            }
+            .mobile-nav-links .nav-link {
+                border-radius: 14px;
+                padding: .68rem .85rem;
+                border: 1px solid var(--border);
+                background: rgba(255,255,255,.78);
+            }
+            .mobile-action-row {
+                display: grid;
+                grid-template-columns: 1fr;
+                gap: .65rem;
+            }
+            .mobile-locale {
+                justify-self: start;
+            }
+        }
+
         @media (max-width: 900px) {
-            .site-nav { justify-content: center; }
-            .menu { justify-content: center; }
             .footer-grid,
             .grid-3,
             .grid-2 { grid-template-columns: 1fr; }
             .page-section { padding: 72px 0; }
+            .container { width: min(1240px, calc(100% - 1.45rem)); }
+            .footer-note { flex-direction: column; gap: .5rem; }
         }
     </style>
 </head>
 <body>
 <header class="site-header">
-    <div class="container site-nav">
-        <a class="brand" href="{{ route('home') }}">{{ $settings->site_name ?? 'Skin by Noor' }}</a>
+    <div class="container">
+        <div class="site-nav">
+            <a class="brand is-gold-focus" href="{{ route('home') }}">
+                <span class="brand-title">{{ $settings->site_name ?? 'Skin by Noor' }}</span>
+                <span class="brand-subtitle">{{ __('public.footer.brand_mark') }}</span>
+            </a>
 
-        <nav class="menu" aria-label="Primary navigation">
-            <a href="{{ route('about') }}">{{ __('public.nav.about') }}</a>
-            <a href="{{ route('services.index') }}">{{ __('public.nav.services') }}</a>
-            <a href="{{ route('recommender.index') }}">{{ __('public.nav.ai_recommender') }}</a>
-            <a href="{{ route('consultation.create') }}">{{ __('public.nav.consultation') }}</a>
-            <a href="{{ route('gallery') }}">{{ __('public.nav.gallery') }}</a>
-            <a href="{{ route('testimonials') }}">{{ __('public.nav.testimonials') }}</a>
-            <a href="{{ route('faq') }}">{{ __('public.nav.faq') }}</a>
-            <a href="{{ route('contact') }}">{{ __('public.nav.contact') }}</a>
-        </nav>
+            <button class="menu-toggle is-gold-focus" type="button" data-mobile-toggle aria-expanded="false" aria-controls="mobileNavPanel">
+                <span class="menu-toggle-lines" aria-hidden="true"><span></span><span></span><span></span></span>
+                <span>{{ __('public.nav.menu') }}</span>
+            </button>
 
-        <div class="menu">
-            <form method="POST" action="{{ route('preferences.locale') }}">@csrf<input type="hidden" name="locale" value="fr"><button class="btn {{ app()->getLocale()==='fr' ? '' : 'btn-soft' }}" type="submit">FR</button></form>
-            <form method="POST" action="{{ route('preferences.locale') }}">@csrf<input type="hidden" name="locale" value="en"><button class="btn {{ app()->getLocale()==='en' ? '' : 'btn-soft' }}" type="submit">EN</button></form>
-            <a class="btn is-gold-focus" href="{{ route('booking.service') }}">{{ __('public.nav.book_now') }}</a>
+            <nav class="nav-links" aria-label="Primary navigation">
+                <a class="nav-link" href="{{ route('about') }}" @if(request()->routeIs('about')) aria-current="page" @endif>{{ __('public.nav.about') }}</a>
+                <a class="nav-link" href="{{ route('services.index') }}" @if(request()->routeIs('services.index', 'services.show')) aria-current="page" @endif>{{ __('public.nav.services') }}</a>
+                <a class="nav-link" href="{{ route('recommender.index') }}" @if(request()->routeIs('recommender.index')) aria-current="page" @endif>{{ __('public.nav.ai_recommender') }}</a>
+                <a class="nav-link" href="{{ route('consultation.create') }}" @if(request()->routeIs('consultation.create', 'consultation.success')) aria-current="page" @endif>{{ __('public.nav.consultation') }}</a>
+                <a class="nav-link" href="{{ route('gallery') }}" @if(request()->routeIs('gallery')) aria-current="page" @endif>{{ __('public.nav.gallery') }}</a>
+                <a class="nav-link" href="{{ route('testimonials') }}" @if(request()->routeIs('testimonials')) aria-current="page" @endif>{{ __('public.nav.testimonials') }}</a>
+                <a class="nav-link" href="{{ route('faq') }}" @if(request()->routeIs('faq')) aria-current="page" @endif>{{ __('public.nav.faq') }}</a>
+                <a class="nav-link" href="{{ route('contact') }}" @if(request()->routeIs('contact')) aria-current="page" @endif>{{ __('public.nav.contact') }}</a>
+            </nav>
+
+            <div class="nav-actions" aria-label="Header actions">
+                <div class="locale-switcher" role="group" aria-label="{{ __('public.nav.language') }}">
+                    <form method="POST" action="{{ route('preferences.locale') }}">
+                        @csrf
+                        <input type="hidden" name="locale" value="fr">
+                        <button class="locale-pill is-gold-focus {{ app()->getLocale()==='fr' ? 'is-active' : '' }}" type="submit">FR</button>
+                    </form>
+                    <form method="POST" action="{{ route('preferences.locale') }}">
+                        @csrf
+                        <input type="hidden" name="locale" value="en">
+                        <button class="locale-pill is-gold-focus {{ app()->getLocale()==='en' ? 'is-active' : '' }}" type="submit">EN</button>
+                    </form>
+                </div>
+                <a class="btn is-gold-focus" href="{{ route('booking.service') }}">{{ __('public.nav.book_now') }}</a>
+            </div>
+        </div>
+
+        <div class="mobile-panel" id="mobileNavPanel" hidden>
+            <nav class="mobile-nav-links" aria-label="Mobile primary navigation">
+                <a class="nav-link" href="{{ route('about') }}" @if(request()->routeIs('about')) aria-current="page" @endif>{{ __('public.nav.about') }}</a>
+                <a class="nav-link" href="{{ route('services.index') }}" @if(request()->routeIs('services.index', 'services.show')) aria-current="page" @endif>{{ __('public.nav.services') }}</a>
+                <a class="nav-link" href="{{ route('recommender.index') }}" @if(request()->routeIs('recommender.index')) aria-current="page" @endif>{{ __('public.nav.ai_recommender') }}</a>
+                <a class="nav-link" href="{{ route('consultation.create') }}" @if(request()->routeIs('consultation.create', 'consultation.success')) aria-current="page" @endif>{{ __('public.nav.consultation') }}</a>
+                <a class="nav-link" href="{{ route('gallery') }}" @if(request()->routeIs('gallery')) aria-current="page" @endif>{{ __('public.nav.gallery') }}</a>
+                <a class="nav-link" href="{{ route('testimonials') }}" @if(request()->routeIs('testimonials')) aria-current="page" @endif>{{ __('public.nav.testimonials') }}</a>
+                <a class="nav-link" href="{{ route('faq') }}" @if(request()->routeIs('faq')) aria-current="page" @endif>{{ __('public.nav.faq') }}</a>
+                <a class="nav-link" href="{{ route('contact') }}" @if(request()->routeIs('contact')) aria-current="page" @endif>{{ __('public.nav.contact') }}</a>
+            </nav>
+            <div class="mobile-action-row">
+                <div class="locale-switcher mobile-locale" role="group" aria-label="{{ __('public.nav.language') }}">
+                    <form method="POST" action="{{ route('preferences.locale') }}">
+                        @csrf
+                        <input type="hidden" name="locale" value="fr">
+                        <button class="locale-pill is-gold-focus {{ app()->getLocale()==='fr' ? 'is-active' : '' }}" type="submit">FR</button>
+                    </form>
+                    <form method="POST" action="{{ route('preferences.locale') }}">
+                        @csrf
+                        <input type="hidden" name="locale" value="en">
+                        <button class="locale-pill is-gold-focus {{ app()->getLocale()==='en' ? 'is-active' : '' }}" type="submit">EN</button>
+                    </form>
+                </div>
+                <a class="btn is-gold-focus" href="{{ route('booking.service') }}">{{ __('public.nav.book_now') }}</a>
+            </div>
         </div>
     </div>
 </header>
@@ -259,23 +516,62 @@
 </main>
 
 <footer class="site-footer">
-    <div class="container footer-grid">
-        <div>
-            <h3>{{ $settings->site_name ?? 'Skin by Noor' }}</h3>
-            <p class="muted">{{ $settings->localized('site_tagline') ?: __('public.footer.tagline') }}</p>
+    <div class="container">
+        <div class="footer-grid">
+            <div>
+                <h3>{{ $settings->site_name ?? 'Skin by Noor' }}</h3>
+                <div class="lux-divider"></div>
+                <p class="muted">{{ $settings->localized('site_tagline') ?: __('public.footer.tagline') }}</p>
+                <p class="footer-meta">{{ __('public.footer.brand_assurance') }}</p>
+            </div>
+            <div>
+                <h4 class="footer-title">{{ __('public.footer.quick_links') }}</h4>
+                <a class="footer-link" href="{{ route('home') }}">{{ __('public.footer.home') }}</a>
+                <a class="footer-link" href="{{ route('about') }}">{{ __('public.footer.who_we_are') }}</a>
+                <a class="footer-link" href="{{ route('gallery') }}">{{ __('public.nav.gallery') }}</a>
+                <a class="footer-link" href="{{ route('testimonials') }}">{{ __('public.nav.testimonials') }}</a>
+                <a class="footer-link" href="{{ route('faq') }}">{{ __('public.nav.faq') }}</a>
+            </div>
+            <div>
+                <h4 class="footer-title">{{ __('public.footer.services') }}</h4>
+                <a class="footer-link" href="{{ route('services.index') }}">{{ __('public.nav.services') }}</a>
+                <a class="footer-link" href="{{ route('consultation.create') }}">{{ __('public.nav.consultation') }}</a>
+                <a class="footer-link" href="{{ route('recommender.index') }}">{{ __('public.nav.ai_recommender') }}</a>
+                <a class="footer-link" href="{{ route('booking.service') }}">{{ __('public.footer.book_appointment') }}</a>
+            </div>
+            <div>
+                <h4 class="footer-title">{{ __('public.footer.contact') }}</h4>
+                <a class="footer-link" href="{{ route('contact') }}">{{ __('public.footer.contact_page') }}</a>
+                @if(filled($settings->phone))
+                    <a class="footer-link" href="tel:{{ preg_replace('/\s+/', '', $settings->phone) }}">{{ $settings->phone }}</a>
+                @endif
+                @if(filled($settings->localized('address')))
+                    <span class="footer-meta">{{ $settings->localized('address') }}</span>
+                @endif
+                @if(filled($settings->whatsapp_number))
+                    <a class="btn is-gold-focus" target="_blank" rel="noopener" href="https://wa.me/{{ preg_replace('/\D+/', '', $settings->whatsapp_number) }}">{{ __('public.footer.whatsapp') }}</a>
+                @endif
+                <div class="footer-social" aria-label="{{ __('public.footer.social') }}">
+                    @if(filled($settings->instagram_url))
+                        <a class="is-gold-focus" href="{{ $settings->instagram_url }}" target="_blank" rel="noopener" aria-label="Instagram">IG</a>
+                    @endif
+                    @if(filled($settings->facebook_url))
+                        <a class="is-gold-focus" href="{{ $settings->facebook_url }}" target="_blank" rel="noopener" aria-label="Facebook">FB</a>
+                    @endif
+                    @if(filled($settings->tiktok_url))
+                        <a class="is-gold-focus" href="{{ $settings->tiktok_url }}" target="_blank" rel="noopener" aria-label="TikTok">TT</a>
+                    @endif
+                </div>
+            </div>
         </div>
-        <div>
-            <h4>{{ __('public.footer.explore') }}</h4>
-            <a class="footer-link" href="{{ route('about') }}">{{ __('public.footer.who_we_are') }}</a>
-            <a class="footer-link" href="{{ route('services.index') }}">{{ __('public.nav.services') }}</a>
-            <a class="footer-link" href="{{ route('booking.service') }}">{{ __('public.footer.book_appointment') }}</a>
-        </div>
-        <div>
-            <h4>{{ __('public.footer.contact') }}</h4>
-            <a class="footer-link" href="{{ route('contact') }}">{{ __('public.footer.contact_page') }}</a>
-            @if(filled($settings->whatsapp_number))
-                <a class="btn is-gold-focus" target="_blank" href="https://wa.me/{{ preg_replace('/\D+/', '', $settings->whatsapp_number) }}">{{ __('public.footer.whatsapp') }}</a>
-            @endif
+
+        <div class="footer-note">
+            <span>© {{ now()->year }} {{ $settings->site_name ?? 'Skin by Noor' }}. {{ __('public.footer.rights') }}</span>
+            <span>
+                <a class="footer-link" href="{{ route('policies.show', ['policy' => app()->getLocale()==='fr' ? 'confidentialite' : 'privacy']) }}">{{ __('public.footer.privacy') }}</a>
+                ·
+                <a class="footer-link" href="{{ route('policies.show', ['policy' => app()->getLocale()==='fr' ? 'conditions-generales' : 'terms']) }}">{{ __('public.footer.terms') }}</a>
+            </span>
         </div>
     </div>
 </footer>
@@ -284,18 +580,65 @@
         const revealElements = document.querySelectorAll('.reveal');
         if (!revealElements.length || !('IntersectionObserver' in window)) {
             revealElements.forEach((element) => element.classList.add('is-visible'));
+        } else {
+            revealElements.forEach((element, index) => {
+                element.style.setProperty('--reveal-delay', `${Math.min(index * 0.04, 0.18)}s`);
+            });
+
+            const observer = new IntersectionObserver((entries, instance) => {
+                entries.forEach((entry) => {
+                    if (!entry.isIntersecting) {
+                        return;
+                    }
+                    entry.target.classList.add('is-visible');
+                    instance.unobserve(entry.target);
+                });
+            }, { threshold: 0.15, rootMargin: '0px 0px -6% 0px' });
+
+            revealElements.forEach((element) => observer.observe(element));
+        }
+
+        const mobileToggle = document.querySelector('[data-mobile-toggle]');
+        const mobilePanel = document.getElementById('mobileNavPanel');
+        if (!mobileToggle || !mobilePanel) {
             return;
         }
 
-        const observer = new IntersectionObserver((entries, instance) => {
-            entries.forEach((entry) => {
-                if (!entry.isIntersecting) return;
-                entry.target.classList.add('is-visible');
-                instance.unobserve(entry.target);
-            });
-        }, { threshold: 0.15 });
+        const closeMobileMenu = () => {
+            mobilePanel.hidden = true;
+            mobileToggle.setAttribute('aria-expanded', 'false');
+            document.body.classList.remove('menu-open');
+        };
 
-        revealElements.forEach((element) => observer.observe(element));
+        const openMobileMenu = () => {
+            mobilePanel.hidden = false;
+            mobileToggle.setAttribute('aria-expanded', 'true');
+            document.body.classList.add('menu-open');
+        };
+
+        mobileToggle.addEventListener('click', () => {
+            if (mobilePanel.hidden) {
+                openMobileMenu();
+                return;
+            }
+            closeMobileMenu();
+        });
+
+        mobilePanel.querySelectorAll('a').forEach((link) => {
+            link.addEventListener('click', closeMobileMenu);
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && !mobilePanel.hidden) {
+                closeMobileMenu();
+            }
+        });
+
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 1080 && !mobilePanel.hidden) {
+                closeMobileMenu();
+            }
+        });
     });
 </script>
 </body>
