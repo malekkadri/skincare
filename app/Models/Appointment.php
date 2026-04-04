@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Appointment extends Model
 {
@@ -24,6 +25,7 @@ class Appointment extends Model
         'end_time',
         'status',
         'booked_currency',
+        'preferred_language',
         'booked_price',
         'service_name_snapshot_fr',
         'service_name_snapshot_en',
@@ -61,6 +63,12 @@ class Appointment extends Model
     public function service(): BelongsTo
     {
         return $this->belongsTo(Service::class);
+    }
+
+
+    public function whatsappLogs(): HasMany
+    {
+        return $this->hasMany(WhatsAppMessageLog::class)->latest();
     }
 
     public function scopeOnDate(Builder $query, string $date): Builder

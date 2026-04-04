@@ -45,6 +45,7 @@
                 <td>{{ strtoupper($appointment->customer?->preferred_language ?? '-') }}</td>
                 <td>{{ $appointment->booked_currency }}</td>
                 <td>
+                    <a class="btn" href="{{ route('admin.appointments.show', $appointment) }}">View</a>
                     <a class="btn btn-secondary" href="{{ route('admin.appointments.edit', $appointment) }}">Edit</a>
                     <form method="POST" action="{{ route('admin.appointments.status', $appointment) }}" style="display:inline-block">
                         @csrf @method('PATCH')

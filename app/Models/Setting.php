@@ -30,6 +30,15 @@ class Setting extends Model
         'maximum_booking_days_ahead',
         'max_appointments_per_day',
         'booking_enabled',
+        'whatsapp_enabled',
+        'whatsapp_provider',
+        'whatsapp_business_number',
+        'whatsapp_api_key',
+        'whatsapp_api_base_url',
+        'whatsapp_default_country_code',
+        'send_booking_confirmation_whatsapp',
+        'send_booking_cancellation_whatsapp',
+        'send_booking_reschedule_whatsapp',
         'hero_title_fr',
         'hero_title_en',
         'hero_subtitle_fr',
@@ -42,6 +51,15 @@ class Setting extends Model
         'supported_languages' => 'array',
         'supported_currencies' => 'array',
         'booking_enabled' => 'boolean',
+        'whatsapp_enabled' => 'boolean',
+        'send_booking_confirmation_whatsapp' => 'boolean',
+        'send_booking_cancellation_whatsapp' => 'boolean',
+        'send_booking_reschedule_whatsapp' => 'boolean',
+    ];
+
+
+    protected $hidden = [
+        'whatsapp_api_key',
     ];
 
     public function getLogoUrlAttribute(): ?string
@@ -76,6 +94,12 @@ class Setting extends Model
             'maximum_booking_days_ahead' => 30,
             'max_appointments_per_day' => null,
             'booking_enabled' => true,
+            'whatsapp_enabled' => false,
+            'whatsapp_provider' => 'log',
+            'whatsapp_default_country_code' => '+216',
+            'send_booking_confirmation_whatsapp' => true,
+            'send_booking_cancellation_whatsapp' => true,
+            'send_booking_reschedule_whatsapp' => true,
         ]);
     }
 }
