@@ -24,6 +24,7 @@ class AuthenticatedSessionController extends Controller
             'email' => $credentials['email'],
             'password' => $credentials['password'],
             'is_admin' => true,
+            'is_active' => true,
         ], $remember)) {
             return back()->withErrors([
                 'email' => 'Invalid credentials or you are not an admin.',

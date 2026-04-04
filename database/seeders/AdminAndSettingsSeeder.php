@@ -17,6 +17,8 @@ class AdminAndSettingsSeeder extends Seeder
                 'name' => 'Skin by Noor Admin',
                 'password' => Hash::make('password123'),
                 'is_admin' => true,
+                'is_active' => true,
+                'role' => 'super_admin',
             ]
         );
 
@@ -77,6 +79,15 @@ class AdminAndSettingsSeeder extends Seeder
                 'map_embed_url' => 'https://maps.google.com',
                 'opening_hours_fr' => 'Lun-Sam: 09:00-19:00',
                 'opening_hours_en' => 'Mon-Sat: 09:00-19:00',
+
+                'seo_home_title_fr' => 'Skin by Noor | Soins du visage à Tunis',
+                'seo_home_title_en' => 'Skin by Noor | Skincare in Tunis',
+                'seo_home_description_fr' => 'Soins experts, consultation personnalisée et réservation WhatsApp.',
+                'seo_home_description_en' => 'Expert skincare, personalized consultations, and WhatsApp booking.',
+                'seo_services_title_fr' => 'Services de soins - Skin by Noor',
+                'seo_services_title_en' => 'Skincare Services - Skin by Noor',
+                'seo_contact_title_fr' => 'Contact - Skin by Noor',
+                'seo_contact_title_en' => 'Contact - Skin by Noor',
                 'ai_enabled' => false,
                 'ai_provider' => 'grok',
                 'ai_api_key' => null,

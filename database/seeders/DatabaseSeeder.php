@@ -10,6 +10,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             AdminAndSettingsSeeder::class,
+            RolePermissionSeeder::class,
             ServiceCatalogSeeder::class,
             BusinessAvailabilitySeeder::class,
             WhatsAppTemplateSeeder::class,

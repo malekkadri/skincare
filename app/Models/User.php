@@ -17,6 +17,8 @@ class User extends Authenticatable
         'email',
         'password',
         'is_admin',
+        'role',
+        'is_active',
     ];
 
     protected $hidden = [
@@ -28,5 +30,35 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
         'is_admin' => 'boolean',
+        'is_active' => 'boolean',
     ];
+
+    public function hasPermission(string $permission): bool
+    {
+        if (! $this->is_admin || ! $this->is_active) {
+            return false;
+        }
+
+        $role = (string) ($this->role ?: 'admin');
+        $roleConfig = config("permissions.roles.{$role}");
+
+        if (! is_array($roleConfig)) {
+            return false;
+        }
+
+        $permissions = $roleConfig['permissions'] ?? [];
+
+        return in_array('*', $permissions, true) || in_array($permission, $permissions, true);
+    }
+
+    public function hasAnyPermission(array $permissions): bool
+    {
+        foreach ($permissions as $permission) {
+            if ($this->hasPermission($permission)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

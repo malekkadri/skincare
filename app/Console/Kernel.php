@@ -16,6 +16,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('skinbynoor:queue-followups')->everyTenMinutes()->timezone('Africa/Tunis');
         $schedule->command('skinbynoor:queue-consultation-acks')->everyTenMinutes()->timezone('Africa/Tunis');
         $schedule->command('skinbynoor:retry-whatsapp-failures')->everyTenMinutes()->timezone('Africa/Tunis');
+        $schedule->command('ops:backup --prefix=scheduled')->dailyAt('02:00')->timezone('Africa/Tunis');
     }
 
     /**

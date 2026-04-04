@@ -122,6 +122,30 @@
         </div>
     </section>
 
+    <section class="card">
+        <h2>SEO Defaults</h2>
+        <div class="grid">
+            <div><label>Home Meta Title (FR)</label><input type="text" name="seo_home_title_fr" value="{{ old('seo_home_title_fr', $settings->seo_home_title_fr) }}"></div>
+            <div><label>Home Meta Title (EN)</label><input type="text" name="seo_home_title_en" value="{{ old('seo_home_title_en', $settings->seo_home_title_en) }}"></div>
+            <div><label>Home Meta Description (FR)</label><textarea name="seo_home_description_fr">{{ old('seo_home_description_fr', $settings->seo_home_description_fr) }}</textarea></div>
+            <div><label>Home Meta Description (EN)</label><textarea name="seo_home_description_en">{{ old('seo_home_description_en', $settings->seo_home_description_en) }}</textarea></div>
+
+            <div><label>Services Meta Title (FR)</label><input type="text" name="seo_services_title_fr" value="{{ old('seo_services_title_fr', $settings->seo_services_title_fr) }}"></div>
+            <div><label>Services Meta Title (EN)</label><input type="text" name="seo_services_title_en" value="{{ old('seo_services_title_en', $settings->seo_services_title_en) }}"></div>
+            <div><label>Services Meta Description (FR)</label><textarea name="seo_services_description_fr">{{ old('seo_services_description_fr', $settings->seo_services_description_fr) }}</textarea></div>
+            <div><label>Services Meta Description (EN)</label><textarea name="seo_services_description_en">{{ old('seo_services_description_en', $settings->seo_services_description_en) }}</textarea></div>
+
+            <div><label>Gallery Meta Title (FR)</label><input type="text" name="seo_gallery_title_fr" value="{{ old('seo_gallery_title_fr', $settings->seo_gallery_title_fr) }}"></div>
+            <div><label>Gallery Meta Title (EN)</label><input type="text" name="seo_gallery_title_en" value="{{ old('seo_gallery_title_en', $settings->seo_gallery_title_en) }}"></div>
+            <div><label>Testimonials Meta Title (FR)</label><input type="text" name="seo_testimonials_title_fr" value="{{ old('seo_testimonials_title_fr', $settings->seo_testimonials_title_fr) }}"></div>
+            <div><label>Testimonials Meta Title (EN)</label><input type="text" name="seo_testimonials_title_en" value="{{ old('seo_testimonials_title_en', $settings->seo_testimonials_title_en) }}"></div>
+            <div><label>FAQ Meta Title (FR)</label><input type="text" name="seo_faq_title_fr" value="{{ old('seo_faq_title_fr', $settings->seo_faq_title_fr) }}"></div>
+            <div><label>FAQ Meta Title (EN)</label><input type="text" name="seo_faq_title_en" value="{{ old('seo_faq_title_en', $settings->seo_faq_title_en) }}"></div>
+            <div><label>Contact Meta Title (FR)</label><input type="text" name="seo_contact_title_fr" value="{{ old('seo_contact_title_fr', $settings->seo_contact_title_fr) }}"></div>
+            <div><label>Contact Meta Title (EN)</label><input type="text" name="seo_contact_title_en" value="{{ old('seo_contact_title_en', $settings->seo_contact_title_en) }}"></div>
+        </div>
+    </section>
+
     <button class="btn" type="submit">Save Settings</button>
 </form>
 @endsection

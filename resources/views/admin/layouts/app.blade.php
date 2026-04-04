@@ -16,7 +16,7 @@
         textarea{min-height:90px}
         .btn{background:var(--primary);color:#fff;border:none;border-radius:.5rem;padding:.55rem .85rem;cursor:pointer;font-size:.9rem;display:inline-block;text-decoration:none}
         .btn-secondary{background:#4b5563}.btn-danger{background:var(--danger)} .btn-success{background:var(--ok)}
-        .flash{padding:.75rem 1rem;border-radius:.5rem;margin-bottom:1rem}.flash.success{background:#dcfce7;color:#166534}
+        .flash{padding:.75rem 1rem;border-radius:.5rem;margin-bottom:1rem}.flash{padding:.75rem 1rem;border-radius:.5rem;margin-bottom:1rem}.flash.success{background:#dcfce7;color:#166534}.flash.error{background:#fee2e2;color:#991b1b}
         .error{font-size:.8rem;color:#dc2626;margin-top:.25rem}.muted{color:var(--muted);font-size:.9rem}
         .table{width:100%;border-collapse:collapse}.table th,.table td{padding:.7rem;border-bottom:1px solid var(--border);text-align:left;vertical-align:middle}
         .table th{font-size:.8rem;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
@@ -29,29 +29,20 @@
 <div class="layout">
     <aside class="sidebar">
         <div class="brand">Skin by Noor</div>
+        @php($user = auth()->user())
         <nav class="nav">
             <a href="{{ route('admin.dashboard') }}" class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">Dashboard</a>
-            <a href="{{ route('admin.settings.edit') }}" class="{{ request()->routeIs('admin.settings.*') ? 'active' : '' }}">Website Settings</a>
-            <a href="{{ route('admin.ai-settings.edit') }}" class="{{ request()->routeIs('admin.ai-settings.*') ? 'active' : '' }}">AI Settings</a>
-            <a href="{{ route('admin.consultations.index') }}" class="{{ request()->routeIs('admin.consultations.*') ? 'active' : '' }}">Consultations</a>
-            <a href="{{ route('admin.ai-content-helper.index') }}" class="{{ request()->routeIs('admin.ai-content-helper.*') ? 'active' : '' }}">AI Content Helper</a>
-            <a href="{{ route('admin.homepage.index') }}" class="{{ request()->routeIs('admin.homepage.*') ? 'active' : '' }}">Homepage</a>
-            <a href="{{ route('admin.about.edit') }}" class="{{ request()->routeIs('admin.about.*') ? 'active' : '' }}">About</a>
-            <a href="{{ route('admin.categories.index') }}" class="{{ request()->routeIs('admin.categories.*') ? 'active' : '' }}">Categories</a>
-            <a href="{{ route('admin.services.index') }}" class="{{ request()->routeIs('admin.services.*') ? 'active' : '' }}">Services</a>
-            <a href="{{ route('admin.appointments.index') }}" class="{{ request()->routeIs('admin.appointments.*') ? 'active' : '' }}">Appointments</a>
-            <a href="{{ route('admin.reports.overview') }}" class="{{ request()->routeIs('admin.reports.*') ? 'active' : '' }}">Reports</a>
-            <a href="{{ route('admin.calendar.index') }}" class="{{ request()->routeIs('admin.calendar.*') ? 'active' : '' }}">Calendar</a>
-            <a href="{{ route('admin.availability.edit') }}" class="{{ request()->routeIs('admin.availability.*') ? 'active' : '' }}">Availability</a>
-            <a href="{{ route('admin.blocked-dates.index') }}" class="{{ request()->routeIs('admin.blocked-dates.*') ? 'active' : '' }}">Blocked Dates</a>
-            <a href="{{ route('admin.blocked-times.index') }}" class="{{ request()->routeIs('admin.blocked-times.*') ? 'active' : '' }}">Blocked Times</a>
-            <a href="{{ route('admin.gallery.index') }}" class="{{ request()->routeIs('admin.gallery.*') ? 'active' : '' }}">Gallery</a>
-            <a href="{{ route('admin.testimonials.index') }}" class="{{ request()->routeIs('admin.testimonials.*') ? 'active' : '' }}">Testimonials</a>
-            <a href="{{ route('admin.faq.index') }}" class="{{ request()->routeIs('admin.faq.*') ? 'active' : '' }}">FAQ</a>
-            <a href="{{ route('admin.policies.index') }}" class="{{ request()->routeIs('admin.policies.*') ? 'active' : '' }}">Policies</a>
-            <a href="{{ route('admin.whatsapp.settings.edit') }}" class="{{ request()->routeIs('admin.whatsapp.settings.*') ? 'active' : '' }}">WhatsApp Settings</a>
-            <a href="{{ route('admin.whatsapp.templates.index') }}" class="{{ request()->routeIs('admin.whatsapp.templates.*') ? 'active' : '' }}">WhatsApp Templates</a>
-            <a href="{{ route('admin.whatsapp.logs.index') }}" class="{{ request()->routeIs('admin.whatsapp.logs.*') ? 'active' : '' }}">WhatsApp Logs</a>
+            @if($user?->hasPermission('manage_settings'))<a href="{{ route('admin.settings.edit') }}" class="{{ request()->routeIs('admin.settings.*') ? 'active' : '' }}">Website Settings</a>@endif
+            @if($user?->hasPermission('manage_ai'))<a href="{{ route('admin.ai-settings.edit') }}" class="{{ request()->routeIs('admin.ai-settings.*') ? 'active' : '' }}">AI Settings</a><a href="{{ route('admin.ai-content-helper.index') }}" class="{{ request()->routeIs('admin.ai-content-helper.*') ? 'active' : '' }}">AI Content Helper</a>@endif
+            @if($user?->hasPermission('manage_consultations'))<a href="{{ route('admin.consultations.index') }}" class="{{ request()->routeIs('admin.consultations.*') ? 'active' : '' }}">Consultations</a>@endif
+            @if($user?->hasPermission('manage_cms'))<a href="{{ route('admin.homepage.index') }}" class="{{ request()->routeIs('admin.homepage.*') ? 'active' : '' }}">Homepage</a><a href="{{ route('admin.about.edit') }}" class="{{ request()->routeIs('admin.about.*') ? 'active' : '' }}">About</a><a href="{{ route('admin.gallery.index') }}" class="{{ request()->routeIs('admin.gallery.*') ? 'active' : '' }}">Gallery</a><a href="{{ route('admin.testimonials.index') }}" class="{{ request()->routeIs('admin.testimonials.*') ? 'active' : '' }}">Testimonials</a><a href="{{ route('admin.faq.index') }}" class="{{ request()->routeIs('admin.faq.*') ? 'active' : '' }}">FAQ</a><a href="{{ route('admin.policies.index') }}" class="{{ request()->routeIs('admin.policies.*') ? 'active' : '' }}">Policies</a>@endif
+            @if($user?->hasPermission('manage_services'))<a href="{{ route('admin.categories.index') }}" class="{{ request()->routeIs('admin.categories.*') ? 'active' : '' }}">Categories</a><a href="{{ route('admin.services.index') }}" class="{{ request()->routeIs('admin.services.*') ? 'active' : '' }}">Services</a>@endif
+            @if($user?->hasPermission('manage_appointments'))<a href="{{ route('admin.appointments.index') }}" class="{{ request()->routeIs('admin.appointments.*') ? 'active' : '' }}">Appointments</a><a href="{{ route('admin.calendar.index') }}" class="{{ request()->routeIs('admin.calendar.*') ? 'active' : '' }}">Calendar</a>@endif
+            @if($user?->hasPermission('manage_availability'))<a href="{{ route('admin.availability.edit') }}" class="{{ request()->routeIs('admin.availability.*') ? 'active' : '' }}">Availability</a><a href="{{ route('admin.blocked-dates.index') }}" class="{{ request()->routeIs('admin.blocked-dates.*') ? 'active' : '' }}">Blocked Dates</a><a href="{{ route('admin.blocked-times.index') }}" class="{{ request()->routeIs('admin.blocked-times.*') ? 'active' : '' }}">Blocked Times</a>@endif
+            @if($user?->hasPermission('view_reports'))<a href="{{ route('admin.reports.overview') }}" class="{{ request()->routeIs('admin.reports.*') ? 'active' : '' }}">Reports</a>@endif
+            @if($user?->hasPermission('manage_whatsapp'))<a href="{{ route('admin.whatsapp.settings.edit') }}" class="{{ request()->routeIs('admin.whatsapp.settings.*') ? 'active' : '' }}">WhatsApp Settings</a><a href="{{ route('admin.whatsapp.templates.index') }}" class="{{ request()->routeIs('admin.whatsapp.templates.*') ? 'active' : '' }}">WhatsApp Templates</a><a href="{{ route('admin.whatsapp.logs.index') }}" class="{{ request()->routeIs('admin.whatsapp.logs.*') ? 'active' : '' }}">WhatsApp Logs</a>@endif
+            @if($user?->hasPermission('manage_admin_users'))<a href="{{ route('admin.users.index') }}" class="{{ request()->routeIs('admin.users.*') ? 'active' : '' }}">Admin Users</a>@endif
+            @if($user?->hasPermission('view_system_health'))<a href="{{ route('admin.ops.health') }}" class="{{ request()->routeIs('admin.ops.*') ? 'active' : '' }}">System Health</a>@endif
         </nav>
     </aside>
 
@@ -64,6 +55,12 @@
         <main class="main">
             @if(session('success'))
                 <div class="flash success">{{ session('success') }}</div>
+            @endif
+            @if(session('error'))
+                <div class="flash error">{{ session('error') }}</div>
+            @endif
+            @if($errors->any())
+                <div class="flash error">Please review the form errors and try again.</div>
             @endif
 
             @yield('content')

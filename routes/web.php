@@ -1,19 +1,22 @@
 <?php
 
 use App\Http\Controllers\Admin\AboutPageController;
+use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\AiContentHelperController;
 use App\Http\Controllers\Admin\AiSettingsController;
-use App\Http\Controllers\Admin\ConsultationController as AdminConsultationController;
 use App\Http\Controllers\Admin\AppointmentController;
 use App\Http\Controllers\Admin\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Admin\AvailabilityController as AdminAvailabilityController;
 use App\Http\Controllers\Admin\BlockedDateController;
 use App\Http\Controllers\Admin\BlockedTimeRangeController;
 use App\Http\Controllers\Admin\CalendarController;
+use App\Http\Controllers\Admin\ConsultationController as AdminConsultationController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\FaqController;
 use App\Http\Controllers\Admin\GalleryItemController;
 use App\Http\Controllers\Admin\HomepageSectionController;
+use App\Http\Controllers\Admin\Ops\BackupController;
+use App\Http\Controllers\Admin\Ops\HealthController;
 use App\Http\Controllers\Admin\PolicyController;
 use App\Http\Controllers\Admin\Reports\AppointmentReportController;
 use App\Http\Controllers\Admin\Reports\ConsultationReportController;
@@ -31,10 +34,11 @@ use App\Http\Controllers\Admin\WhatsAppSettingsController;
 use App\Http\Controllers\Admin\WhatsAppTemplateController;
 use App\Http\Controllers\Booking\AvailabilityController;
 use App\Http\Controllers\Booking\BookingWizardController;
-use App\Http\Controllers\PublicPreferenceController;
 use App\Http\Controllers\Public\ConsultationController;
 use App\Http\Controllers\Public\ServiceRecommenderController;
+use App\Http\Controllers\PublicPreferenceController;
 use App\Http\Controllers\PublicSiteController;
+use App\Http\Controllers\SitemapController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('public.preferences')->group(function () {
@@ -75,6 +79,12 @@ Route::middleware('public.preferences')->group(function () {
     });
 });
 
+Route::get('/sitemap.xml', SitemapController::class)->name('sitemap');
+Route::get('/robots.txt', function () {
+    return response("User-agent: *\nAllow: /\nDisallow: /admin\n\nSitemap: ".route('sitemap')."\n", 200, ['Content-Type' => 'text/plain']);
+});
+Route::get('/health', [HealthController::class, 'probe'])->name('health.probe');
+
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::middleware('guest')->group(function () {
         Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
@@ -84,56 +94,70 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::middleware(['auth', 'admin'])->group(function () {
         Route::get('/', DashboardController::class)->name('dashboard');
 
-        Route::get('/settings', [SettingsController::class, 'edit'])->name('settings.edit');
-        Route::put('/settings', [SettingsController::class, 'update'])->name('settings.update');
-        Route::get('/ai-settings', [AiSettingsController::class, 'edit'])->name('ai-settings.edit');
-        Route::put('/ai-settings', [AiSettingsController::class, 'update'])->name('ai-settings.update');
-        Route::get('/ai-content-helper', [AiContentHelperController::class, 'index'])->name('ai-content-helper.index');
-        Route::post('/ai-content-helper', [AiContentHelperController::class, 'generate'])->name('ai-content-helper.generate');
+        Route::middleware('permission:manage_settings')->group(function () {
+            Route::get('/settings', [SettingsController::class, 'edit'])->name('settings.edit');
+            Route::put('/settings', [SettingsController::class, 'update'])->name('settings.update');
+        });
 
-        Route::get('/homepage', [HomepageSectionController::class, 'index'])->name('homepage.index');
-        Route::get('/homepage/{homepage}/edit', [HomepageSectionController::class, 'edit'])->name('homepage.edit');
-        Route::put('/homepage/{homepage}', [HomepageSectionController::class, 'update'])->name('homepage.update');
-        Route::get('/about', [AboutPageController::class, 'edit'])->name('about.edit');
-        Route::put('/about', [AboutPageController::class, 'update'])->name('about.update');
+        Route::middleware('permission:manage_ai')->group(function () {
+            Route::get('/ai-settings', [AiSettingsController::class, 'edit'])->name('ai-settings.edit');
+            Route::put('/ai-settings', [AiSettingsController::class, 'update'])->name('ai-settings.update');
+            Route::get('/ai-content-helper', [AiContentHelperController::class, 'index'])->name('ai-content-helper.index');
+            Route::post('/ai-content-helper', [AiContentHelperController::class, 'generate'])->name('ai-content-helper.generate');
+        });
 
-        Route::get('/whatsapp/settings', [WhatsAppSettingsController::class, 'edit'])->name('whatsapp.settings.edit');
-        Route::put('/whatsapp/settings', [WhatsAppSettingsController::class, 'update'])->name('whatsapp.settings.update');
-        Route::get('/whatsapp/templates', [WhatsAppTemplateController::class, 'index'])->name('whatsapp.templates.index');
-        Route::put('/whatsapp/templates/{template}', [WhatsAppTemplateController::class, 'update'])->name('whatsapp.templates.update');
-        Route::get('/whatsapp/logs', [WhatsAppLogController::class, 'index'])->name('whatsapp.logs.index');
-        Route::get('/whatsapp/logs/{log}', [WhatsAppLogController::class, 'show'])->name('whatsapp.logs.show');
-        Route::post('/whatsapp/logs/{log}/retry', [WhatsAppLogController::class, 'retry'])->name('whatsapp.logs.retry');
+        Route::middleware('permission:manage_cms')->group(function () {
+            Route::get('/homepage', [HomepageSectionController::class, 'index'])->name('homepage.index');
+            Route::get('/homepage/{homepage}/edit', [HomepageSectionController::class, 'edit'])->name('homepage.edit');
+            Route::put('/homepage/{homepage}', [HomepageSectionController::class, 'update'])->name('homepage.update');
+            Route::get('/about', [AboutPageController::class, 'edit'])->name('about.edit');
+            Route::put('/about', [AboutPageController::class, 'update'])->name('about.update');
+            Route::resource('gallery', GalleryItemController::class)->except('show')->parameter('gallery', 'gallery');
+            Route::resource('testimonials', TestimonialController::class)->except('show');
+            Route::resource('faq', FaqController::class)->except('show');
+            Route::resource('policies', PolicyController::class)->except('show');
+        });
 
-        Route::resource('categories', ServiceCategoryController::class)->except('show');
-        Route::resource('services', ServiceController::class)->except('show');
-        Route::resource('gallery', GalleryItemController::class)->except('show')->parameter('gallery', 'gallery');
-        Route::resource('testimonials', TestimonialController::class)->except('show');
-        Route::resource('faq', FaqController::class)->except('show');
-        Route::resource('policies', PolicyController::class)->except('show');
+        Route::middleware('permission:manage_whatsapp')->group(function () {
+            Route::get('/whatsapp/settings', [WhatsAppSettingsController::class, 'edit'])->name('whatsapp.settings.edit');
+            Route::put('/whatsapp/settings', [WhatsAppSettingsController::class, 'update'])->name('whatsapp.settings.update');
+            Route::get('/whatsapp/templates', [WhatsAppTemplateController::class, 'index'])->name('whatsapp.templates.index');
+            Route::put('/whatsapp/templates/{template}', [WhatsAppTemplateController::class, 'update'])->name('whatsapp.templates.update');
+            Route::get('/whatsapp/logs', [WhatsAppLogController::class, 'index'])->name('whatsapp.logs.index');
+            Route::get('/whatsapp/logs/{log}', [WhatsAppLogController::class, 'show'])->name('whatsapp.logs.show');
+            Route::post('/whatsapp/logs/{log}/retry', [WhatsAppLogController::class, 'retry'])->name('whatsapp.logs.retry');
+        });
 
-        Route::resource('consultations', AdminConsultationController::class)->only(['index', 'show', 'update']);
+        Route::middleware('permission:manage_services')->group(function () {
+            Route::resource('categories', ServiceCategoryController::class)->except('show');
+            Route::resource('services', ServiceController::class)->except('show');
+        });
 
-        Route::resource('appointments', AppointmentController::class)->except('destroy');
-        Route::patch('appointments/{appointment}/status', [AppointmentController::class, 'updateStatus'])->name('appointments.status');
-        Route::post('appointments/{appointment}/resend-confirmation', [AppointmentController::class, 'resendConfirmation'])->name('appointments.resend-confirmation');
+        Route::middleware('permission:manage_consultations')->group(function () {
+            Route::resource('consultations', AdminConsultationController::class)->only(['index', 'show', 'update']);
+        });
 
-        Route::get('calendar', [CalendarController::class, 'index'])->name('calendar.index');
-        Route::get('calendar/events', [CalendarController::class, 'events'])->name('calendar.events');
+        Route::middleware('permission:manage_appointments')->group(function () {
+            Route::resource('appointments', AppointmentController::class)->except('destroy');
+            Route::patch('appointments/{appointment}/status', [AppointmentController::class, 'updateStatus'])->name('appointments.status');
+            Route::post('appointments/{appointment}/resend-confirmation', [AppointmentController::class, 'resendConfirmation'])->name('appointments.resend-confirmation');
+            Route::get('calendar', [CalendarController::class, 'index'])->name('calendar.index');
+            Route::get('calendar/events', [CalendarController::class, 'events'])->name('calendar.events');
+        });
 
-        Route::get('availability', [AdminAvailabilityController::class, 'edit'])->name('availability.edit');
-        Route::put('availability/hours', [AdminAvailabilityController::class, 'updateHours'])->name('availability.hours.update');
-        Route::put('availability/settings', [AdminAvailabilityController::class, 'updateSettings'])->name('availability.settings.update');
+        Route::middleware('permission:manage_availability')->group(function () {
+            Route::get('availability', [AdminAvailabilityController::class, 'edit'])->name('availability.edit');
+            Route::put('availability/hours', [AdminAvailabilityController::class, 'updateHours'])->name('availability.hours.update');
+            Route::put('availability/settings', [AdminAvailabilityController::class, 'updateSettings'])->name('availability.settings.update');
+            Route::get('blocked-dates', [BlockedDateController::class, 'index'])->name('blocked-dates.index');
+            Route::post('blocked-dates', [BlockedDateController::class, 'store'])->name('blocked-dates.store');
+            Route::delete('blocked-dates/{blockedDate}', [BlockedDateController::class, 'destroy'])->name('blocked-dates.destroy');
+            Route::get('blocked-times', [BlockedTimeRangeController::class, 'index'])->name('blocked-times.index');
+            Route::post('blocked-times', [BlockedTimeRangeController::class, 'store'])->name('blocked-times.store');
+            Route::delete('blocked-times/{blockedTime}', [BlockedTimeRangeController::class, 'destroy'])->name('blocked-times.destroy');
+        });
 
-        Route::get('blocked-dates', [BlockedDateController::class, 'index'])->name('blocked-dates.index');
-        Route::post('blocked-dates', [BlockedDateController::class, 'store'])->name('blocked-dates.store');
-        Route::delete('blocked-dates/{blockedDate}', [BlockedDateController::class, 'destroy'])->name('blocked-dates.destroy');
-
-        Route::get('blocked-times', [BlockedTimeRangeController::class, 'index'])->name('blocked-times.index');
-        Route::post('blocked-times', [BlockedTimeRangeController::class, 'store'])->name('blocked-times.store');
-        Route::delete('blocked-times/{blockedTime}', [BlockedTimeRangeController::class, 'destroy'])->name('blocked-times.destroy');
-
-        Route::prefix('reports')->name('reports.')->group(function () {
+        Route::middleware('permission:view_reports')->prefix('reports')->name('reports.')->group(function () {
             Route::get('/', OverviewReportController::class)->name('overview');
             Route::get('/appointments', AppointmentReportController::class)->name('appointments');
             Route::get('/revenue', RevenueReportController::class)->name('revenue');
@@ -141,10 +165,17 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('/consultations', ConsultationReportController::class)->name('consultations');
             Route::get('/whatsapp', WhatsAppReportController::class)->name('whatsapp');
 
-            Route::get('/exports/appointments', [ReportExportController::class, 'appointments'])->name('exports.appointments');
-            Route::get('/exports/consultations', [ReportExportController::class, 'consultations'])->name('exports.consultations');
-            Route::get('/exports/whatsapp', [ReportExportController::class, 'whatsapp'])->name('exports.whatsapp');
+            Route::middleware('permission:export_reports')->group(function () {
+                Route::get('/exports/appointments', [ReportExportController::class, 'appointments'])->name('exports.appointments');
+                Route::get('/exports/consultations', [ReportExportController::class, 'consultations'])->name('exports.consultations');
+                Route::get('/exports/whatsapp', [ReportExportController::class, 'whatsapp'])->name('exports.whatsapp');
+            });
         });
+
+        Route::middleware('permission:manage_admin_users')->resource('users', AdminUserController::class)->only(['index', 'create', 'store', 'edit', 'update']);
+
+        Route::middleware('permission:view_system_health')->get('/ops/health', [HealthController::class, 'index'])->name('ops.health');
+        Route::middleware('permission:manage_backups')->post('/ops/backups', [BackupController::class, 'store'])->name('ops.backups.store');
 
         Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
     });

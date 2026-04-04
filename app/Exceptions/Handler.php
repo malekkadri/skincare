@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -25,6 +26,14 @@ class Handler extends ExceptionHandler
     {
         $this->reportable(function (Throwable $e) {
             //
+        });
+
+        $this->renderable(function (HttpExceptionInterface $e, $request) {
+            if ($e->getStatusCode() === 403 && $request->is('admin/*')) {
+                return redirect()->route('admin.dashboard')->with('error', 'You are not authorized for that section.');
+            }
+
+            return null;
         });
     }
 }
