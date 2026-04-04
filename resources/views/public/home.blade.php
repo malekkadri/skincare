@@ -10,18 +10,32 @@
         gap: 2.25rem;
         grid-template-columns: 1.1fr 1fr;
     }
-    .hero-image-wrap { padding: .9rem; }
+    .hero-image-wrap {
+        padding: .9rem;
+        position: relative;
+    }
+    .hero-image-wrap::before {
+        content: "";
+        position: absolute;
+        inset: 8% -6% -8%;
+        z-index: -1;
+        border-radius: 30px;
+        background: radial-gradient(circle at center, rgba(200, 162, 122, .28) 0%, rgba(200, 162, 122, 0) 68%);
+        filter: blur(20px);
+    }
     .hero-image-wrap img {
         width: 100%;
         height: 540px;
         object-fit: cover;
         border-radius: 20px;
+        animation: floaty 9s ease-in-out infinite;
     }
     .hero-title {
         font-size: clamp(2.2rem, 5vw, 4rem);
         line-height: 1.1;
         margin-bottom: 1rem;
         font-weight: 500;
+        text-wrap: balance;
     }
     .features-bar {
         background: #f4f0ea;
@@ -40,6 +54,11 @@
         gap: .7rem;
         align-items: center;
         font-size: .94rem;
+        transition: transform .25s ease, border-color .25s ease;
+    }
+    .feature-pill:hover {
+        transform: translateY(-4px);
+        border-color: #dfcbb8;
     }
     .feature-icon {
         width: 36px;
@@ -73,6 +92,14 @@
         height: 220px;
         object-fit: cover;
         border-radius: 22px 22px 0 0;
+        transition: transform .45s ease;
+    }
+    .service-card:hover img { transform: scale(1.05); }
+    .service-body .muted {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
     }
     .service-body { padding: 1.15rem; }
     .service-body h3 { margin-bottom: .35rem; }
@@ -103,6 +130,22 @@
         border: 1px solid #e7dbcf;
         border-radius: 28px;
         padding: 4rem 1rem;
+        position: relative;
+        overflow: hidden;
+    }
+    .cta-block::after {
+        content: "";
+        position: absolute;
+        width: 240px;
+        aspect-ratio: 1;
+        top: -80px;
+        right: -70px;
+        border-radius: 50%;
+        background: radial-gradient(circle at center, rgba(200, 162, 122, .2) 0%, rgba(200, 162, 122, 0) 70%);
+    }
+    @keyframes floaty {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-9px); }
     }
     @media (max-width: 980px) {
         .hero-grid,
@@ -132,7 +175,7 @@
 />
 
 <section class="page-section" style="padding-top:0">
-    <div class="features-bar">
+    <div class="features-bar reveal">
         @foreach([
             [__('public.home.feature_quick_booking'), '◌'],
             [__('public.home.feature_premium_care'), '✦'],
@@ -147,7 +190,8 @@
     </div>
 </section>
 
-<section class="page-section">
+<section class="page-section reveal">
+    <div class="lux-divider"></div>
     <div class="about-grid">
         <img class="about-image" src="https://images.unsplash.com/photo-1522337094846-8a818d7b90d3?auto=format&fit=crop&w=900&q=80" alt="Skincare portrait">
         <div>
@@ -159,7 +203,8 @@
     </div>
 </section>
 
-<section class="page-section">
+<section class="page-section reveal">
+    <div class="lux-divider"></div>
     <p class="section-kicker">{{ __('public.home.services_kicker') }}</p>
     <h2 class="section-title">{{ __('public.home.services_title') }}</h2>
     <div class="services-grid">
@@ -171,7 +216,8 @@
     </div>
 </section>
 
-<section class="page-section">
+<section class="page-section reveal">
+    <div class="lux-divider"></div>
     <p class="section-kicker">{{ __('public.home.gallery_kicker') }}</p>
     <h2 class="section-title">{{ __('public.home.gallery_title') }}</h2>
     <div class="gallery-grid">
@@ -189,7 +235,8 @@
     </div>
 </section>
 
-<section class="page-section">
+<section class="page-section reveal">
+    <div class="lux-divider"></div>
     <p class="section-kicker">{{ __('public.home.testimonials_kicker') }}</p>
     <h2 class="section-title">{{ __('public.home.testimonials_title') }}</h2>
     <div class="testimonials-grid">
@@ -201,7 +248,7 @@
     </div>
 </section>
 
-<section class="page-section">
+<section class="page-section reveal">
     <div class="cta-block">
         <h2 class="section-title">{{ __('public.home.cta_title') }}</h2>
         <p class="muted">{{ __('public.home.cta_text') }}</p>

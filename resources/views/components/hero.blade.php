@@ -6,7 +6,7 @@
     'ctaLabel' => __('public.nav.book_now'),
 ])
 
-<section class="page-section hero-grid" aria-label="Hero">
+<section class="page-section hero-grid reveal" aria-label="Hero">
     <div class="hero-image-wrap card">
         <img src="{{ $image }}" alt="{{ __('public.home.cta_title') }}">
     </div>
@@ -15,7 +15,7 @@
         <h1 class="hero-title">{{ $title }}</h1>
         <p class="muted">{{ $description }}</p>
         <div style="margin-top:1.8rem">
-            <a href="{{ $ctaUrl }}" class="btn">{{ $ctaLabel }}</a>
+            <a href="{{ $ctaUrl }}" class="btn is-gold-focus">{{ $ctaLabel }}</a>
         </div>
     </div>
 </section>

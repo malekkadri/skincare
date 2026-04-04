@@ -19,20 +19,27 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #F8F6F3;
-            --secondary: #EDE7E1;
-            --accent: #C8A27A;
-            --text-primary: #2E2E2E;
-            --text-secondary: #7A7A7A;
-            --card: #FFFCF9;
+            --bg: #f8f4ef;
+            --secondary: #efe7de;
+            --accent: #c8a27a;
+            --accent-deep: #ab7e57;
+            --text-primary: #2d2621;
+            --text-secondary: #776a60;
+            --card: #fffaf5;
+            --ring: rgba(200, 162, 122, .35);
         }
         * { box-sizing: border-box; }
         body {
             margin: 0;
-            background: var(--bg);
+            background:
+                radial-gradient(circle at 10% 15%, rgba(232, 211, 190, .35), transparent 42%),
+                radial-gradient(circle at 85% 25%, rgba(241, 230, 217, .4), transparent 34%),
+                var(--bg);
             color: var(--text-primary);
             font-family: 'Inter', system-ui, sans-serif;
             line-height: 1.7;
+            min-height: 100vh;
+            overflow-x: hidden;
         }
         h1, h2, h3, h4 {
             font-family: 'Playfair Display', Georgia, serif;
@@ -49,8 +56,8 @@
             position: sticky;
             top: 0;
             z-index: 20;
-            backdrop-filter: blur(8px);
-            background: rgba(248, 246, 243, .92);
+            backdrop-filter: blur(14px);
+            background: rgba(250, 246, 241, .82);
             border-bottom: 1px solid #e8e1d9;
         }
         .site-nav {
@@ -81,15 +88,26 @@
             justify-content: center;
             border-radius: 999px;
             border: 1px solid transparent;
-            background: var(--accent);
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-deep) 100%);
             color: #fff;
             padding: .72rem 1.4rem;
             font-size: .94rem;
             transition: transform .2s ease, box-shadow .2s ease, opacity .2s ease;
             box-shadow: 0 12px 30px rgba(200, 162, 122, .25);
             cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            transform: translateX(-110%);
+            background: linear-gradient(100deg, transparent 25%, rgba(255, 255, 255, .35), transparent 75%);
+            transition: transform .7s ease;
         }
         .btn:hover { transform: translateY(-1px); opacity: .96; }
+        .btn:hover::after { transform: translateX(110%); }
         .btn-soft {
             background: var(--secondary);
             border-color: #ddd2c8;
@@ -124,6 +142,11 @@
             border: 1px solid #ede5dd;
             box-shadow: 0 18px 45px rgba(95, 81, 69, .08);
             padding: 1.35rem;
+            transition: transform .28s ease, box-shadow .28s ease;
+        }
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 26px 50px rgba(95, 81, 69, .12);
         }
         .grid { display: grid; gap: 1.2rem; }
         .grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -161,7 +184,7 @@
             margin-top: 40px;
             border-top: 1px solid #e9dfd6;
             padding: 64px 0;
-            background: #f3eee8;
+            background: linear-gradient(180deg, #f3eee8 0%, #efe7de 100%);
         }
         .footer-grid {
             display: grid;
@@ -170,6 +193,33 @@
         }
         .footer-link { color: var(--text-secondary); display: block; margin-bottom: .45rem; }
         .footer-link:hover { color: var(--text-primary); }
+        .lux-divider {
+            height: 1px;
+            width: min(240px, 45vw);
+            background: linear-gradient(90deg, transparent 0%, rgba(200, 162, 122, .75) 50%, transparent 100%);
+            margin: 0 auto 1.25rem;
+        }
+        .reveal {
+            opacity: 0;
+            transform: translateY(18px);
+            transition: opacity .75s ease, transform .75s ease;
+        }
+        .reveal.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .is-gold-focus:focus-visible {
+            outline: 2px solid var(--ring);
+            outline-offset: 3px;
+        }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation: none !important;
+                transition: none !important;
+                scroll-behavior: auto !important;
+            }
+            .reveal { opacity: 1; transform: none; }
+        }
         @media (max-width: 900px) {
             .site-nav { justify-content: center; }
             .menu { justify-content: center; }
@@ -199,7 +249,7 @@
         <div class="menu">
             <form method="POST" action="{{ route('preferences.locale') }}">@csrf<input type="hidden" name="locale" value="fr"><button class="btn {{ app()->getLocale()==='fr' ? '' : 'btn-soft' }}" type="submit">FR</button></form>
             <form method="POST" action="{{ route('preferences.locale') }}">@csrf<input type="hidden" name="locale" value="en"><button class="btn {{ app()->getLocale()==='en' ? '' : 'btn-soft' }}" type="submit">EN</button></form>
-            <a class="btn" href="{{ route('booking.service') }}">{{ __('public.nav.book_now') }}</a>
+            <a class="btn is-gold-focus" href="{{ route('booking.service') }}">{{ __('public.nav.book_now') }}</a>
         </div>
     </div>
 </header>
@@ -224,10 +274,29 @@
             <h4>{{ __('public.footer.contact') }}</h4>
             <a class="footer-link" href="{{ route('contact') }}">{{ __('public.footer.contact_page') }}</a>
             @if(filled($settings->whatsapp_number))
-                <a class="btn" target="_blank" href="https://wa.me/{{ preg_replace('/\D+/', '', $settings->whatsapp_number) }}">{{ __('public.footer.whatsapp') }}</a>
+                <a class="btn is-gold-focus" target="_blank" href="https://wa.me/{{ preg_replace('/\D+/', '', $settings->whatsapp_number) }}">{{ __('public.footer.whatsapp') }}</a>
             @endif
         </div>
     </div>
 </footer>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const revealElements = document.querySelectorAll('.reveal');
+        if (!revealElements.length || !('IntersectionObserver' in window)) {
+            revealElements.forEach((element) => element.classList.add('is-visible'));
+            return;
+        }
+
+        const observer = new IntersectionObserver((entries, instance) => {
+            entries.forEach((entry) => {
+                if (!entry.isIntersecting) return;
+                entry.target.classList.add('is-visible');
+                instance.unobserve(entry.target);
+            });
+        }, { threshold: 0.15 });
+
+        revealElements.forEach((element) => observer.observe(element));
+    });
+</script>
 </body>
 </html>
