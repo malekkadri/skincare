@@ -28,37 +28,37 @@
             @csrf
 
             <div class="form-field">
-                <label>{{ __('consultation.preferred_language') }}</label>
-                <select name="preferred_language">
+                <label for="preferred_language">{{ __('consultation.preferred_language') }}</label>
+                <select id="preferred_language" name="preferred_language" aria-invalid="{{ $errors->has('preferred_language') ? 'true' : 'false' }}" aria-describedby="@error('preferred_language') reco_preferred_language_error @enderror">
                     <option value="fr" @selected(old('preferred_language', $submitted['preferred_language'] ?? app()->getLocale()) === 'fr')>FR</option>
                     <option value="en" @selected(old('preferred_language', $submitted['preferred_language'] ?? app()->getLocale()) === 'en')>EN</option>
                 </select>
-                @error('preferred_language')<div class="error">{{ $message }}</div>@enderror
+                @error('preferred_language')<div id="reco_preferred_language_error" class="error">{{ $message }}</div>@enderror
             </div>
 
             <div class="form-field">
-                <label>{{ __('consultation.skin_type') }}</label>
-                <input name="skin_type" value="{{ old('skin_type', $submitted['skin_type'] ?? '') }}" aria-describedby="reco-skin-type-help">
+                <label for="skin_type">{{ __('consultation.skin_type') }}</label>
+                <input id="skin_type" name="skin_type" value="{{ old('skin_type', $submitted['skin_type'] ?? '') }}" aria-describedby="reco-skin-type-help">
                 <small id="reco-skin-type-help" class="field-help">Optional. For example: dry, combination, oily, balanced.</small>
             </div>
 
             <div class="form-field">
-                <label>{{ __('consultation.skin_sensitivity_level') }}</label>
-                <input name="skin_sensitivity_level" value="{{ old('skin_sensitivity_level', $submitted['skin_sensitivity_level'] ?? '') }}" aria-describedby="reco-sensitivity-help">
+                <label for="skin_sensitivity_level">{{ __('consultation.skin_sensitivity_level') }}</label>
+                <input id="skin_sensitivity_level" name="skin_sensitivity_level" value="{{ old('skin_sensitivity_level', $submitted['skin_sensitivity_level'] ?? '') }}" aria-describedby="reco-sensitivity-help">
                 <small id="reco-sensitivity-help" class="field-help">Optional. Let us know if your skin reacts easily.</small>
             </div>
 
             <div class="form-field">
-                <label>{{ __('consultation.preferred_goals') }}</label>
-                <input name="preferred_goals" value="{{ old('preferred_goals', $submitted['preferred_goals'] ?? '') }}" aria-describedby="reco-goals-help">
+                <label for="preferred_goals">{{ __('consultation.preferred_goals') }}</label>
+                <input id="preferred_goals" name="preferred_goals" value="{{ old('preferred_goals', $submitted['preferred_goals'] ?? '') }}" aria-describedby="reco-goals-help">
                 <small id="reco-goals-help" class="field-help">Optional. Example: hydration, glow, texture, acne support.</small>
             </div>
 
             <div class="form-field form-span-full">
-                <label>{{ __('consultation.main_concerns') }}</label>
-                <textarea name="main_concerns" required aria-describedby="reco-concerns-help">{{ old('main_concerns', $submitted['main_concerns'] ?? '') }}</textarea>
+                <label for="main_concerns">{{ __('consultation.main_concerns') }}</label>
+                <textarea id="main_concerns" name="main_concerns" required aria-invalid="{{ $errors->has('main_concerns') ? 'true' : 'false' }}" aria-describedby="reco-concerns-help @error('main_concerns') reco_main_concerns_error @enderror">{{ old('main_concerns', $submitted['main_concerns'] ?? '') }}</textarea>
                 <small id="reco-concerns-help" class="field-help">Required. Add your top concerns so suggestions are more relevant.</small>
-                @error('main_concerns')<div class="error">{{ $message }}</div>@enderror
+                @error('main_concerns')<div id="reco_main_concerns_error" class="error">{{ $message }}</div>@enderror
             </div>
 
             <div class="form-span-full recommender-submit-row">
