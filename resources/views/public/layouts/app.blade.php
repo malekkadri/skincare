@@ -399,8 +399,8 @@
             flex-wrap: wrap;
         }
         .footer-social a {
-            width: 2rem;
-            height: 2rem;
+            width: 2.5rem;
+            height: 2.5rem;
             border-radius: 999px;
             border: 1px solid var(--border-strong);
             background: rgba(255,255,255,.65);
