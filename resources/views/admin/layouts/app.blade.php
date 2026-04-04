@@ -16,7 +16,7 @@
         textarea{min-height:90px}
         .btn{background:var(--primary);color:#fff;border:none;border-radius:.5rem;padding:.55rem .85rem;cursor:pointer;font-size:.9rem;display:inline-block;text-decoration:none}
         .btn-secondary{background:#4b5563}.btn-danger{background:var(--danger)} .btn-success{background:var(--ok)}
-        .flash{padding:.75rem 1rem;border-radius:.5rem;margin-bottom:1rem}.flash{padding:.75rem 1rem;border-radius:.5rem;margin-bottom:1rem}.flash.success{background:#dcfce7;color:#166534}.flash.error{background:#fee2e2;color:#991b1b}
+        .flash{padding:.75rem 1rem;border-radius:.5rem;margin-bottom:1rem}.flash.success{background:#dcfce7;color:#166534}.flash.error{background:#fee2e2;color:#991b1b}
         .error{font-size:.8rem;color:#dc2626;margin-top:.25rem}.muted{color:var(--muted);font-size:.9rem}
         .table{width:100%;border-collapse:collapse}.table th,.table td{padding:.7rem;border-bottom:1px solid var(--border);text-align:left;vertical-align:middle}
         .table th{font-size:.8rem;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
@@ -42,7 +42,7 @@
             @if($user?->hasPermission('view_reports'))<a href="{{ route('admin.reports.overview') }}" class="{{ request()->routeIs('admin.reports.*') ? 'active' : '' }}">Reports</a>@endif
             @if($user?->hasPermission('manage_whatsapp'))<a href="{{ route('admin.whatsapp.settings.edit') }}" class="{{ request()->routeIs('admin.whatsapp.settings.*') ? 'active' : '' }}">WhatsApp Settings</a><a href="{{ route('admin.whatsapp.templates.index') }}" class="{{ request()->routeIs('admin.whatsapp.templates.*') ? 'active' : '' }}">WhatsApp Templates</a><a href="{{ route('admin.whatsapp.logs.index') }}" class="{{ request()->routeIs('admin.whatsapp.logs.*') ? 'active' : '' }}">WhatsApp Logs</a>@endif
             @if($user?->hasPermission('manage_admin_users'))<a href="{{ route('admin.users.index') }}" class="{{ request()->routeIs('admin.users.*') ? 'active' : '' }}">Admin Users</a>@endif
-            @if($user?->hasPermission('view_system_health'))<a href="{{ route('admin.ops.health') }}" class="{{ request()->routeIs('admin.ops.*') ? 'active' : '' }}">System Health</a>@endif
+            @if($user?->hasPermission('view_system_health'))<a href="{{ route('admin.ops.health') }}" class="{{ request()->routeIs('admin.ops.health') ? 'active' : '' }}">System Health</a><a href="{{ route('admin.ops.launch-readiness') }}" class="{{ request()->routeIs('admin.ops.launch-readiness') ? 'active' : '' }}">Launch Readiness</a>@endif
         </nav>
     </aside>
 

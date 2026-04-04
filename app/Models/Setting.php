@@ -55,8 +55,8 @@ class Setting extends Model
     public static function current(): self
     {
         return static::query()->firstOrCreate([], [
-            'site_name' => 'Skin by Noor','default_language' => 'fr','supported_languages' => ['fr', 'en'],'default_currency' => 'TND','supported_currencies' => ['TND', 'EUR'],
-            'timezone' => 'Africa/Tunis','slot_interval_minutes' => 30,'minimum_notice_hours' => 2,'maximum_booking_days_ahead' => 30,'booking_enabled' => true,
+            'site_name' => config('skinbynoor.defaults.site_name', 'Skin by Noor'),'default_language' => 'fr','supported_languages' => config('skinbynoor.supported_locales', ['fr', 'en']),'default_currency' => 'TND','supported_currencies' => config('skinbynoor.supported_currencies', ['TND', 'EUR']),
+            'timezone' => config('skinbynoor.timezone', 'Africa/Tunis'),'slot_interval_minutes' => 30,'minimum_notice_hours' => 2,'maximum_booking_days_ahead' => 30,'booking_enabled' => true,
             'whatsapp_enabled' => false,'whatsapp_provider' => 'log','whatsapp_default_country_code' => '+216',
             'send_booking_confirmation_whatsapp' => true,'send_booking_cancellation_whatsapp' => true,'send_booking_reschedule_whatsapp' => true,
             'whatsapp_automation_enabled' => false,'send_24h_reminder' => true,'send_2h_reminder' => true,'send_post_appointment_followup' => true,

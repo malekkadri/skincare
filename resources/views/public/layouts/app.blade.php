@@ -46,8 +46,8 @@
 <footer>
     <div class="container grid grid-3">
         <div><h4>{{ $settings->site_name ?? 'Skin by Noor' }}</h4><p class="muted">{{ $settings->localized('site_tagline') }}</p></div>
-        <div><h4>Policies</h4>@foreach(\App\Models\Policy::active()->ordered()->get() as $footerPolicy)<div><a href="{{ route('policies.show',$footerPolicy) }}">{{ $footerPolicy->localized_title }}</a></div>@endforeach</div>
-        <div><h4>WhatsApp</h4><a class="btn" target="_blank" href="https://wa.me/{{ preg_replace('/\D+/', '', $settings->whatsapp_number ?? '') }}">{{ $settings->whatsapp_number ?: '+216' }}</a></div>
+        <div><h4>Policies</h4>@forelse(\App\Models\Policy::active()->ordered()->get() as $footerPolicy)<div><a href="{{ route('policies.show',$footerPolicy) }}">{{ $footerPolicy->localized_title }}</a></div>@empty<div class="muted">No policy pages published yet.</div>@endforelse</div>
+        <div><h4>WhatsApp</h4>@if(filled($settings->whatsapp_number))<a class="btn" target="_blank" href="https://wa.me/{{ preg_replace('/\D+/', '', $settings->whatsapp_number) }}">{{ $settings->whatsapp_number }}</a>@else<div class="muted">WhatsApp contact will appear once configured.</div>@endif</div>
     </div>
 </footer>
 </body>

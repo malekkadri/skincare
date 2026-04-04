@@ -15,5 +15,8 @@ class GalleryItem extends Model
     public function scopeOrdered(Builder $q): Builder { return $q->orderBy('sort_order')->orderByDesc('id'); }
     public function getLocalizedTitleAttribute(): ?string { return app()->getLocale() === 'fr' ? $this->title_fr : $this->title_en; }
     public function getLocalizedCaptionAttribute(): ?string { return app()->getLocale() === 'fr' ? $this->caption_fr : $this->caption_en; }
-    public function getImageUrlAttribute(): string { return Storage::disk('public')->url($this->image_path); }
+    public function getImageUrlAttribute(): ?string
+    {
+        return $this->image_path ? Storage::disk('public')->url($this->image_path) : null;
+    }
 }

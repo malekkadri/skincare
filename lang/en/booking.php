@@ -9,6 +9,7 @@ return [
     'step_review' => 'Review',
     'continue' => 'Continue',
     'confirm' => 'Confirm booking',
+    'service_unavailable' => 'Selected service is unavailable. Please choose another.',
     'slot_unavailable' => 'This slot is no longer available. Please choose another.',
     'success' => 'Your booking has been received successfully.',
 ];
