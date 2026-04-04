@@ -32,6 +32,10 @@
             <a href="{{ route('admin.settings.edit') }}" class="{{ request()->routeIs('admin.settings.*') ? 'active' : '' }}">Website Settings</a>
             <a href="{{ route('admin.categories.index') }}" class="{{ request()->routeIs('admin.categories.*') ? 'active' : '' }}">Categories</a>
             <a href="{{ route('admin.services.index') }}" class="{{ request()->routeIs('admin.services.*') ? 'active' : '' }}">Services</a>
+            <a href="{{ route('admin.appointments.index') }}" class="{{ request()->routeIs('admin.appointments.*') ? 'active' : '' }}">Appointments</a>
+            <a href="{{ route('admin.availability.edit') }}" class="{{ request()->routeIs('admin.availability.*') ? 'active' : '' }}">Availability</a>
+            <a href="{{ route('admin.blocked-dates.index') }}" class="{{ request()->routeIs('admin.blocked-dates.*') ? 'active' : '' }}">Blocked Dates</a>
+            <a href="{{ route('admin.blocked-times.index') }}" class="{{ request()->routeIs('admin.blocked-times.*') ? 'active' : '' }}">Blocked Times</a>
         </nav>
     </aside>
 
