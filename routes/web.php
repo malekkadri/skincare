@@ -136,6 +136,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         Route::middleware('permission:manage_consultations')->group(function () {
             Route::resource('consultations', AdminConsultationController::class)->only(['index', 'show', 'update']);
+            Route::post('consultations/{consultation}/retry-analysis', [AdminConsultationController::class, 'retryAnalysis'])->name('consultations.retry-analysis');
+            Route::get('consultation-images/{image}', [AdminConsultationController::class, 'image'])->name('consultations.image');
         });
 
         Route::middleware('permission:manage_appointments')->group(function () {

@@ -9,13 +9,18 @@
 </div>
 
 <div class="card">
-    <h2>Consultation Answers</h2>
-    <p><strong>Main concerns:</strong> {{ $consultation->main_concerns }}</p>
-    <p><strong>Skin type:</strong> {{ $consultation->skin_type ?: '—' }}</p>
-    <p><strong>Sensitivity:</strong> {{ $consultation->skin_sensitivity_level ?: '—' }}</p>
-    <p><strong>Allergies:</strong> {{ $consultation->allergies ?: '—' }}</p>
-    <p><strong>Goals:</strong> {{ $consultation->preferred_goals ?: '—' }}</p>
-    <p><strong>Notes:</strong> {{ $consultation->additional_notes ?: '—' }}</p>
+    <h2>Face Images</h2>
+    @if($consultation->images->isEmpty())
+        <p class="muted">No uploaded images.</p>
+    @else
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;">
+            @foreach($consultation->images as $image)
+                <a href="{{ route('admin.consultations.image', $image) }}" target="_blank" rel="noopener">
+                    <img src="{{ route('admin.consultations.image', $image) }}" alt="Consultation face image {{ $loop->iteration }}" style="width:100%;height:180px;object-fit:cover;border-radius:12px;">
+                </a>
+            @endforeach
+        </div>
+    @endif
 </div>
 
 <div class="card">
@@ -23,10 +28,42 @@
     @php($ai = $consultation->aiResults->first())
     @if($ai)
         <p><strong>Status:</strong> {{ $ai->status }}</p>
-        <p><strong>Summary:</strong> {{ $ai->summary_text ?: '—' }}</p>
-        <p><strong>Recommended services:</strong> {{ implode(', ', $ai->recommended_services_json ?? []) ?: '—' }}</p>
-        <p><strong>Risk flags:</strong> {{ implode(', ', $ai->risk_flags_json ?? []) ?: '—' }}</p>
-        @if($ai->error_message)<p class="error">{{ $ai->error_message }}</p>@endif
+        <p><strong>Provider/Model:</strong> {{ $ai->provider ?: '—' }} / {{ $ai->model ?: '—' }}</p>
+        <p><strong>Processed at:</strong> {{ optional($ai->processed_at)->format('Y-m-d H:i') ?: '—' }}</p>
+        <p><strong>User summary:</strong> {{ $ai->user_summary ?: $ai->summary_text ?: '—' }}</p>
+        <p><strong>Admin summary:</strong> {{ $ai->admin_summary ?: '—' }}</p>
+        <p><strong>Confidence score:</strong> {{ isset($ai->confidence_score) ? number_format($ai->confidence_score * 100, 0).'%' : '—' }}</p>
+        <p><strong>Needs human review:</strong> {{ $ai->needs_human_review ? 'Yes' : 'No' }}</p>
+        <p><strong>Refer dermatologist:</strong> {{ $ai->refer_to_dermatologist ? 'Yes' : 'No' }}</p>
+
+        <h4>Visible concerns</h4>
+        <ul>
+            @forelse(($ai->normalized_result_json['visible_concerns'] ?? []) as $concern)
+                <li>{{ $concern['key'] ?? 'uncertain' }} ({{ number_format(($concern['confidence'] ?? 0) * 100, 0) }}%) - {{ $concern['severity'] ?? 'uncertain' }}</li>
+            @empty
+                <li>—</li>
+            @endforelse
+        </ul>
+
+        <h4>Recommended services</h4>
+        <ul>
+            @forelse(($ai->recommended_services_json ?? []) as $service)
+                <li>#{{ $service['service_id'] ?? '?' }} / {{ $service['slug'] ?? '' }} - {{ $service['reason'] ?? '' }}</li>
+            @empty
+                <li>—</li>
+            @endforelse
+        </ul>
+
+        <p><strong>Caution flags:</strong> {{ implode(', ', $ai->risk_flags_json ?? []) ?: '—' }}</p>
+
+        @if($ai->error_message)<p class="error"><strong>Error:</strong> {{ $ai->error_message }}</p>@endif
+
+        @if($consultation->images->isNotEmpty())
+            <form method="POST" action="{{ route('admin.consultations.retry-analysis', $consultation) }}">
+                @csrf
+                <button class="btn" type="submit">Retry AI Analysis</button>
+            </form>
+        @endif
     @else
         <p class="muted">No AI result yet.</p>
     @endif
