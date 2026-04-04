@@ -25,6 +25,11 @@ class Setting extends Model
         'default_currency',
         'supported_currencies',
         'timezone',
+        'slot_interval_minutes',
+        'minimum_notice_hours',
+        'maximum_booking_days_ahead',
+        'max_appointments_per_day',
+        'booking_enabled',
         'hero_title_fr',
         'hero_title_en',
         'hero_subtitle_fr',
@@ -36,6 +41,7 @@ class Setting extends Model
     protected $casts = [
         'supported_languages' => 'array',
         'supported_currencies' => 'array',
+        'booking_enabled' => 'boolean',
     ];
 
     public function getLogoUrlAttribute(): ?string
@@ -65,6 +71,11 @@ class Setting extends Model
             'default_currency' => 'TND',
             'supported_currencies' => ['TND', 'EUR'],
             'timezone' => 'Africa/Tunis',
+            'slot_interval_minutes' => 30,
+            'minimum_notice_hours' => 2,
+            'maximum_booking_days_ahead' => 30,
+            'max_appointments_per_day' => null,
+            'booking_enabled' => true,
         ]);
     }
 }
