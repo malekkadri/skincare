@@ -7,6 +7,9 @@ return [
         'gallery' => 'Galerie',
         'testimonials' => 'Avis clients',
         'contact' => 'Contact',
+        'ai_recommender' => 'IA Recommandation',
+        'consultation' => 'Consultation',
+        'faq' => 'FAQ',
         'book_now' => 'Réserver',
     ],
     'footer' => [
