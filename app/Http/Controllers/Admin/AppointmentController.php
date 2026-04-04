@@ -10,6 +10,7 @@ use App\Models\Appointment;
 use App\Models\Customer;
 use App\Models\Service;
 use App\Services\AvailabilityService;
+use App\Services\WhatsAppService;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -18,7 +19,7 @@ use Illuminate\View\View;
 
 class AppointmentController extends Controller
 {
-    public function __construct(protected AvailabilityService $availabilityService)
+    public function __construct(protected AvailabilityService $availabilityService, protected WhatsAppService $whatsAppService)
     {
     }
 
@@ -37,6 +38,16 @@ class AppointmentController extends Controller
         return view('admin.appointments.index', [
             'appointments' => $appointments,
             'services' => Service::query()->ordered()->get(),
+            'statuses' => Appointment::statuses(),
+        ]);
+    }
+
+    public function show(Appointment $appointment): View
+    {
+        $appointment->load(['customer', 'service', 'whatsappLogs']);
+
+        return view('admin.appointments.show', [
+            'appointment' => $appointment,
             'statuses' => Appointment::statuses(),
         ]);
     }
@@ -62,17 +73,36 @@ class AppointmentController extends Controller
     {
         $this->persist($request->validated(), $appointment);
 
-        return redirect()->route('admin.appointments.index')->with('success', 'Appointment updated successfully.');
+        return redirect()->route('admin.appointments.show', $appointment)->with('success', 'Appointment updated successfully.');
     }
 
     public function updateStatus(UpdateAppointmentStatusRequest $request, Appointment $appointment): RedirectResponse
     {
+        $oldStatus = $appointment->status;
         $status = $request->validated('status');
+
         $appointment->status = $status;
         $appointment->cancelled_at = $status === Appointment::STATUS_CANCELLED ? now() : null;
         $appointment->save();
 
+        if ($status === Appointment::STATUS_CANCELLED && $oldStatus !== Appointment::STATUS_CANCELLED) {
+            $this->whatsAppService->sendBookingCancellation($appointment->load('customer'));
+        }
+
+        if (in_array($status, [Appointment::STATUS_PENDING, Appointment::STATUS_CONFIRMED], true)
+            && $oldStatus !== $status
+            && $oldStatus !== Appointment::STATUS_PENDING) {
+            $this->whatsAppService->sendBookingRescheduled($appointment->load('customer'));
+        }
+
         return back()->with('success', 'Appointment status updated.');
+    }
+
+    public function resendConfirmation(Appointment $appointment): RedirectResponse
+    {
+        $this->whatsAppService->sendBookingConfirmation($appointment->load('customer'));
+
+        return back()->with('success', 'Confirmation message send attempt logged.');
     }
 
     protected function formData(Appointment $appointment): array
@@ -124,6 +154,7 @@ class AppointmentController extends Controller
                 'end_time' => $end->format('H:i:s'),
                 'status' => $validated['status'],
                 'booked_currency' => $currency,
+                'preferred_language' => $customer->preferred_language ?? 'fr',
                 'booked_price' => $price,
                 'service_name_snapshot_fr' => $service->name_fr,
                 'service_name_snapshot_en' => $service->name_en,
@@ -134,7 +165,17 @@ class AppointmentController extends Controller
                 'cancelled_at' => $validated['status'] === Appointment::STATUS_CANCELLED ? now() : null,
             ];
 
-            $appointment ? $appointment->update($payload) : Appointment::query()->create($payload);
+            $existing = $appointment?->replicate();
+            if ($appointment) {
+                $appointment->update($payload);
+                $record = $appointment->fresh();
+            } else {
+                $record = Appointment::query()->create($payload);
+            }
+
+            if ($existing && ($existing->appointment_date->toDateString() !== $record->appointment_date->toDateString() || $existing->start_time !== $record->start_time)) {
+                $this->whatsAppService->sendBookingRescheduled($record->load('customer'));
+            }
         });
     }
 }

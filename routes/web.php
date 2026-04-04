@@ -5,18 +5,42 @@ use App\Http\Controllers\Admin\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Admin\AvailabilityController as AdminAvailabilityController;
 use App\Http\Controllers\Admin\BlockedDateController;
 use App\Http\Controllers\Admin\BlockedTimeRangeController;
+use App\Http\Controllers\Admin\CalendarController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ServiceCategoryController;
 use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\Admin\SettingsController;
+use App\Http\Controllers\Admin\WhatsAppSettingsController;
+use App\Http\Controllers\Admin\WhatsAppTemplateController;
 use App\Http\Controllers\Booking\AvailabilityController;
+use App\Http\Controllers\Booking\BookingWizardController;
+use App\Http\Controllers\PublicPreferenceController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::middleware('public.preferences')->group(function () {
+    Route::get('/', function () {
+        return view('welcome');
+    });
 
-Route::get('/booking/available-slots', AvailabilityController::class)->name('booking.available-slots');
+    Route::post('/preferences/locale', [PublicPreferenceController::class, 'locale'])->name('preferences.locale');
+    Route::post('/preferences/currency', [PublicPreferenceController::class, 'currency'])->name('preferences.currency');
+
+    Route::get('/booking/available-slots', AvailabilityController::class)->name('booking.available-slots');
+
+    Route::prefix('booking')->name('booking.')->group(function () {
+        Route::get('/', [BookingWizardController::class, 'service'])->name('service');
+        Route::post('/service', [BookingWizardController::class, 'saveService'])->name('service.save');
+        Route::get('/date', [BookingWizardController::class, 'date'])->name('date');
+        Route::post('/date', [BookingWizardController::class, 'saveDate'])->name('date.save');
+        Route::get('/slot', [BookingWizardController::class, 'slot'])->name('slot');
+        Route::post('/slot', [BookingWizardController::class, 'saveSlot'])->name('slot.save');
+        Route::get('/customer', [BookingWizardController::class, 'customer'])->name('customer');
+        Route::post('/customer', [BookingWizardController::class, 'saveCustomer'])->name('customer.save');
+        Route::get('/review', [BookingWizardController::class, 'review'])->name('review');
+        Route::post('/confirm', [BookingWizardController::class, 'confirm'])->name('confirm');
+        Route::get('/success/{token}', [BookingWizardController::class, 'success'])->name('success');
+    });
+});
 
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::middleware('guest')->group(function () {
@@ -30,11 +54,20 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/settings', [SettingsController::class, 'edit'])->name('settings.edit');
         Route::put('/settings', [SettingsController::class, 'update'])->name('settings.update');
 
+        Route::get('/whatsapp/settings', [WhatsAppSettingsController::class, 'edit'])->name('whatsapp.settings.edit');
+        Route::put('/whatsapp/settings', [WhatsAppSettingsController::class, 'update'])->name('whatsapp.settings.update');
+        Route::get('/whatsapp/templates', [WhatsAppTemplateController::class, 'index'])->name('whatsapp.templates.index');
+        Route::put('/whatsapp/templates/{template}', [WhatsAppTemplateController::class, 'update'])->name('whatsapp.templates.update');
+
         Route::resource('categories', ServiceCategoryController::class)->except('show');
         Route::resource('services', ServiceController::class)->except('show');
 
-        Route::resource('appointments', AppointmentController::class)->except('destroy', 'show');
+        Route::resource('appointments', AppointmentController::class)->except('destroy');
         Route::patch('appointments/{appointment}/status', [AppointmentController::class, 'updateStatus'])->name('appointments.status');
+        Route::post('appointments/{appointment}/resend-confirmation', [AppointmentController::class, 'resendConfirmation'])->name('appointments.resend-confirmation');
+
+        Route::get('calendar', [CalendarController::class, 'index'])->name('calendar.index');
+        Route::get('calendar/events', [CalendarController::class, 'events'])->name('calendar.events');
 
         Route::get('availability', [AdminAvailabilityController::class, 'edit'])->name('availability.edit');
         Route::put('availability/hours', [AdminAvailabilityController::class, 'updateHours'])->name('availability.hours.update');
@@ -52,4 +85,5 @@ Route::prefix('admin')->name('admin.')->group(function () {
     });
 });
 
+Route::redirect('/book', '/booking');
 Route::redirect('/login', '/admin/login')->name('login');
