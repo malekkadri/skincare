@@ -16,14 +16,18 @@ class Setting extends Model
         'hero_title_fr','hero_title_en','hero_subtitle_fr','hero_subtitle_en','hero_button_text_fr','hero_button_text_en',
         'hero_secondary_button_text_fr','hero_secondary_button_text_en','hero_secondary_button_url',
         'contact_page_title_fr','contact_page_title_en','contact_intro_fr','contact_intro_en','map_embed_url','opening_hours_fr','opening_hours_en',
+        'ai_enabled','ai_provider','ai_api_key','ai_model','ai_base_url','ai_temperature','ai_timeout_seconds',
+        'ai_enable_consultation_summary','ai_enable_service_recommendation','ai_enable_admin_content_helper',
     ];
 
     protected $casts = [
         'supported_languages' => 'array','supported_currencies' => 'array','booking_enabled' => 'boolean','whatsapp_enabled' => 'boolean',
         'send_booking_confirmation_whatsapp' => 'boolean','send_booking_cancellation_whatsapp' => 'boolean','send_booking_reschedule_whatsapp' => 'boolean',
+        'ai_enabled' => 'boolean','ai_temperature' => 'decimal:2','ai_enable_consultation_summary' => 'boolean',
+        'ai_enable_service_recommendation' => 'boolean','ai_enable_admin_content_helper' => 'boolean',
     ];
 
-    protected $hidden = ['whatsapp_api_key'];
+    protected $hidden = ['whatsapp_api_key', 'ai_api_key'];
 
     public function getLogoUrlAttribute(): ?string { return $this->logo_path ? Storage::disk('public')->url($this->logo_path) : null; }
     public function getFaviconUrlAttribute(): ?string { return $this->favicon_path ? Storage::disk('public')->url($this->favicon_path) : null; }
@@ -40,6 +44,8 @@ class Setting extends Model
             'timezone' => 'Africa/Tunis','slot_interval_minutes' => 30,'minimum_notice_hours' => 2,'maximum_booking_days_ahead' => 30,'booking_enabled' => true,
             'whatsapp_enabled' => false,'whatsapp_provider' => 'log','whatsapp_default_country_code' => '+216',
             'send_booking_confirmation_whatsapp' => true,'send_booking_cancellation_whatsapp' => true,'send_booking_reschedule_whatsapp' => true,
+            'ai_enabled' => false,'ai_provider' => 'grok','ai_model' => 'grok-2-latest','ai_timeout_seconds' => 25,'ai_temperature' => 0.30,
+            'ai_enable_consultation_summary' => true,'ai_enable_service_recommendation' => true,'ai_enable_admin_content_helper' => true,
         ]);
     }
 }

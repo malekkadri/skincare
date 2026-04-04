@@ -22,6 +22,11 @@ class Customer extends Model
         return $this->hasMany(Appointment::class);
     }
 
+    public function consultations(): HasMany
+    {
+        return $this->hasMany(Consultation::class);
+    }
+
     public function getFullNameAttribute(): string
     {
         return trim($this->first_name.' '.($this->last_name ?? ''));
