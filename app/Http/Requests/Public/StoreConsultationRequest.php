@@ -29,6 +29,8 @@ class StoreConsultationRequest extends FormRequest
             'current_treatments_or_medications' => ['nullable', 'string', 'max:1500'],
             'pregnancy_or_breastfeeding_status' => ['nullable', 'string', 'max:120'],
             'preferred_goals' => ['nullable', 'string', 'max:1500'],
+            'face_images' => ['nullable', 'array', 'max:3'],
+            'face_images.*' => ['file', 'image', 'mimes:jpg,jpeg,png,webp', 'max:8192'],
             'additional_notes' => ['nullable', 'string', 'max:2000'],
             'consent' => ['accepted'],
         ];

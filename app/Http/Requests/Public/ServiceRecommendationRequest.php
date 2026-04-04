@@ -20,6 +20,8 @@ class ServiceRecommendationRequest extends FormRequest
             'skin_sensitivity_level' => ['nullable', 'string', 'max:100'],
             'main_concerns' => ['required', 'string', 'max:2000'],
             'preferred_goals' => ['nullable', 'string', 'max:1500'],
+            'face_images' => ['nullable', 'array', 'max:3'],
+            'face_images.*' => ['file', 'image', 'mimes:jpg,jpeg,png,webp', 'max:8192'],
         ];
     }
 }

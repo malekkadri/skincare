@@ -42,6 +42,12 @@ class Consultation extends Model
         return $this->belongsTo(Customer::class);
     }
 
+
+    public function images(): HasMany
+    {
+        return $this->hasMany(ConsultationImage::class)->orderBy('sort_order');
+    }
+
     public function aiResults(): HasMany
     {
         return $this->hasMany(ConsultationAiResult::class);

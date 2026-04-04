@@ -31,4 +31,12 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'xai' => [
+        'api_key' => env('XAI_API_KEY'),
+        'base_url' => env('XAI_BASE_URL', 'https://api.x.ai/v1'),
+        'vision_model' => env('XAI_VISION_MODEL', 'grok-2-vision-latest'),
+        'timeout' => env('XAI_TIMEOUT', 30),
+        'store' => env('XAI_STORE', false),
+    ],
+
 ];
