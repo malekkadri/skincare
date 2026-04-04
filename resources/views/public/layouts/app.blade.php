@@ -87,6 +87,7 @@
             font-size: .94rem;
             transition: transform .2s ease, box-shadow .2s ease, opacity .2s ease;
             box-shadow: 0 12px 30px rgba(200, 162, 122, .25);
+            cursor: pointer;
         }
         .btn:hover { transform: translateY(-1px); opacity: .96; }
         .btn-soft {
@@ -95,7 +96,15 @@
             color: var(--text-primary);
             box-shadow: none;
         }
+        .btn-row { display: flex; flex-wrap: wrap; gap: .75rem; }
         .page-section { padding: 88px 0; }
+        .page-hero {
+            border-radius: 30px;
+            padding: clamp(2rem, 4.5vw, 4rem);
+            background: linear-gradient(135deg, #f6efe8 0%, #fbf9f6 100%);
+            border: 1px solid #e7dcd1;
+            margin-top: 1.25rem;
+        }
         .section-title {
             font-size: clamp(1.8rem, 2.5vw, 2.6rem);
             margin-bottom: .75rem;
@@ -114,6 +123,39 @@
             border-radius: 22px;
             border: 1px solid #ede5dd;
             box-shadow: 0 18px 45px rgba(95, 81, 69, .08);
+            padding: 1.35rem;
+        }
+        .grid { display: grid; gap: 1.2rem; }
+        .grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        .form-control,
+        select,
+        input,
+        textarea {
+            width: 100%;
+            border: 1px solid #ded4ca;
+            border-radius: 14px;
+            padding: .78rem .92rem;
+            background: #fffdfb;
+            color: var(--text-primary);
+            font: inherit;
+        }
+        label {
+            font-size: .88rem;
+            color: #6b5e53;
+            display: inline-block;
+            margin-bottom: .35rem;
+        }
+        .form-field { display: grid; gap: .35rem; }
+        .form-span-full { grid-column: 1 / -1; }
+        .error { color: #9f5748; font-size: .84rem; }
+        .empty-state {
+            text-align: center;
+            padding: 2rem 1rem;
+            border: 1px dashed #d9cec2;
+            border-radius: 18px;
+            color: var(--text-secondary);
+            background: #fbf8f4;
         }
         .site-footer {
             margin-top: 40px;
@@ -131,7 +173,9 @@
         @media (max-width: 900px) {
             .site-nav { justify-content: center; }
             .menu { justify-content: center; }
-            .footer-grid { grid-template-columns: 1fr; }
+            .footer-grid,
+            .grid-3,
+            .grid-2 { grid-template-columns: 1fr; }
             .page-section { padding: 72px 0; }
         }
     </style>
