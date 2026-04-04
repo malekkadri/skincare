@@ -11,7 +11,10 @@ return [
         'consultation' => 'Consultation',
         'faq' => 'FAQ',
         'book_now' => 'Book Now',
+        'menu' => 'Menu',
+        'language' => 'Language',
     ],
+
     'footer' => [
         'tagline' => 'Elevated skincare rituals designed for healthy, luminous skin.',
         'explore' => 'Explore',
@@ -20,6 +23,15 @@ return [
         'contact' => 'Contact',
         'contact_page' => 'Contact page',
         'whatsapp' => 'WhatsApp Us',
+        'brand_mark' => 'Luxury Skincare Atelier',
+        'brand_assurance' => 'Personalized protocols, premium products, and trusted care in every appointment.',
+        'quick_links' => 'Quick links',
+        'services' => 'Services',
+        'home' => 'Home',
+        'social' => 'Social media',
+        'rights' => 'All rights reserved.',
+        'privacy' => 'Privacy Policy',
+        'terms' => 'Terms & Conditions',
     ],
     'common' => [
         'submitting' => 'Submitting...',

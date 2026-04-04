@@ -11,7 +11,10 @@ return [
         'consultation' => 'Consultation',
         'faq' => 'FAQ',
         'book_now' => 'Réserver',
+        'menu' => 'Menu',
+        'language' => 'Langue',
     ],
+
     'footer' => [
         'tagline' => 'Des rituels de soin haut de gamme pour une peau saine et lumineuse.',
         'explore' => 'Explorer',
@@ -20,6 +23,15 @@ return [
         'contact' => 'Contact',
         'contact_page' => 'Page contact',
         'whatsapp' => 'Nous écrire sur WhatsApp',
+        'brand_mark' => 'Atelier de soins premium',
+        'brand_assurance' => 'Des protocoles personnalisés, des produits premium et une prise en charge de confiance à chaque rendez-vous.',
+        'quick_links' => 'Liens rapides',
+        'services' => 'Services',
+        'home' => 'Accueil',
+        'social' => 'Réseaux sociaux',
+        'rights' => 'Tous droits réservés.',
+        'privacy' => 'Politique de confidentialité',
+        'terms' => 'Conditions générales',
     ],
     'common' => [
         'submitting' => 'Envoi en cours...',
