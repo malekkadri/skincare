@@ -10,12 +10,12 @@ return new class extends Migration
     {
         Schema::create('ai_usage_logs', function (Blueprint $table) {
             $table->id();
-            $table->string('feature_key');
+            $table->string('feature_key', 100);
             $table->string('provider')->nullable();
             $table->string('model')->nullable();
             $table->text('input_context_summary')->nullable();
             $table->text('output_summary')->nullable();
-            $table->string('status')->default('skipped');
+            $table->string('status', 50)->nullable()->default('skipped');
             $table->text('error_message')->nullable();
             $table->foreignId('related_consultation_id')->nullable()->constrained('consultations')->nullOnDelete();
             $table->foreignId('admin_user_id')->nullable()->constrained('users')->nullOnDelete();

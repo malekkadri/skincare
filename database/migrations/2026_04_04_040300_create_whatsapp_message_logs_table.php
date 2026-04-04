@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->string('language', 2);
             $table->string('recipient_phone', 50)->nullable();
             $table->text('message_body')->nullable();
-            $table->string('status')->default('pending');
+            $table->string('status', 50)->default('pending');
             $table->text('provider_response')->nullable();
             $table->timestamps();
 
