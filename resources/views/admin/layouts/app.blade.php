@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Admin Panel') - Skin by Noor</title>
     <style>
-        :root { --bg:#f3f4f6; --card:#fff; --text:#111827; --muted:#6b7280; --primary:#7c3aed; --border:#e5e7eb; }
+        :root { --bg:#f3f4f6; --card:#fff; --text:#111827; --muted:#6b7280; --primary:#7c3aed; --border:#e5e7eb; --danger:#dc2626; }
         *{box-sizing:border-box} body{margin:0;font-family:Inter,system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text)}
         .layout{display:flex;min-height:100vh}.sidebar{width:240px;background:#111827;color:#f9fafb;padding:1.25rem}
         .brand{font-size:1.1rem;font-weight:700;margin-bottom:1.5rem}.nav a{display:block;padding:.65rem .75rem;border-radius:.5rem;color:#e5e7eb;text-decoration:none;margin-bottom:.4rem}
@@ -13,9 +13,13 @@
         .main{padding:1.5rem}.card{background:var(--card);border:1px solid var(--border);border-radius:.75rem;padding:1.25rem;margin-bottom:1rem}
         .card h2{margin-top:0;font-size:1.05rem}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}
         label{display:block;font-weight:600;font-size:.9rem;margin-bottom:.35rem} input,textarea,select{width:100%;padding:.6rem .7rem;border:1px solid #d1d5db;border-radius:.5rem;font-size:.95rem}
-        textarea{min-height:90px}.btn{background:var(--primary);color:#fff;border:none;border-radius:.5rem;padding:.65rem .95rem;cursor:pointer}
+        textarea{min-height:90px}
+        .btn{background:var(--primary);color:#fff;border:none;border-radius:.5rem;padding:.55rem .85rem;cursor:pointer;font-size:.9rem;display:inline-block}
+        .btn-secondary{background:#4b5563}.btn-danger{background:var(--danger)}
         .flash{padding:.75rem 1rem;border-radius:.5rem;margin-bottom:1rem}.flash.success{background:#dcfce7;color:#166534}
         .error{font-size:.8rem;color:#dc2626;margin-top:.25rem}.muted{color:var(--muted);font-size:.9rem}
+        .table{width:100%;border-collapse:collapse}.table th,.table td{padding:.7rem;border-bottom:1px solid var(--border);text-align:left;vertical-align:middle}
+        .table th{font-size:.8rem;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
         @media (max-width: 900px){.sidebar{display:none}.grid{grid-template-columns:1fr}}
     </style>
 </head>
@@ -26,6 +30,8 @@
         <nav class="nav">
             <a href="{{ route('admin.dashboard') }}" class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">Dashboard</a>
             <a href="{{ route('admin.settings.edit') }}" class="{{ request()->routeIs('admin.settings.*') ? 'active' : '' }}">Website Settings</a>
+            <a href="{{ route('admin.categories.index') }}" class="{{ request()->routeIs('admin.categories.*') ? 'active' : '' }}">Categories</a>
+            <a href="{{ route('admin.services.index') }}" class="{{ request()->routeIs('admin.services.*') ? 'active' : '' }}">Services</a>
         </nav>
     </aside>
 
