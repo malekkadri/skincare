@@ -45,6 +45,17 @@ class UpdateSettingRequest extends FormRequest
             'hero_subtitle_en' => ['nullable', 'string'],
             'hero_button_text_fr' => ['nullable', 'string', 'max:255'],
             'hero_button_text_en' => ['nullable', 'string', 'max:255'],
+
+            'contact_page_title_fr' => ['nullable', 'string', 'max:255'],
+            'contact_page_title_en' => ['nullable', 'string', 'max:255'],
+            'contact_intro_fr' => ['nullable', 'string'],
+            'contact_intro_en' => ['nullable', 'string'],
+            'map_embed_url' => ['nullable', 'url', 'max:255'],
+            'opening_hours_fr' => ['nullable', 'string'],
+            'opening_hours_en' => ['nullable', 'string'],
+            'hero_secondary_button_text_fr' => ['nullable', 'string', 'max:255'],
+            'hero_secondary_button_text_en' => ['nullable', 'string', 'max:255'],
+            'hero_secondary_button_url' => ['nullable', 'string', 'max:255'],
         ];
     }
     public function withValidator($validator): void

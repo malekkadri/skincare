@@ -1,0 +1,3 @@
+@extends('public.layouts.app')
+@section('title', $settings->localized('contact_page_title') ?? 'Contact')
+@section('content')<section class="section"><h1>{{ $settings->localized('contact_page_title') ?? 'Contact' }}</h1><p>{{ $settings->localized('contact_intro') }}</p><div class="grid grid-2"><div class="card"><p>{{ $settings->localized('address') }}</p><p>{{ $settings->phone }}</p><a class="btn" target="_blank" href="https://wa.me/{{ preg_replace('/\D+/', '', $settings->whatsapp_number ?? '') }}">WhatsApp</a></div><div class="card">{!! $settings->map_embed_url ? '<iframe src="'.$settings->map_embed_url.'" width="100%" height="260" style="border:0;"></iframe>' : '' !!}</div></div></section>@endsection

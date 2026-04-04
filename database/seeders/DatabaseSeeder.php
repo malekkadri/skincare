@@ -13,6 +13,7 @@ class DatabaseSeeder extends Seeder
             ServiceCatalogSeeder::class,
             BusinessAvailabilitySeeder::class,
             WhatsAppTemplateSeeder::class,
+            MarketingContentSeeder::class,
         ]);
     }
 }
