@@ -35,7 +35,10 @@ return [
         'api_key' => env('XAI_API_KEY'),
         'base_url' => env('XAI_BASE_URL', 'https://api.x.ai/v1'),
         'vision_model' => env('XAI_VISION_MODEL', 'grok-2-vision-latest'),
+        'enabled' => env('XAI_FACE_ANALYSIS_ENABLED', true),
         'timeout' => env('XAI_TIMEOUT', 30),
+        'connect_timeout' => env('XAI_CONNECT_TIMEOUT', 10),
+        'max_output_chars' => env('XAI_MAX_OUTPUT_CHARS', 4000),
         'store' => env('XAI_STORE', false),
     ],
 
