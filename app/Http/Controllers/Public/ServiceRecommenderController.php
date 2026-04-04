@@ -75,6 +75,9 @@ class ServiceRecommenderController extends Controller
                 ];
             } catch (Throwable $exception) {
                 report($exception);
+                $result['status'] = 'skipped';
+                $result['caution_notes'] = 'Face image analysis is temporarily unavailable. Recommendations were generated from form answers only.';
+                $result['suggested_next_step'] = 'Proceed with booking and request a manual consultation review.';
             } finally {
                 foreach ($tempPaths as $path) {
                     Storage::disk('local')->delete($path);

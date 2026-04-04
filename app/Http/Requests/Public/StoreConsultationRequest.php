@@ -30,7 +30,7 @@ class StoreConsultationRequest extends FormRequest
             'pregnancy_or_breastfeeding_status' => ['nullable', 'string', 'max:120'],
             'preferred_goals' => ['nullable', 'string', 'max:1500'],
             'face_images' => ['nullable', 'array', 'max:3'],
-            'face_images.*' => ['file', 'image', 'mimes:jpg,jpeg,png,webp', 'max:8192'],
+            'face_images.*' => ['file', 'image', 'mimes:jpg,jpeg,png,webp', 'mimetypes:image/jpeg,image/png,image/webp', 'max:8192', 'dimensions:min_width=300,min_height=300,max_width=6000,max_height=6000'],
             'additional_notes' => ['nullable', 'string', 'max:2000'],
             'consent' => ['accepted'],
         ];

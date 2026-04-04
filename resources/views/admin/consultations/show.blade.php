@@ -2,6 +2,16 @@
 @section('title', 'Consultation')
 @section('header', 'Consultation #'.$consultation->id)
 @section('content')
+@php
+    $statusClass = fn (?string $status) => match($status) {
+        'completed' => 'status-confirmed',
+        'failed' => 'status-cancelled',
+        'processing' => 'status-pending',
+        'pending' => 'status-pending',
+        'skipped' => 'status-pending',
+        default => 'status-pending',
+    };
+@endphp
 <div class="card">
     <h2>Client</h2>
     <p><strong>{{ $consultation->full_name }}</strong> · {{ $consultation->phone }} · {{ $consultation->email }}</p>
@@ -27,14 +37,18 @@
     <h2>Latest AI Result</h2>
     @php($ai = $consultation->aiResults->first())
     @if($ai)
-        <p><strong>Status:</strong> {{ $ai->status }}</p>
+        <p><strong>Status:</strong> <span class="status {{ $statusClass($ai->status) }}">{{ ucfirst($ai->status) }}</span></p>
         <p><strong>Provider/Model:</strong> {{ $ai->provider ?: '—' }} / {{ $ai->model ?: '—' }}</p>
+        <p><strong>Generated at:</strong> {{ optional($ai->generated_at)->format('Y-m-d H:i') ?: '—' }}</p>
         <p><strong>Processed at:</strong> {{ optional($ai->processed_at)->format('Y-m-d H:i') ?: '—' }}</p>
         <p><strong>User summary:</strong> {{ $ai->user_summary ?: $ai->summary_text ?: '—' }}</p>
         <p><strong>Admin summary:</strong> {{ $ai->admin_summary ?: '—' }}</p>
         <p><strong>Confidence score:</strong> {{ isset($ai->confidence_score) ? number_format($ai->confidence_score * 100, 0).'%' : '—' }}</p>
-        <p><strong>Needs human review:</strong> {{ $ai->needs_human_review ? 'Yes' : 'No' }}</p>
-        <p><strong>Refer dermatologist:</strong> {{ $ai->refer_to_dermatologist ? 'Yes' : 'No' }}</p>
+
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 14px;">
+            <span class="status {{ $ai->needs_human_review ? 'status-cancelled' : 'status-confirmed' }}">{{ $ai->needs_human_review ? 'Needs Human Review' : 'No Human Review Flag' }}</span>
+            <span class="status {{ $ai->refer_to_dermatologist ? 'status-cancelled' : 'status-pending' }}">{{ $ai->refer_to_dermatologist ? 'Refer to Dermatologist' : 'No Dermatology Referral Flag' }}</span>
+        </div>
 
         <h4>Visible concerns</h4>
         <ul>
@@ -56,9 +70,11 @@
 
         <p><strong>Caution flags:</strong> {{ implode(', ', $ai->risk_flags_json ?? []) ?: '—' }}</p>
 
-        @if($ai->error_message)<p class="error"><strong>Error:</strong> {{ $ai->error_message }}</p>@endif
+        @if($ai->error_message)
+            <p class="error"><strong>Failure details:</strong> {{ $ai->error_message }}</p>
+        @endif
 
-        @if($consultation->images->isNotEmpty())
+        @if($consultation->images->isNotEmpty() && ! in_array($ai->status, ['pending', 'processing'], true))
             <form method="POST" action="{{ route('admin.consultations.retry-analysis', $consultation) }}">
                 @csrf
                 <button class="btn" type="submit">Retry AI Analysis</button>

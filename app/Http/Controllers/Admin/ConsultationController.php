@@ -9,6 +9,7 @@ use App\Models\Consultation;
 use App\Models\ConsultationAiResult;
 use App\Models\ConsultationImage;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -43,26 +44,53 @@ class ConsultationController extends Controller
     public function image(ConsultationImage $image): StreamedResponse
     {
         abort_unless(auth()->check() && auth()->user()->can('manage_consultations'), 403);
+        abort_unless($image->disk === 'local', 404);
 
-        abort_unless(Storage::disk($image->disk)->exists($image->path), 404);
+        $disk = Storage::disk($image->disk);
+        abort_unless($disk->exists($image->path), 404);
 
-        return response()->stream(function () use ($image): void {
-            echo Storage::disk($image->disk)->get($image->path);
+        $stream = $disk->readStream($image->path);
+        abort_unless(is_resource($stream), 404);
+
+        return response()->stream(function () use ($stream): void {
+            fpassthru($stream);
+            fclose($stream);
         }, 200, [
             'Content-Type' => $image->mime_type ?: 'application/octet-stream',
-            'Cache-Control' => 'private, max-age=120',
-            'Content-Disposition' => 'inline; filename="consultation-image-'.$image->id.'"',
+            'Cache-Control' => 'private, no-store, max-age=0',
+            'Content-Disposition' => 'inline; filename="consultation-image-'.$image->id.'.jpg"',
+            'X-Content-Type-Options' => 'nosniff',
         ]);
     }
 
     public function retryAnalysis(Consultation $consultation): RedirectResponse
     {
-        $aiResult = ConsultationAiResult::query()->firstOrCreate(
-            ['consultation_id' => $consultation->id],
-            ['status' => 'pending', 'generated_at' => now()]
-        );
+        if ($consultation->images()->doesntExist()) {
+            return back()->with('error', 'No face images found for this consultation.');
+        }
 
-        $aiResult->update(['status' => 'pending', 'error_message' => null]);
+        $queued = true;
+
+        $aiResult = DB::transaction(function () use ($consultation, &$queued): ConsultationAiResult {
+            $result = ConsultationAiResult::query()->lockForUpdate()->firstOrCreate(
+                ['consultation_id' => $consultation->id],
+                ['status' => 'pending', 'generated_at' => now()]
+            );
+
+            if (in_array($result->status, ['pending', 'processing'], true)) {
+                $queued = false;
+
+                return $result;
+            }
+
+            $result->update(['status' => 'pending', 'error_message' => null]);
+
+            return $result;
+        });
+
+        if (! $queued) {
+            return back()->with('success', 'AI analysis is already queued or running.');
+        }
 
         AnalyzeConsultationFaceImagesJob::dispatch($consultation->id);
 

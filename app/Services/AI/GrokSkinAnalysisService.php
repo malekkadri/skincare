@@ -3,15 +3,29 @@
 namespace App\Services\AI;
 
 use App\Models\ConsultationImage;
+use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Http;
 use RuntimeException;
+use Throwable;
 
 class GrokSkinAnalysisService
 {
+    public function __construct(protected SkinAnalysisResultNormalizer $normalizer)
+    {
+    }
+
     public function analyze(array $context, array $serviceCatalog, array $images): array
     {
+        if (! config('services.xai.enabled', true)) {
+            throw new RuntimeException('Face analysis provider is disabled by configuration.');
+        }
+
+        if (! config('services.xai.api_key')) {
+            throw new RuntimeException('Face analysis provider key is not configured.');
+        }
+
         $response = $this->client()->post(rtrim((string) config('services.xai.base_url'), '/').'/responses', [
             'model' => config('services.xai.vision_model'),
             'store' => (bool) config('services.xai.store', false),
@@ -58,80 +72,32 @@ class GrokSkinAnalysisService
 
         return [
             'provider' => 'xai',
-            'model' => (string) config('services.xai.vision_model'),
-            'raw_response' => $payload,
-            'normalized' => $this->normalizeResult($decoded, $serviceCatalog),
+            'model' => (string) (Arr::get($payload, 'model') ?: config('services.xai.vision_model')),
+            'raw_response' => $this->safeRawResponse($payload, $outputText),
+            'normalized' => $this->normalizer->normalize($decoded, $serviceCatalog),
         ];
     }
 
     public function normalizeResult(array $result, array $serviceCatalog): array
     {
-        $allowedById = collect($serviceCatalog)->keyBy('id');
-        $allowedBySlug = collect($serviceCatalog)->keyBy('slug');
+        return $this->normalizer->normalize($result, $serviceCatalog);
+    }
 
-        $recommended = collect($result['recommended_services'] ?? [])
-            ->map(function ($item) use ($allowedById, $allowedBySlug): ?array {
-                if (! is_array($item)) {
-                    return null;
-                }
+    public function classifyFailure(Throwable $exception): string
+    {
+        if ($exception instanceof ConnectionException) {
+            return 'network';
+        }
 
-                $serviceId = (int) ($item['service_id'] ?? 0);
-                $slug = (string) ($item['slug'] ?? '');
-                $matched = $allowedById->get($serviceId) ?? ($slug !== '' ? $allowedBySlug->get($slug) : null);
+        $message = strtolower($exception->getMessage());
 
-                if (! $matched) {
-                    return null;
-                }
-
-                return [
-                    'service_id' => (int) $matched['id'],
-                    'slug' => (string) $matched['slug'],
-                    'score' => max(0.0, min(1.0, (float) ($item['score'] ?? 0))),
-                    'priority' => max(1, (int) ($item['priority'] ?? 999)),
-                    'reason' => (string) ($item['reason'] ?? ''),
-                    'cautions' => collect($item['cautions'] ?? [])->filter(fn ($value) => is_string($value) && $value !== '')->values()->all(),
-                ];
-            })
-            ->filter()
-            ->sortBy('priority')
-            ->values();
-
-        $visibleConcerns = collect($result['visible_concerns'] ?? [])->map(function ($item): ?array {
-            if (! is_array($item)) {
-                return null;
-            }
-
-            return [
-                'key' => (string) ($item['key'] ?? 'uncertain'),
-                'confidence' => max(0.0, min(1.0, (float) ($item['confidence'] ?? 0))),
-                'severity' => (string) ($item['severity'] ?? 'uncertain'),
-                'reason' => (string) ($item['reason'] ?? ''),
-            ];
-        })->filter()->values()->all();
-
-        $confidence = $recommended->avg('score');
-
-        return [
-            'analysis_version' => (string) ($result['analysis_version'] ?? '1.0'),
-            'image_quality' => [
-                'is_sufficient' => (bool) Arr::get($result, 'image_quality.is_sufficient', false),
-                'issues' => collect(Arr::get($result, 'image_quality.issues', []))->filter(fn ($v) => is_string($v))->values()->all(),
-            ],
-            'skin_profile' => [
-                'skin_type_guess' => (string) Arr::get($result, 'skin_profile.skin_type_guess', 'uncertain'),
-                'sensitivity_level' => (string) Arr::get($result, 'skin_profile.sensitivity_level', 'uncertain'),
-                'hydration_level' => (string) Arr::get($result, 'skin_profile.hydration_level', 'uncertain'),
-            ],
-            'visible_concerns' => $visibleConcerns,
-            'recommended_services' => $recommended->all(),
-            'not_recommended_service_ids' => collect($result['not_recommended_service_ids'] ?? [])->map(fn ($id) => (int) $id)->filter()->values()->all(),
-            'caution_flags' => collect($result['caution_flags'] ?? [])->filter(fn ($value) => is_string($value) && $value !== '')->values()->all(),
-            'needs_human_review' => (bool) ($result['needs_human_review'] ?? false),
-            'refer_to_dermatologist' => (bool) ($result['refer_to_dermatologist'] ?? false),
-            'user_facing_summary' => (string) ($result['user_facing_summary'] ?? ''),
-            'admin_summary' => (string) ($result['admin_summary'] ?? ''),
-            'confidence_score' => $confidence !== null ? round((float) $confidence, 3) : null,
-        ];
+        return match (true) {
+            str_contains($message, 'timed out') => 'timeout',
+            str_contains($message, 'invalid json') => 'malformed_response',
+            str_contains($message, 'did not contain a json text payload') => 'partial_response',
+            str_contains($message, 'not configured') || str_contains($message, 'disabled by configuration') => 'provider_unavailable',
+            default => 'provider_error',
+        };
     }
 
     protected function imagePayloads(array $images): array
@@ -186,6 +152,20 @@ class GrokSkinAnalysisService
         return Http::asJson()
             ->acceptJson()
             ->withToken((string) config('services.xai.api_key'))
-            ->timeout((int) config('services.xai.timeout', 30));
+            ->timeout((int) config('services.xai.timeout', 30))
+            ->connectTimeout((int) config('services.xai.connect_timeout', 10))
+            ->retry(2, 300, throw: false);
+    }
+
+    private function safeRawResponse(array $payload, string $outputText): array
+    {
+        return [
+            'id' => Arr::get($payload, 'id'),
+            'model' => Arr::get($payload, 'model'),
+            'status' => Arr::get($payload, 'status'),
+            'created_at' => Arr::get($payload, 'created_at'),
+            'usage' => Arr::get($payload, 'usage', []),
+            'output_text_excerpt' => mb_substr($outputText, 0, (int) config('services.xai.max_output_chars', 4000)),
+        ];
     }
 }
