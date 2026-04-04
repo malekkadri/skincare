@@ -8,56 +8,285 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
-        :root { --bg:#F8F6F3; --secondary:#EDE7E1; --accent:#C8A27A; --text:#2E2E2E; --muted:#7A7A7A; }
+        :root {
+            --bg: #f7f3ee;
+            --bg-soft: #fbf8f4;
+            --surface: #fffdfb;
+            --surface-muted: #f8f2eb;
+            --accent: #b7885b;
+            --accent-soft: #efe2d4;
+            --text: #2b2723;
+            --muted: #73675d;
+            --line: #e7dbcf;
+            --line-strong: #dcc8b4;
+            --ok: #2e6a4f;
+            --danger: #a03333;
+            --radius-lg: 26px;
+            --radius-md: 18px;
+            --shadow: 0 18px 42px rgba(84, 67, 51, 0.07);
+        }
+
         * { box-sizing: border-box; }
-        body { margin: 0; background: var(--bg); color: var(--text); font-family: 'Inter', system-ui, sans-serif; }
-        h1,h2,h3 { margin-top:0; font-family: 'Playfair Display', Georgia, serif; }
-        .wrap { width: min(980px, calc(100% - 2rem)); margin: 1.5rem auto 2rem; }
-        .topbar { display:flex; justify-content:space-between; align-items:center; gap:1rem; flex-wrap:wrap; margin-bottom: 1rem; }
-        .pill-group { display:flex; gap:.4rem; flex-wrap:wrap; }
-        .card { background:#fffdfb; border:1px solid #e9dfd6; border-radius:22px; padding:1.2rem; box-shadow: 0 18px 42px rgba(95, 81, 69, .07); }
-        .hero { background: linear-gradient(135deg, #f6efe8 0%, #fbf9f6 100%); border:1px solid #e7dcd1; border-radius:26px; padding:1.6rem; margin-bottom: 1rem; }
-        .btn { background: var(--accent); color:#fff; border:1px solid transparent; padding:.72rem 1.1rem; border-radius:999px; cursor:pointer; text-decoration:none; display:inline-flex; align-items:center; justify-content:center; }
-        .btn-soft { background: var(--secondary); color: var(--text); border-color:#ddd2c8; }
-        .btn:disabled { opacity:.55; cursor:not-allowed; }
-        .grid { display:grid; gap:1rem; }
+
+        body {
+            margin: 0;
+            font-family: 'Inter', system-ui, sans-serif;
+            color: var(--text);
+            background:
+                radial-gradient(1300px 500px at 30% -15%, #fcf8f3 0%, transparent 70%),
+                linear-gradient(180deg, #f8f5f1 0%, var(--bg) 45%, #f5f1ec 100%);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1, h2, h3 {
+            margin-top: 0;
+            font-family: 'Playfair Display', Georgia, serif;
+            letter-spacing: 0.01em;
+        }
+
+        .wrap {
+            width: min(1020px, calc(100% - 1.75rem));
+            margin: clamp(1rem, 2.2vw, 1.8rem) auto clamp(1.75rem, 3vw, 2.5rem);
+        }
+
+        .hero {
+            background: linear-gradient(150deg, #f8efe5 0%, var(--surface) 65%);
+            border: 1px solid var(--line);
+            border-radius: calc(var(--radius-lg) + 2px);
+            box-shadow: var(--shadow);
+            padding: clamp(1rem, 2.2vw, 1.7rem);
+            margin-bottom: 1rem;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+
+        .brand-block h2 {
+            margin: 0;
+            font-size: clamp(1.3rem, 1rem + 1vw, 1.8rem);
+        }
+
+        .brand-block p {
+            margin: .35rem 0 0;
+            color: var(--muted);
+            font-size: .92rem;
+        }
+
+        .pill-group {
+            display: flex;
+            gap: .42rem;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: flex-end;
+        }
+
+        .pill-group form { margin: 0; }
+
+        .steps {
+            display: flex;
+            gap: .55rem;
+            overflow-x: auto;
+            padding: .15rem 0 .25rem;
+            scrollbar-width: thin;
+        }
+
+        .step {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: .4rem;
+            white-space: nowrap;
+            padding: .55rem .9rem;
+            border-radius: 999px;
+            border: 1px solid #e4d7ca;
+            background: rgba(255, 251, 246, .85);
+            color: #7a6a5a;
+            font-size: .79rem;
+            font-weight: 500;
+            transition: background-color .2s ease, border-color .2s ease, color .2s ease;
+        }
+
+        .step-index {
+            width: 1.25rem;
+            height: 1.25rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 999px;
+            border: 1px solid currentColor;
+            font-size: .69rem;
+            font-weight: 600;
+        }
+
+        .step.active {
+            background: linear-gradient(180deg, #c89f75 0%, var(--accent) 100%);
+            border-color: var(--accent);
+            color: #fff;
+            box-shadow: 0 10px 22px rgba(171, 126, 84, .22);
+        }
+
+        .step.done {
+            background: #f4ece3;
+            border-color: #d9c3ad;
+            color: #6e5a47;
+        }
+
+        .trust-note {
+            display: flex;
+            align-items: center;
+            gap: .6rem;
+            margin-top: .85rem;
+            color: #6e6054;
+            font-size: .84rem;
+        }
+
+        .trust-note svg {
+            flex-shrink: 0;
+            color: var(--ok);
+        }
+
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--line);
+            border-radius: var(--radius-lg);
+            padding: clamp(1rem, 2.1vw, 1.4rem);
+            box-shadow: var(--shadow);
+        }
+
+        .grid { display: grid; gap: 1rem; }
         .grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-        input,select,textarea { width:100%; border:1px solid #ded4ca; border-radius:14px; padding:.7rem .85rem; background:#fffdfb; font:inherit; color:var(--text); }
-        label { font-size:.88rem; color:#6b5e53; }
-        .steps { display:grid; grid-template-columns:repeat(5, minmax(0, 1fr)); gap:.45rem; margin-bottom:1rem; }
-        .step { text-align:center; padding:.45rem .6rem; border-radius:999px; background:#f1e9e1; color:#7b6651; font-size:.8rem; }
-        .active { background: var(--accent); color: #fff; }
-        .service-card { padding: 1rem; border: 1px solid #eaded3; border-radius: 16px; background: #fffcf9; }
-        .field-error { color: #a03333; font-size: .83rem; margin-top: .35rem; }
-        .notice { padding: .85rem 1rem; border-radius: 14px; margin-bottom: 1rem; border: 1px solid #efd8c7; background: #fef4ec; color: #704f37; }
+
+        .service-card {
+            padding: .95rem;
+            border: 1px solid #e9ddd1;
+            border-radius: var(--radius-md);
+            background: #fffdfa;
+            transition: border-color .2s ease, box-shadow .2s ease;
+        }
+
+        .service-card:has(input:checked) {
+            border-color: var(--line-strong);
+            box-shadow: 0 0 0 2px rgba(183, 136, 91, .12);
+        }
+
+        input, select, textarea {
+            width: 100%;
+            border: 1px solid #dfd4c9;
+            border-radius: 14px;
+            padding: .72rem .88rem;
+            background: #fffdfb;
+            font: inherit;
+            color: var(--text);
+        }
+
+        input:focus-visible,
+        select:focus-visible,
+        textarea:focus-visible,
+        .btn:focus-visible {
+            outline: 2px solid rgba(183, 136, 91, .5);
+            outline-offset: 2px;
+        }
+
+        label {
+            display: inline-block;
+            margin-bottom: .38rem;
+            font-size: .86rem;
+            font-weight: 500;
+            color: #685c51;
+        }
+
+        .btn {
+            background: linear-gradient(180deg, #c99f76 0%, var(--accent) 100%);
+            color: #fff;
+            border: 1px solid transparent;
+            padding: .72rem 1.15rem;
+            border-radius: 999px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            transition: transform .18s ease, box-shadow .18s ease, opacity .18s ease;
+        }
+
+        .btn:hover { transform: translateY(-1px); box-shadow: 0 8px 18px rgba(150, 108, 68, .22); }
+        .btn:disabled { opacity: .55; cursor: not-allowed; transform: none; box-shadow: none; }
+
+        .btn-soft {
+            background: #f4ebe3;
+            color: var(--text);
+            border-color: #ddcec1;
+            box-shadow: none;
+        }
+
+        .field-error {
+            color: var(--danger);
+            font-size: .83rem;
+            margin-top: .35rem;
+        }
+
+        .notice {
+            padding: .85rem 1rem;
+            border-radius: 14px;
+            margin-bottom: 1rem;
+            border: 1px solid #efd8c7;
+            background: #fef4ec;
+            color: #704f37;
+        }
+
         .title { margin: 0 0 .35rem; }
-        .subtitle { color: #766558; margin: 0 0 1.2rem; font-size: .95rem; }
+        .subtitle { color: #76695d; margin: 0 0 1.15rem; font-size: .95rem; }
+
+        @media (prefers-reduced-motion: reduce) {
+            * { transition: none !important; animation: none !important; }
+        }
+
         @media (max-width: 760px) {
+            .wrap { width: min(100%, calc(100% - 1rem)); }
+            .topbar { flex-direction: column; align-items: stretch; }
+            .pill-group { justify-content: flex-start; }
             .grid-2 { grid-template-columns: 1fr; }
-            .steps { grid-template-columns: 1fr; }
+            .btn { min-height: 44px; }
         }
     </style>
 </head>
 <body>
 <div class="wrap">
-    <div class="topbar">
-        <h2>Skin by Noor — {{ __('booking.title') }}</h2>
-        <div class="pill-group">
-            <form method="POST" action="{{ route('preferences.locale') }}">@csrf<input type="hidden" name="locale" value="fr"><button class="btn {{ app()->getLocale()==='fr' ? '' : 'btn-soft' }}" type="submit">FR</button></form>
-            <form method="POST" action="{{ route('preferences.locale') }}">@csrf<input type="hidden" name="locale" value="en"><button class="btn {{ app()->getLocale()==='en' ? '' : 'btn-soft' }}" type="submit">EN</button></form>
-            <form method="POST" action="{{ route('preferences.currency') }}">@csrf<input type="hidden" name="currency" value="TND"><button class="btn {{ session('currency','TND')==='TND' ? '' : 'btn-soft' }}" type="submit">TND</button></form>
-            <form method="POST" action="{{ route('preferences.currency') }}">@csrf<input type="hidden" name="currency" value="EUR"><button class="btn {{ session('currency','TND')==='EUR' ? '' : 'btn-soft' }}" type="submit">EUR</button></form>
-        </div>
-    </div>
-
     <div class="hero">
-        <div class="steps">
-            <span class="step {{ request()->routeIs('booking.service*') ? 'active' : '' }}">1. {{ __('booking.step_service') }}</span>
-            <span class="step {{ request()->routeIs('booking.date*') ? 'active' : '' }}">2. {{ __('booking.step_date') }}</span>
-            <span class="step {{ request()->routeIs('booking.slot*') ? 'active' : '' }}">3. {{ __('booking.step_slot') }}</span>
-            <span class="step {{ request()->routeIs('booking.customer*') ? 'active' : '' }}">4. {{ __('booking.step_customer') }}</span>
-            <span class="step {{ request()->routeIs('booking.review*') ? 'active' : '' }}">5. {{ __('booking.step_review') }}</span>
+        <div class="topbar">
+            <div class="brand-block">
+                <h2>Skin by Noor — {{ __('booking.title') }}</h2>
+                <p>{{ __('booking.step_service') }} → {{ __('booking.step_review') }} · {{ __('booking.success') }}</p>
+            </div>
+
+            <div class="pill-group" aria-label="Language and currency preferences">
+                <form method="POST" action="{{ route('preferences.locale') }}">@csrf<input type="hidden" name="locale" value="fr"><button class="btn {{ app()->getLocale()==='fr' ? '' : 'btn-soft' }}" type="submit">FR</button></form>
+                <form method="POST" action="{{ route('preferences.locale') }}">@csrf<input type="hidden" name="locale" value="en"><button class="btn {{ app()->getLocale()==='en' ? '' : 'btn-soft' }}" type="submit">EN</button></form>
+                <form method="POST" action="{{ route('preferences.currency') }}">@csrf<input type="hidden" name="currency" value="TND"><button class="btn {{ session('currency','TND')==='TND' ? '' : 'btn-soft' }}" type="submit">TND</button></form>
+                <form method="POST" action="{{ route('preferences.currency') }}">@csrf<input type="hidden" name="currency" value="EUR"><button class="btn {{ session('currency','TND')==='EUR' ? '' : 'btn-soft' }}" type="submit">EUR</button></form>
+            </div>
         </div>
+
+        <div class="steps" aria-label="Booking progress">
+            <span class="step {{ request()->routeIs('booking.service*') ? 'active' : (request()->routeIs('booking.date*') || request()->routeIs('booking.slot*') || request()->routeIs('booking.customer*') || request()->routeIs('booking.review*') || request()->routeIs('booking.success*') ? 'done' : '') }}"><span class="step-index">1</span>{{ __('booking.step_service') }}</span>
+            <span class="step {{ request()->routeIs('booking.date*') ? 'active' : (request()->routeIs('booking.slot*') || request()->routeIs('booking.customer*') || request()->routeIs('booking.review*') || request()->routeIs('booking.success*') ? 'done' : '') }}"><span class="step-index">2</span>{{ __('booking.step_date') }}</span>
+            <span class="step {{ request()->routeIs('booking.slot*') ? 'active' : (request()->routeIs('booking.customer*') || request()->routeIs('booking.review*') || request()->routeIs('booking.success*') ? 'done' : '') }}"><span class="step-index">3</span>{{ __('booking.step_slot') }}</span>
+            <span class="step {{ request()->routeIs('booking.customer*') ? 'active' : (request()->routeIs('booking.review*') || request()->routeIs('booking.success*') ? 'done' : '') }}"><span class="step-index">4</span>{{ __('booking.step_customer') }}</span>
+            <span class="step {{ request()->routeIs('booking.review*') ? 'active' : (request()->routeIs('booking.success*') ? 'done' : '') }}"><span class="step-index">5</span>{{ __('booking.step_review') }}</span>
+        </div>
+
+        <p class="trust-note">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8.7-7 10-4-1.3-7-5.5-7-10V6l7-3z" stroke="currentColor" stroke-width="1.5"/><path d="M9 12.2l2 2 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            {{ __('booking.confirm') }} · {{ __('booking.success') }}
+        </p>
     </div>
 
     @if(session('error'))
