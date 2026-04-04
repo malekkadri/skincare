@@ -66,6 +66,16 @@ class AdminAndSettingsSeeder extends Seeder
                 'map_embed_url' => 'https://maps.google.com',
                 'opening_hours_fr' => 'Lun-Sam: 09:00-19:00',
                 'opening_hours_en' => 'Mon-Sat: 09:00-19:00',
+                'ai_enabled' => false,
+                'ai_provider' => 'grok',
+                'ai_api_key' => null,
+                'ai_model' => 'grok-2-latest',
+                'ai_base_url' => 'https://api.x.ai/v1/chat/completions',
+                'ai_temperature' => 0.30,
+                'ai_timeout_seconds' => 25,
+                'ai_enable_consultation_summary' => true,
+                'ai_enable_service_recommendation' => true,
+                'ai_enable_admin_content_helper' => true,
             ]
         );
     }

@@ -32,6 +32,9 @@
         <nav class="nav">
             <a href="{{ route('admin.dashboard') }}" class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">Dashboard</a>
             <a href="{{ route('admin.settings.edit') }}" class="{{ request()->routeIs('admin.settings.*') ? 'active' : '' }}">Website Settings</a>
+            <a href="{{ route('admin.ai-settings.edit') }}" class="{{ request()->routeIs('admin.ai-settings.*') ? 'active' : '' }}">AI Settings</a>
+            <a href="{{ route('admin.consultations.index') }}" class="{{ request()->routeIs('admin.consultations.*') ? 'active' : '' }}">Consultations</a>
+            <a href="{{ route('admin.ai-content-helper.index') }}" class="{{ request()->routeIs('admin.ai-content-helper.*') ? 'active' : '' }}">AI Content Helper</a>
             <a href="{{ route('admin.homepage.index') }}" class="{{ request()->routeIs('admin.homepage.*') ? 'active' : '' }}">Homepage</a>
             <a href="{{ route('admin.about.edit') }}" class="{{ request()->routeIs('admin.about.*') ? 'active' : '' }}">About</a>
             <a href="{{ route('admin.categories.index') }}" class="{{ request()->routeIs('admin.categories.*') ? 'active' : '' }}">Categories</a>

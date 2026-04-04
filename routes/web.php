@@ -1,6 +1,9 @@
 <?php
 
 use App\Http\Controllers\Admin\AboutPageController;
+use App\Http\Controllers\Admin\AiContentHelperController;
+use App\Http\Controllers\Admin\AiSettingsController;
+use App\Http\Controllers\Admin\ConsultationController as AdminConsultationController;
 use App\Http\Controllers\Admin\AppointmentController;
 use App\Http\Controllers\Admin\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Admin\AvailabilityController as AdminAvailabilityController;
@@ -21,6 +24,8 @@ use App\Http\Controllers\Admin\WhatsAppTemplateController;
 use App\Http\Controllers\Booking\AvailabilityController;
 use App\Http\Controllers\Booking\BookingWizardController;
 use App\Http\Controllers\PublicPreferenceController;
+use App\Http\Controllers\Public\ConsultationController;
+use App\Http\Controllers\Public\ServiceRecommenderController;
 use App\Http\Controllers\PublicSiteController;
 use Illuminate\Support\Facades\Route;
 
@@ -37,6 +42,13 @@ Route::middleware('public.preferences')->group(function () {
 
     Route::post('/preferences/locale', [PublicPreferenceController::class, 'locale'])->name('preferences.locale');
     Route::post('/preferences/currency', [PublicPreferenceController::class, 'currency'])->name('preferences.currency');
+
+    Route::get('/consultation', [ConsultationController::class, 'create'])->name('consultation.create');
+    Route::post('/consultation', [ConsultationController::class, 'store'])->name('consultation.store');
+    Route::get('/consultation/success/{consultation}', [ConsultationController::class, 'success'])->name('consultation.success');
+
+    Route::get('/service-recommender', [ServiceRecommenderController::class, 'index'])->name('recommender.index');
+    Route::post('/service-recommender', [ServiceRecommenderController::class, 'recommend'])->name('recommender.recommend');
 
     Route::get('/booking/available-slots', AvailabilityController::class)->name('booking.available-slots');
 
@@ -66,6 +78,11 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         Route::get('/settings', [SettingsController::class, 'edit'])->name('settings.edit');
         Route::put('/settings', [SettingsController::class, 'update'])->name('settings.update');
+        Route::get('/ai-settings', [AiSettingsController::class, 'edit'])->name('ai-settings.edit');
+        Route::put('/ai-settings', [AiSettingsController::class, 'update'])->name('ai-settings.update');
+        Route::get('/ai-content-helper', [AiContentHelperController::class, 'index'])->name('ai-content-helper.index');
+        Route::post('/ai-content-helper', [AiContentHelperController::class, 'generate'])->name('ai-content-helper.generate');
+
         Route::get('/homepage', [HomepageSectionController::class, 'index'])->name('homepage.index');
         Route::get('/homepage/{homepage}/edit', [HomepageSectionController::class, 'edit'])->name('homepage.edit');
         Route::put('/homepage/{homepage}', [HomepageSectionController::class, 'update'])->name('homepage.update');
@@ -83,6 +100,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::resource('testimonials', TestimonialController::class)->except('show');
         Route::resource('faq', FaqController::class)->except('show');
         Route::resource('policies', PolicyController::class)->except('show');
+
+        Route::resource('consultations', AdminConsultationController::class)->only(['index', 'show', 'update']);
 
         Route::resource('appointments', AppointmentController::class)->except('destroy');
         Route::patch('appointments/{appointment}/status', [AppointmentController::class, 'updateStatus'])->name('appointments.status');
