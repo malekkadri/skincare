@@ -188,8 +188,11 @@
         <nav class="menu" aria-label="Primary navigation">
             <a href="{{ route('about') }}">{{ __('public.nav.about') }}</a>
             <a href="{{ route('services.index') }}">{{ __('public.nav.services') }}</a>
+            <a href="{{ route('recommender.index') }}">{{ __('public.nav.ai_recommender') }}</a>
+            <a href="{{ route('consultation.create') }}">{{ __('public.nav.consultation') }}</a>
             <a href="{{ route('gallery') }}">{{ __('public.nav.gallery') }}</a>
             <a href="{{ route('testimonials') }}">{{ __('public.nav.testimonials') }}</a>
+            <a href="{{ route('faq') }}">{{ __('public.nav.faq') }}</a>
             <a href="{{ route('contact') }}">{{ __('public.nav.contact') }}</a>
         </nav>
 
