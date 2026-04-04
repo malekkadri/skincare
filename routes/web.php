@@ -19,6 +19,7 @@ use App\Http\Controllers\Admin\ServiceCategoryController;
 use App\Http\Controllers\Admin\ServiceController;
 use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\TestimonialController;
+use App\Http\Controllers\Admin\WhatsAppLogController;
 use App\Http\Controllers\Admin\WhatsAppSettingsController;
 use App\Http\Controllers\Admin\WhatsAppTemplateController;
 use App\Http\Controllers\Booking\AvailabilityController;
@@ -93,6 +94,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::put('/whatsapp/settings', [WhatsAppSettingsController::class, 'update'])->name('whatsapp.settings.update');
         Route::get('/whatsapp/templates', [WhatsAppTemplateController::class, 'index'])->name('whatsapp.templates.index');
         Route::put('/whatsapp/templates/{template}', [WhatsAppTemplateController::class, 'update'])->name('whatsapp.templates.update');
+        Route::get('/whatsapp/logs', [WhatsAppLogController::class, 'index'])->name('whatsapp.logs.index');
+        Route::get('/whatsapp/logs/{log}', [WhatsAppLogController::class, 'show'])->name('whatsapp.logs.show');
+        Route::post('/whatsapp/logs/{log}/retry', [WhatsAppLogController::class, 'retry'])->name('whatsapp.logs.retry');
 
         Route::resource('categories', ServiceCategoryController::class)->except('show');
         Route::resource('services', ServiceController::class)->except('show');
