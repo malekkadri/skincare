@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Public;
 
+use App\Jobs\QueueConsultationAcknowledgementsJob;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Public\StoreConsultationRequest;
 use App\Models\Consultation;
@@ -51,6 +52,8 @@ class ConsultationController extends Controller
             'error_message' => $summaryResult['error_message'] ?? null,
             'generated_at' => now(),
         ]);
+
+        QueueConsultationAcknowledgementsJob::dispatch();
 
         return redirect()->route('consultation.success', $consultation);
     }

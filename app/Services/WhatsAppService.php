@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Appointment;
+use App\Models\Consultation;
 use App\Models\Setting;
 use App\Models\WhatsAppMessageLog;
 use App\Models\WhatsAppTemplate;
@@ -30,6 +31,56 @@ class WhatsAppService
         return $this->sendForAppointment('booking_rescheduled', $appointment, Setting::current()->send_booking_reschedule_whatsapp);
     }
 
+    public function sendLogEntry(WhatsAppMessageLog $log): array
+    {
+        $settings = Setting::current();
+        $language = $log->language ?: 'fr';
+
+        if (! $settings->whatsapp_enabled) {
+            return ['success' => false, 'error_code' => 'whatsapp_disabled', 'error' => 'WhatsApp disabled'];
+        }
+
+        $template = WhatsAppTemplate::query()
+            ->active()
+            ->where('key', $log->template_key)
+            ->where('language', $language)
+            ->first();
+
+        if (! $template) {
+            return ['success' => false, 'error_code' => 'template_missing', 'error' => 'Missing active template'];
+        }
+
+        $recipient = $log->recipient_phone ?: $log->customer?->phone ?: $log->appointment?->customer?->phone ?: $log->consultation?->phone;
+        if (! $recipient) {
+            return ['success' => false, 'error_code' => 'recipient_missing', 'error' => 'Missing recipient'];
+        }
+
+        $variables = $log->appointment
+            ? $this->appointmentVariables($log->appointment, $settings)
+            : $this->consultationVariables($log->consultation, $settings);
+
+        $message = $this->renderer->render($template->message_body, $variables);
+        $providerResponse = json_encode([
+            'provider' => $settings->whatsapp_provider ?: 'log',
+            'base_url' => $settings->whatsapp_api_base_url,
+        ], JSON_UNESCAPED_UNICODE);
+
+        Log::info('WhatsApp placeholder send', [
+            'template' => $log->template_key,
+            'recipient' => $recipient,
+            'message' => $message,
+            'appointment_id' => $log->appointment_id,
+            'consultation_id' => $log->related_consultation_id,
+            'automation_source' => $log->automation_source,
+        ]);
+
+        return [
+            'success' => true,
+            'message_body' => $message,
+            'provider_response' => $providerResponse,
+        ];
+    }
+
     protected function sendForAppointment(string $templateKey, Appointment $appointment, bool $eventEnabled): bool
     {
         $settings = Setting::current();
@@ -53,25 +104,17 @@ class WhatsAppService
             return false;
         }
 
-        $message = $this->renderer->render($template->message_body, $this->variables($appointment, $settings));
-        $recipient = $appointment->customer?->phone;
+        $message = $this->renderer->render($template->message_body, $this->appointmentVariables($appointment, $settings));
 
         $this->createLog($templateKey, $language, $appointment, 'sent', $message, json_encode([
             'provider' => $settings->whatsapp_provider ?: 'log',
             'base_url' => $settings->whatsapp_api_base_url,
         ], JSON_UNESCAPED_UNICODE));
 
-        Log::info('WhatsApp placeholder send', [
-            'template' => $templateKey,
-            'recipient' => $recipient,
-            'message' => $message,
-            'appointment_id' => $appointment->id,
-        ]);
-
         return true;
     }
 
-    protected function variables(Appointment $appointment, Setting $settings): array
+    protected function appointmentVariables(Appointment $appointment, Setting $settings): array
     {
         $tz = $settings->timezone ?: 'Africa/Tunis';
         $date = Carbon::parse($appointment->appointment_date->toDateString(), $tz);
@@ -87,6 +130,18 @@ class WhatsAppService
         ];
     }
 
+    protected function consultationVariables(?Consultation $consultation, Setting $settings): array
+    {
+        return [
+            'client_name' => $consultation?->full_name ?: 'Client',
+            'service_name' => '',
+            'appointment_date' => '',
+            'appointment_time' => '',
+            'business_name' => $settings->site_name,
+            'whatsapp_number' => $settings->whatsapp_business_number ?: $settings->whatsapp_number,
+        ];
+    }
+
     protected function createLog(string $templateKey, string $language, Appointment $appointment, string $status, ?string $body, ?string $providerResponse): void
     {
         WhatsAppMessageLog::query()->create([
@@ -97,6 +152,10 @@ class WhatsAppService
             'recipient_phone' => $appointment->customer?->phone,
             'message_body' => $body,
             'status' => $status,
+            'sent_at' => $status === 'sent' ? now() : null,
+            'failed_at' => $status === 'failed' ? now() : null,
+            'attempts' => $status === 'sent' ? 1 : 0,
+            'automation_source' => $templateKey,
             'provider_response' => $providerResponse,
         ]);
     }

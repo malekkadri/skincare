@@ -13,6 +13,8 @@ class WhatsAppTemplate extends Model
         'booking_rescheduled',
         'appointment_reminder_24h',
         'appointment_reminder_2h',
+        'appointment_followup',
+        'consultation_acknowledgement',
     ];
 
     protected $fillable = [

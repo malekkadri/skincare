@@ -48,7 +48,9 @@
             <a href="{{ route('admin.testimonials.index') }}" class="{{ request()->routeIs('admin.testimonials.*') ? 'active' : '' }}">Testimonials</a>
             <a href="{{ route('admin.faq.index') }}" class="{{ request()->routeIs('admin.faq.*') ? 'active' : '' }}">FAQ</a>
             <a href="{{ route('admin.policies.index') }}" class="{{ request()->routeIs('admin.policies.*') ? 'active' : '' }}">Policies</a>
-            <a href="{{ route('admin.whatsapp.settings.edit') }}" class="{{ request()->routeIs('admin.whatsapp.*') ? 'active' : '' }}">WhatsApp</a>
+            <a href="{{ route('admin.whatsapp.settings.edit') }}" class="{{ request()->routeIs('admin.whatsapp.settings.*') ? 'active' : '' }}">WhatsApp Settings</a>
+            <a href="{{ route('admin.whatsapp.templates.index') }}" class="{{ request()->routeIs('admin.whatsapp.templates.*') ? 'active' : '' }}">WhatsApp Templates</a>
+            <a href="{{ route('admin.whatsapp.logs.index') }}" class="{{ request()->routeIs('admin.whatsapp.logs.*') ? 'active' : '' }}">WhatsApp Logs</a>
         </nav>
     </aside>
 

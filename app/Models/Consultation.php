@@ -52,6 +52,11 @@ class Consultation extends Model
         return $this->hasOne(ConsultationAiResult::class)->latestOfMany('generated_at');
     }
 
+    public function whatsappLogs(): HasMany
+    {
+        return $this->hasMany(WhatsAppMessageLog::class, 'related_consultation_id')->latest();
+    }
+
     public function getFullNameAttribute(): string
     {
         return trim($this->first_name.' '.($this->last_name ?? ''));

@@ -12,7 +12,10 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        // $schedule->command('inspire')->hourly();
+        $schedule->command('skinbynoor:queue-reminders')->everyFiveMinutes()->timezone('Africa/Tunis');
+        $schedule->command('skinbynoor:queue-followups')->everyTenMinutes()->timezone('Africa/Tunis');
+        $schedule->command('skinbynoor:queue-consultation-acks')->everyTenMinutes()->timezone('Africa/Tunis');
+        $schedule->command('skinbynoor:retry-whatsapp-failures')->everyTenMinutes()->timezone('Africa/Tunis');
     }
 
     /**
