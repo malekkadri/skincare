@@ -2,47 +2,69 @@
 
 Production-ready skincare website and admin panel for Skin by Noor.
 
-## Module 9 Readiness Notes
+## Setup (Local)
 
-### Environment and production essentials
+1. Install dependencies:
+   - `composer install`
+   - `npm install && npm run build` (or `npm run dev`)
+2. Configure env:
+   - `cp .env.example .env`
+   - `php artisan key:generate`
+   - Configure DB + `APP_URL`
+3. Run migrations:
+   - `php artisan migrate`
+4. Seed:
+   - `php artisan db:seed`
+5. Link storage:
+   - `php artisan storage:link`
 
-Set these in `.env` for production:
+## Seeder strategy (Module 10)
 
-- `APP_ENV=production`
-- `APP_DEBUG=false`
-- `APP_URL=https://your-domain`
-- `APP_TIMEZONE=Africa/Tunis`
-- `QUEUE_CONNECTION` (recommended non-sync driver)
-- `DEFAULT_SUPER_ADMIN_EMAIL` (optional, defaults to `admin@skinbynoor.test`)
-- WhatsApp keys (`WHATSAPP_*`) and AI keys (`AI_*`) as needed.
+- `CoreSeeder`: required operational baseline (admins/settings/permissions/templates).
+- `DemoContentSeeder`: demo/service/marketing/sample consultations.
+- `DatabaseSeeder` always runs `CoreSeeder` and skips `DemoContentSeeder` in production unless:
+  - `SEED_DEMO_DATA_IN_PRODUCTION=true`
 
-### Required operational setup
+## Production deployment checklist
 
-- Run queue worker (example): `php artisan queue:work --tries=3 --timeout=90`
-- Run scheduler (cron): `* * * * * php /path/to/artisan schedule:run >> /dev/null 2>&1`
-- Create storage symlink: `php artisan storage:link`
+- Set:
+  - `APP_ENV=production`
+  - `APP_DEBUG=false`
+  - `APP_URL=https://your-domain`
+  - `APP_TIMEZONE=Africa/Tunis`
+  - `QUEUE_CONNECTION` to non-`sync`
+- Build caches:
+  - `php artisan config:cache`
+  - `php artisan route:cache`
+  - `php artisan view:cache`
+- Storage:
+  - `php artisan storage:link`
+- Queue worker:
+  - `php artisan queue:work --tries=3 --timeout=90`
+- Scheduler cron:
+  - `* * * * * php /path/to/artisan schedule:run >> /dev/null 2>&1`
 
-### Permissions and admin users
+## Ops & launch readiness
 
-Roles shipped:
-
-- `super_admin`
-- `admin`
-- `editor`
-- `receptionist`
-
-Seeded super admin email defaults to `admin@skinbynoor.test`.
-
-### SEO, sitemap, and robots
-
-- Dynamic sitemap: `/sitemap.xml`
-- Dynamic robots: `/robots.txt`
-- Canonical/OG/Twitter meta tags are rendered from page-level SEO defaults and content metadata.
-
-### Backup and health commands
-
-- Manual backup artifact: `php artisan ops:backup --prefix=manual`
-- Health probe endpoint: `/health`
 - Admin health dashboard: `/admin/ops/health`
+- Admin launch readiness page: `/admin/ops/launch-readiness`
+- Health endpoint: `/health`
+- Sitemap: `/sitemap.xml`
+- Backup command: `php artisan ops:backup --prefix=manual`
 
-> Note: Backup command currently creates a safe placeholder artifact in `storage/app/backups` to provide a clean extension point for managed DB backup tooling.
+## Smoke test command
+
+Run:
+
+- `php artisan skinbynoor:smoke-test`
+
+This verifies critical routes, writable directories, base settings, service/category presence, storage link, and queue/scheduler hints.
+
+## Recommended post-deploy checks
+
+1. Login to admin and open **Ops → Launch Readiness**.
+2. Confirm at least one active service/category and logo are configured.
+3. Verify booking flow end-to-end with a real test appointment.
+4. Verify consultation submit flow with AI both enabled and disabled.
+5. Run smoke test command and review warnings.
+6. Confirm queue worker and scheduler are running.

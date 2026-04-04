@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\AiContentHelperRequest;
+use App\Models\Setting;
 use App\Services\AI\AIService;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -14,6 +15,7 @@ class AiContentHelperController extends Controller
     {
         return view('admin.ai-content-helper.index', [
             'result' => null,
+            'settings' => Setting::current(),
             'input' => [
                 'content_type' => 'homepage_copy',
                 'language' => app()->getLocale(),
@@ -35,6 +37,7 @@ class AiContentHelperController extends Controller
         return view('admin.ai-content-helper.index', [
             'result' => $result,
             'input' => $validated,
+            'settings' => Setting::current(),
         ]);
     }
 }

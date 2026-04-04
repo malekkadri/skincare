@@ -49,6 +49,11 @@ class BookingWizardController extends Controller
         }
 
         $wizard = $this->wizardData();
+        if (! $wizard['service']) {
+            session()->forget('booking_wizard.service_id');
+
+            return redirect()->route('booking.service')->with('error', __('booking.service_unavailable'));
+        }
 
         return view('booking.date', compact('wizard'));
     }
@@ -70,6 +75,12 @@ class BookingWizardController extends Controller
         }
 
         $wizard = $this->wizardData();
+        if (! $wizard['service']) {
+            session()->forget('booking_wizard.service_id');
+
+            return redirect()->route('booking.service')->with('error', __('booking.service_unavailable'));
+        }
+
         $slots = $this->availabilityService->getAvailableSlots($wizard['service'], $wizard['appointment_date']);
 
         return view('booking.slot', compact('wizard', 'slots'));
@@ -85,6 +96,12 @@ class BookingWizardController extends Controller
         }
 
         $wizard = $this->wizardData();
+        if (! $wizard['service']) {
+            session()->forget('booking_wizard.service_id');
+
+            return redirect()->route('booking.service')->with('error', __('booking.service_unavailable'));
+        }
+
         $slots = $this->availabilityService->getAvailableSlots($wizard['service'], $wizard['appointment_date']);
 
         abort_unless(in_array($request->validated('start_time'), $slots, true), 422, __('booking.slot_unavailable'));
@@ -101,6 +118,11 @@ class BookingWizardController extends Controller
         }
 
         $wizard = $this->wizardData();
+        if (! $wizard['service']) {
+            session()->forget('booking_wizard.service_id');
+
+            return redirect()->route('booking.service')->with('error', __('booking.service_unavailable'));
+        }
 
         return view('booking.customer', compact('wizard'));
     }
@@ -119,6 +141,11 @@ class BookingWizardController extends Controller
         }
 
         $wizard = $this->wizardData();
+        if (! $wizard['service']) {
+            session()->forget('booking_wizard.service_id');
+
+            return redirect()->route('booking.service')->with('error', __('booking.service_unavailable'));
+        }
 
         return view('booking.review', compact('wizard'));
     }
@@ -130,6 +157,12 @@ class BookingWizardController extends Controller
         }
 
         $wizard = $this->wizardData();
+        if (! $wizard['service']) {
+            session()->forget('booking_wizard.service_id');
+
+            return redirect()->route('booking.service')->with('error', __('booking.service_unavailable'));
+        }
+
         $customerData = $wizard['customer'];
 
         $appointment = DB::transaction(function () use ($wizard, $customerData): Appointment {

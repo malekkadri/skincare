@@ -12,7 +12,14 @@ class AvailabilityController extends Controller
 {
     public function __invoke(AvailableSlotsRequest $request, AvailabilityService $availabilityService): JsonResponse
     {
-        $service = Service::query()->active()->findOrFail($request->integer('service_id'));
+        $service = Service::query()->active()->find($request->integer('service_id'));
+
+        if (! $service) {
+            return response()->json([
+                'message' => __('booking.service_unavailable'),
+                'slots' => [],
+            ], 422);
+        }
 
         return response()->json([
             'service_id' => $service->id,

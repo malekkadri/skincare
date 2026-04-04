@@ -2,6 +2,12 @@
 @section('title', 'AI Content Helper')
 @section('header', 'AI Content Helper')
 @section('content')
+@if(! $settings->ai_enabled)
+<div class="card">
+    <p class="muted">AI is currently disabled. You can still access this page, but generation will be skipped until AI is enabled.</p>
+</div>
+@endif
+
 <form method="POST" action="{{ route('admin.ai-content-helper.generate') }}" class="card">@csrf
     <div class="grid">
         <div><label>Content type</label><select name="content_type">

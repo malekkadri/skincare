@@ -8,15 +8,24 @@ use App\Http\Requests\Public\StoreConsultationRequest;
 use App\Models\Consultation;
 use App\Models\ConsultationAiResult;
 use App\Models\Customer;
+use App\Models\Setting;
 use App\Services\AI\AIService;
+use App\Services\Seo\SeoService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
 class ConsultationController extends Controller
 {
+    public function __construct(protected SeoService $seoService)
+    {
+    }
+
     public function create(): View
     {
-        return view('public.consultation.create');
+        return view('public.consultation.create', [
+            'settings' => Setting::current(),
+            'seo' => $this->seoService->forPage('contact', route('consultation.create'), __('consultation.title')),
+        ]);
     }
 
     public function store(StoreConsultationRequest $request, AIService $aiService): RedirectResponse
@@ -55,13 +64,15 @@ class ConsultationController extends Controller
 
         QueueConsultationAcknowledgementsJob::dispatch();
 
-        return redirect()->route('consultation.success', $consultation);
+        return redirect()->route('consultation.success', $consultation)->with('success', __('consultation.success_message'));
     }
 
     public function success(Consultation $consultation): View
     {
         return view('public.consultation.success', [
             'consultation' => $consultation->load('latestAiResult'),
+            'settings' => Setting::current(),
+            'seo' => $this->seoService->forPage('contact', route('consultation.success', $consultation), __('consultation.success_title')),
         ]);
     }
 }

@@ -17,6 +17,7 @@ use App\Http\Controllers\Admin\GalleryItemController;
 use App\Http\Controllers\Admin\HomepageSectionController;
 use App\Http\Controllers\Admin\Ops\BackupController;
 use App\Http\Controllers\Admin\Ops\HealthController;
+use App\Http\Controllers\Admin\Ops\LaunchReadinessController;
 use App\Http\Controllers\Admin\PolicyController;
 use App\Http\Controllers\Admin\Reports\AppointmentReportController;
 use App\Http\Controllers\Admin\Reports\ConsultationReportController;
@@ -175,6 +176,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::middleware('permission:manage_admin_users')->resource('users', AdminUserController::class)->only(['index', 'create', 'store', 'edit', 'update']);
 
         Route::middleware('permission:view_system_health')->get('/ops/health', [HealthController::class, 'index'])->name('ops.health');
+        Route::middleware('permission:view_system_health')->get('/ops/launch-readiness', [LaunchReadinessController::class, 'index'])->name('ops.launch-readiness');
         Route::middleware('permission:manage_backups')->post('/ops/backups', [BackupController::class, 'store'])->name('ops.backups.store');
 
         Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
