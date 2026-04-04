@@ -310,7 +310,7 @@
                 </p>
                 <div class="hero-actions">
                     <a href="{{ route('booking.service') }}" class="btn is-gold-focus">{{ __('public.home.hero_cta') }}</a>
-                    <a class="btn btn-soft" href="{{ route('services') }}">{{ __('public.nav.services') }}</a>
+                    <a class="btn btn-soft" href="{{ route('services.index') }}">{{ __('public.nav.services') }}</a>
                 </div>
                 <div class="hero-trust-list" aria-label="Trust indicators">
                     <span class="hero-trust-pill">Licensed Studio</span>
@@ -368,7 +368,7 @@
                 <p class="section-kicker">{{ __('public.home.services_kicker') }}</p>
                 <h2 class="section-title">{{ __('public.home.services_title') }}</h2>
             </div>
-            <a class="btn btn-soft" href="{{ route('services') }}">{{ __('public.nav.services') }}</a>
+            <a class="btn btn-soft" href="{{ route('services.index') }}">{{ __('public.nav.services') }}</a>
         </div>
         <div class="services-grid">
             @forelse($featuredServices as $service)
