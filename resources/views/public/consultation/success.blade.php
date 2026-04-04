@@ -4,7 +4,7 @@
 
 @section('content')
 <section class="page-section">
-    <div class="card consultation-success reveal" style="max-width:860px;margin:auto;">
+    <div class="card consultation-success centered-card reveal" style="--card-max:860px;">
         <div class="success-header">
             <p class="section-kicker">Consultation</p>
             <h1 class="section-title">{{ __('consultation.success_title') }}</h1>
@@ -13,7 +13,7 @@
         </div>
 
         @if(($consultation->latestAiResult?->status ?? '') === 'success')
-            <div class="success-ai-block" aria-label="AI recommendation summary">
+            <div class="success-ai-block soft-panel" aria-label="AI recommendation summary">
                 <h2>{{ __('consultation.recommended_title') }}</h2>
                 <p>{{ $consultation->latestAiResult->summary_text }}</p>
 
@@ -29,7 +29,7 @@
             <a class="btn btn-soft" href="https://wa.me/{{ preg_replace('/\D+/', '', $settings->whatsapp_number ?? '') }}" target="_blank" rel="noopener">{{ __('consultation.whatsapp_cta') }}</a>
         </div>
 
-        <div class="success-next-step">
+        <div class="success-next-step soft-panel">
             <h3>What happens next?</h3>
             <ul>
                 <li>We review your details and recommendations.</li>
@@ -45,9 +45,6 @@
     .success-header { border-bottom: 1px solid var(--border); padding-bottom: .85rem; }
     .success-ai-block,
     .success-next-step {
-        border: 1px solid var(--border);
-        border-radius: 16px;
-        background: linear-gradient(140deg, #fffdfa 0%, #f8f2eb 100%);
         padding: 1rem;
     }
     .success-ai-block h2 { font-size: clamp(1.2rem, 2vw, 1.55rem); margin-bottom: .45rem; }
