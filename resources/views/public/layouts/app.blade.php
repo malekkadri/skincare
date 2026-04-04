@@ -14,40 +14,172 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="{{ $seo->title ?? ($settings->site_name ?? 'Skin by Noor') }}">
     <meta name="twitter:description" content="{{ $seo->description ?? ($settings->localized('site_tagline') ?? '') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
-        body{margin:0;font-family:Inter,system-ui,sans-serif;background:#f8f5f3;color:#2f2630;line-height:1.6}.container{max-width:1100px;margin:auto;padding:1rem}
-        header{position:sticky;top:0;background:#fff8f6f2;backdrop-filter:blur(6px);border-bottom:1px solid #f0e6e2;z-index:10}
-        .nav{display:flex;justify-content:space-between;align-items:center;gap:1rem}.menu{display:flex;gap:1rem;flex-wrap:wrap;align-items:center}
-        a{text-decoration:none;color:inherit}.btn{background:#7c4d63;color:#fff;padding:.6rem 1rem;border-radius:999px;display:inline-block;border:0}
-        .btn-alt{background:#efe4df;color:#47313d}.card{background:#fff;border:1px solid #eee1db;border-radius:16px;padding:1rem;box-shadow:0 6px 20px rgba(86,52,68,.06)}
-        .grid{display:grid;gap:1rem}.hero{padding:4rem 0}.grid-3{grid-template-columns:repeat(3,minmax(0,1fr))}.grid-2{grid-template-columns:repeat(2,minmax(0,1fr))}
-        footer{margin-top:3rem;background:#2f2630;color:#f8edf2;padding:2.5rem 0}.muted{opacity:.8}.section{padding:3rem 0}img{max-width:100%;border-radius:14px}
-        .empty-state{padding:1rem;border:1px dashed #d8c2cb;border-radius:12px;background:#fff}
-        @media(max-width:900px){.grid-3,.grid-2{grid-template-columns:1fr}.nav{flex-direction:column;align-items:flex-start}.menu{width:100%}}
+        :root {
+            --bg: #F8F6F3;
+            --secondary: #EDE7E1;
+            --accent: #C8A27A;
+            --text-primary: #2E2E2E;
+            --text-secondary: #7A7A7A;
+            --card: #FFFCF9;
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--text-primary);
+            font-family: 'Inter', system-ui, sans-serif;
+            line-height: 1.7;
+        }
+        h1, h2, h3, h4 {
+            font-family: 'Playfair Display', Georgia, serif;
+            letter-spacing: .02em;
+            color: var(--text-primary);
+            margin-top: 0;
+        }
+        a { color: inherit; text-decoration: none; }
+        .container {
+            width: min(1200px, calc(100% - 2.5rem));
+            margin-inline: auto;
+        }
+        .site-header {
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            backdrop-filter: blur(8px);
+            background: rgba(248, 246, 243, .92);
+            border-bottom: 1px solid #e8e1d9;
+        }
+        .site-nav {
+            min-height: 84px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            flex-wrap: wrap;
+            padding: .75rem 0;
+        }
+        .brand {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 1.45rem;
+        }
+        .menu {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            align-items: center;
+            color: var(--text-secondary);
+            font-size: .95rem;
+        }
+        .menu a:hover { color: var(--text-primary); }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 999px;
+            border: 1px solid transparent;
+            background: var(--accent);
+            color: #fff;
+            padding: .72rem 1.4rem;
+            font-size: .94rem;
+            transition: transform .2s ease, box-shadow .2s ease, opacity .2s ease;
+            box-shadow: 0 12px 30px rgba(200, 162, 122, .25);
+        }
+        .btn:hover { transform: translateY(-1px); opacity: .96; }
+        .btn-soft {
+            background: var(--secondary);
+            border-color: #ddd2c8;
+            color: var(--text-primary);
+            box-shadow: none;
+        }
+        .page-section { padding: 88px 0; }
+        .section-title {
+            font-size: clamp(1.8rem, 2.5vw, 2.6rem);
+            margin-bottom: .75rem;
+            font-weight: 500;
+        }
+        .section-kicker {
+            text-transform: uppercase;
+            letter-spacing: .2em;
+            font-size: .74rem;
+            color: var(--text-secondary);
+            margin-bottom: .5rem;
+        }
+        .muted { color: var(--text-secondary); }
+        .card {
+            background: var(--card);
+            border-radius: 22px;
+            border: 1px solid #ede5dd;
+            box-shadow: 0 18px 45px rgba(95, 81, 69, .08);
+        }
+        .site-footer {
+            margin-top: 40px;
+            border-top: 1px solid #e9dfd6;
+            padding: 64px 0;
+            background: #f3eee8;
+        }
+        .footer-grid {
+            display: grid;
+            gap: 1.5rem;
+            grid-template-columns: 1.4fr 1fr 1fr;
+        }
+        .footer-link { color: var(--text-secondary); display: block; margin-bottom: .45rem; }
+        .footer-link:hover { color: var(--text-primary); }
+        @media (max-width: 900px) {
+            .site-nav { justify-content: center; }
+            .menu { justify-content: center; }
+            .footer-grid { grid-template-columns: 1fr; }
+            .page-section { padding: 72px 0; }
+        }
     </style>
 </head>
 <body>
-<header>
-    <div class="container nav">
-        <a href="{{ route('home') }}"><strong>{{ $settings->site_name ?? 'Skin by Noor' }}</strong></a>
-        <nav class="menu">
-            <a href="{{ route('about') }}">About</a><a href="{{ route('services.index') }}">Services</a><a href="{{ route('consultation.create') }}">Consultation</a>
-            <a href="{{ route('recommender.index') }}">AI Recommender</a><a href="{{ route('gallery') }}">Gallery</a><a href="{{ route('testimonials') }}">Testimonials</a>
-            <a href="{{ route('faq') }}">FAQ</a><a href="{{ route('contact') }}">Contact</a>
+<header class="site-header">
+    <div class="container site-nav">
+        <a class="brand" href="{{ route('home') }}">{{ $settings->site_name ?? 'Skin by Noor' }}</a>
+
+        <nav class="menu" aria-label="Primary navigation">
+            <a href="{{ route('about') }}">About</a>
+            <a href="{{ route('services.index') }}">Services</a>
+            <a href="{{ route('gallery') }}">Gallery</a>
+            <a href="{{ route('testimonials') }}">Testimonials</a>
+            <a href="{{ route('contact') }}">Contact</a>
         </nav>
+
         <div class="menu">
-            <form method="POST" action="{{ route('preferences.locale') }}">@csrf<input type="hidden" name="locale" value="fr"><button class="btn btn-alt" type="submit">FR</button></form>
-            <form method="POST" action="{{ route('preferences.locale') }}">@csrf<input type="hidden" name="locale" value="en"><button class="btn btn-alt" type="submit">EN</button></form>
-            <a class="btn" href="{{ route('booking.service') }}">Book</a>
+            <form method="POST" action="{{ route('preferences.locale') }}">@csrf<input type="hidden" name="locale" value="fr"><button class="btn btn-soft" type="submit">FR</button></form>
+            <form method="POST" action="{{ route('preferences.locale') }}">@csrf<input type="hidden" name="locale" value="en"><button class="btn btn-soft" type="submit">EN</button></form>
+            <a class="btn" href="{{ route('booking.service') }}">Book Now</a>
         </div>
     </div>
 </header>
-<div class="container">@yield('content')</div>
-<footer>
-    <div class="container grid grid-3">
-        <div><h4>{{ $settings->site_name ?? 'Skin by Noor' }}</h4><p class="muted">{{ $settings->localized('site_tagline') }}</p></div>
-        <div><h4>Policies</h4>@forelse(\App\Models\Policy::active()->ordered()->get() as $footerPolicy)<div><a href="{{ route('policies.show',$footerPolicy) }}">{{ $footerPolicy->localized_title }}</a></div>@empty<div class="muted">No policy pages published yet.</div>@endforelse</div>
-        <div><h4>WhatsApp</h4>@if(filled($settings->whatsapp_number))<a class="btn" target="_blank" href="https://wa.me/{{ preg_replace('/\D+/', '', $settings->whatsapp_number) }}">{{ $settings->whatsapp_number }}</a>@else<div class="muted">WhatsApp contact will appear once configured.</div>@endif</div>
+
+<main class="container">
+    @yield('content')
+</main>
+
+<footer class="site-footer">
+    <div class="container footer-grid">
+        <div>
+            <h3>{{ $settings->site_name ?? 'Skin by Noor' }}</h3>
+            <p class="muted">{{ $settings->localized('site_tagline') ?: 'Elevated skincare rituals designed for healthy, luminous skin.' }}</p>
+        </div>
+        <div>
+            <h4>Explore</h4>
+            <a class="footer-link" href="{{ route('about') }}">Who are we</a>
+            <a class="footer-link" href="{{ route('services.index') }}">Services</a>
+            <a class="footer-link" href="{{ route('booking.service') }}">Book appointment</a>
+        </div>
+        <div>
+            <h4>Contact</h4>
+            <a class="footer-link" href="{{ route('contact') }}">Contact page</a>
+            @if(filled($settings->whatsapp_number))
+                <a class="btn" target="_blank" href="https://wa.me/{{ preg_replace('/\D+/', '', $settings->whatsapp_number) }}">WhatsApp Us</a>
+            @endif
+        </div>
     </div>
 </footer>
 </body>
