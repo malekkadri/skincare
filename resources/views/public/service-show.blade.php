@@ -96,6 +96,52 @@
         align-items: start;
     }
 
+    .service-detail-visual {
+        border-radius: 24px;
+        border: 1px solid var(--border);
+        background: rgba(255, 255, 255, .86);
+        box-shadow: var(--shadow-soft);
+        overflow: hidden;
+        position: relative;
+        isolation: isolate;
+        min-height: clamp(260px, 36vw, 420px);
+    }
+
+    .service-detail-visual img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        transform: scale(1.01);
+        animation: detailImagePulse 8s ease-in-out infinite;
+    }
+
+    .service-detail-visual::after {
+        content: '';
+        position: absolute;
+        inset: auto 0 0;
+        height: 38%;
+        background: linear-gradient(to top, rgba(31, 22, 17, .4), rgba(31, 22, 17, 0));
+        pointer-events: none;
+    }
+
+    .service-detail-visual-caption {
+        position: absolute;
+        z-index: 1;
+        left: 1rem;
+        bottom: 1rem;
+        border: 1px solid rgba(255, 255, 255, .36);
+        background: rgba(255, 255, 255, .12);
+        backdrop-filter: blur(4px);
+        color: #fff;
+        border-radius: 999px;
+        letter-spacing: .07em;
+        text-transform: uppercase;
+        font-size: .68rem;
+        font-weight: 600;
+        padding: .45rem .72rem;
+    }
+
     .service-detail-body,
     .service-detail-support {
         border-radius: 24px;
@@ -160,6 +206,11 @@
         width: 100%;
     }
 
+    @keyframes detailImagePulse {
+        0%, 100% { transform: scale(1.01); }
+        50% { transform: scale(1.05); }
+    }
+
     @media (max-width: 900px) {
         .service-detail-content {
             grid-template-columns: 1fr;
@@ -192,6 +243,10 @@
         .service-detail-copy {
             line-height: 1.78;
         }
+
+        .service-detail-visual-caption {
+            font-size: .62rem;
+        }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -199,8 +254,10 @@
         .service-detail-meta,
         .service-detail-body,
         .service-detail-support,
-        .service-detail-cta {
+        .service-detail-cta,
+        .service-detail-visual img {
             transition: none;
+            animation: none;
         }
     }
 </style>
@@ -227,6 +284,14 @@
             <p class="service-detail-assurance">Begin your booking in under a minute. You can review and confirm your appointment details before final submission.</p>
         </div>
     </header>
+
+    <section class="service-detail-visual reveal" aria-label="Service image">
+        <img
+            src="{{ $service->image_url ?: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=1400&q=80' }}"
+            alt="{{ $service->localized_name }}"
+        >
+        <span class="service-detail-visual-caption">Personalized service</span>
+    </section>
 
     <section class="service-detail-content" aria-label="Service information">
         <article class="service-detail-body">

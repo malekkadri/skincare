@@ -100,6 +100,7 @@
     }
 
     .service-card {
+        --service-card-padding: 1.2rem;
         display: grid;
         gap: .95rem;
         min-height: 100%;
@@ -107,7 +108,7 @@
         background: linear-gradient(180deg, rgba(255, 255, 255, .98), #fffaf5);
         border: 1px solid var(--border);
         box-shadow: 0 12px 30px rgba(47, 39, 34, .08);
-        padding: 1.2rem 1.2rem 1.1rem;
+        padding: var(--service-card-padding) var(--service-card-padding) 1.1rem;
         transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
     }
 
@@ -116,6 +117,37 @@
         transform: translateY(-3px);
         border-color: var(--border-strong);
         box-shadow: 0 18px 36px rgba(47, 39, 34, .12);
+    }
+
+    .service-card-media {
+        margin: calc(var(--service-card-padding) * -1) calc(var(--service-card-padding) * -1) 0;
+        border-radius: 22px 22px 0 0;
+        overflow: hidden;
+        position: relative;
+        aspect-ratio: 16 / 10;
+        background: #f2e6da;
+    }
+
+    .service-card-media img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        transition: transform .35s ease;
+    }
+
+    .service-card:hover .service-card-media img,
+    .service-card:focus-visible .service-card-media img {
+        transform: scale(1.05);
+    }
+
+    .service-card-media::after {
+        content: '';
+        position: absolute;
+        inset: auto 0 0;
+        height: 50%;
+        background: linear-gradient(to top, rgba(44, 30, 18, .24), transparent);
+        pointer-events: none;
     }
 
     .service-card-header {
@@ -198,6 +230,7 @@
         }
 
         .service-card {
+            --service-card-padding: 1.05rem;
             padding: 1.05rem;
             gap: .82rem;
         }
@@ -246,7 +279,14 @@
 
                 <div class="services-grid">
                     @forelse($category->services as $service)
-                        <a class="service-card is-gold-focus" href="{{ route('services.show', $service->slug) }}" aria-label="View details for {{ $service->localized_name }}">
+                        <a class="service-card reveal is-gold-focus" href="{{ route('services.show', $service->slug) }}" aria-label="View details for {{ $service->localized_name }}">
+                            <figure class="service-card-media">
+                                <img
+                                    src="{{ $service->image_url ?: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=900&q=80' }}"
+                                    alt="{{ $service->localized_name }}"
+                                    loading="lazy"
+                                >
+                            </figure>
                             <div class="service-card-header">
                                 <h3 class="service-card-title">{{ $service->localized_name }}</h3>
                                 <p class="service-card-copy">{{ $service->localized_short_description }}</p>
