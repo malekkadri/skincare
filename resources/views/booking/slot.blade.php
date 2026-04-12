@@ -4,8 +4,8 @@
 <div class="card booking-step-slot" data-step-slot>
     <div class="step-intro slot-step-intro">
         <p class="step-kicker">{{ __('booking.step_slot') }}</p>
-        <h1 class="title step-title">Choose your preferred time</h1>
-        <p class="subtitle step-subtitle">Select the time that best suits your day. Your appointment is only confirmed after the final review.</p>
+        <h1 class="title step-title">{{ __('booking.slot_heading') }}</h1>
+        <p class="subtitle step-subtitle">{{ __('booking.slot_subtitle') }}</p>
     </div>
 
     <form method="POST" action="{{ route('booking.slot.save') }}" data-slot-form>
@@ -13,14 +13,14 @@
 
         <div class="slot-selection-shell">
             <div class="slot-selection-head">
-                <p class="slot-date-label">Date selected</p>
+                <p class="slot-date-label">{{ __('booking.slot_date_label') }}</p>
                 <p class="slot-date-value">{{ $wizard['appointment_date'] }}</p>
-                <p class="slot-reassurance">Need a different timing? You can go back and change your date at any moment before final confirmation.</p>
+                <p class="slot-reassurance">{{ __('booking.slot_reassurance') }}</p>
             </div>
 
             <fieldset class="slot-options" aria-describedby="slot-help slot-selection-error">
-                <legend class="sr-only">Choose your appointment time</legend>
-                <p id="slot-help" class="slot-help-text">Available times are shown in your local booking flow. Tap once to select and continue.</p>
+                <legend class="sr-only">{{ __('booking.slot_legend') }}</legend>
+                <p id="slot-help" class="slot-help-text">{{ __('booking.slot_help') }}</p>
 
                 <div class="grid grid-2 slot-options-grid">
                     @forelse($slots as $slot)
@@ -38,16 +38,16 @@
 
                             <span class="slot-option-main">
                                 <strong class="slot-option-time">{{ $slot }}</strong>
-                                <span class="slot-option-caption">Appointment start time</span>
+                                <span class="slot-option-caption">{{ __('booking.slot_start_time') }}</span>
                             </span>
 
-                            <span class="slot-option-check" aria-hidden="true">Selected</span>
+                            <span class="slot-option-check" aria-hidden="true">{{ __('booking.slot_selected') }}</span>
                         </label>
                     @empty
                         <div class="slot-empty" role="status">
                             <p class="slot-empty-title">{{ __('booking.slot_unavailable') }}</p>
-                            <p class="slot-empty-copy">No appointment times are currently available for this date. Please choose another date to continue.</p>
-                            <a href="{{ route('booking.date') }}" class="btn btn-soft slot-empty-action">Pick another date</a>
+                            <p class="slot-empty-copy">{{ __('booking.slot_empty_copy') }}</p>
+                            <a href="{{ route('booking.date') }}" class="btn btn-soft slot-empty-action">{{ __('booking.slot_pick_another_date') }}</a>
                         </div>
                     @endforelse
                 </div>
@@ -59,7 +59,7 @@
         @enderror
 
         <div class="slot-step-footer">
-            <p class="slot-footer-note">Selected time slots are held only during your booking flow to keep availability accurate and fair.</p>
+            <p class="slot-footer-note">{{ __('booking.slot_footer_note') }}</p>
             <button
                 id="slot_submit"
                 class="btn slot-continue"

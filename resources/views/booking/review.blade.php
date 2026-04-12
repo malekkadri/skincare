@@ -2,8 +2,7 @@
 
 @section('content')
 @php
-    $isFr = ($wizard['locale'] ?? app()->getLocale()) === 'fr';
-    $serviceName = $isFr ? $wizard['service']->name_fr : $wizard['service']->name_en;
+    $serviceName = app()->getLocale() === 'fr' ? $wizard['service']->name_fr : $wizard['service']->name_en;
     $customerName = trim(($wizard['customer']['first_name'] ?? '').' '.($wizard['customer']['last_name'] ?? ''));
     $price = ($wizard['currency'] ?? 'TND') === 'EUR'
         ? number_format((float) $wizard['service']->price_eur, 2).' EUR'
@@ -13,51 +12,47 @@
 <div class="card booking-step-review" data-step-review>
     <div class="step-intro review-step-intro">
         <p class="step-kicker">{{ __('booking.step_review') }}</p>
-        <h1 class="title step-title">{{ $isFr ? 'Dernière vérification avant confirmation' : 'Final review before confirmation' }}</h1>
-        <p class="subtitle step-subtitle">
-            {{ $isFr
-                ? 'Merci de relire les détails de votre rendez-vous. Une fois confirmé, Skin by Noor préparera votre visite avec soin.'
-                : 'Please review your appointment details below. Once confirmed, Skin by Noor will prepare your visit with care.' }}
-        </p>
+        <h1 class="title step-title">{{ __('booking.review_heading') }}</h1>
+        <p class="subtitle step-subtitle">{{ __('booking.review_subtitle') }}</p>
     </div>
 
     <section class="review-summary" aria-labelledby="appointment-summary-title">
         <div class="review-summary-head">
-            <h2 id="appointment-summary-title" class="review-summary-title">{{ $isFr ? 'Résumé du rendez-vous' : 'Appointment summary' }}</h2>
-            <p class="review-summary-copy">{{ $isFr ? 'Vérifiez chaque élément pour confirmer en toute confiance.' : 'Check each detail so you can confirm with confidence.' }}</p>
+            <h2 id="appointment-summary-title" class="review-summary-title">{{ __('booking.review_summary_title') }}</h2>
+            <p class="review-summary-copy">{{ __('booking.review_summary_copy') }}</p>
         </div>
 
-        <dl class="summary-grid" aria-label="{{ $isFr ? 'Détails du rendez-vous' : 'Appointment details' }}">
+        <dl class="summary-grid" aria-label="{{ __('booking.review_details_aria') }}">
             <div class="summary-row summary-row-featured">
-                <dt>{{ $isFr ? 'Soin sélectionné' : 'Selected service' }}</dt>
+                <dt>{{ __('booking.review_selected_service') }}</dt>
                 <dd>{{ $serviceName }}</dd>
             </div>
             <div class="summary-row">
-                <dt>{{ $isFr ? 'Date' : 'Date' }}</dt>
+                <dt>{{ __('booking.date_label') }}</dt>
                 <dd>{{ $wizard['appointment_date'] }}</dd>
             </div>
             <div class="summary-row">
-                <dt>{{ $isFr ? 'Heure' : 'Time' }}</dt>
+                <dt>{{ __('booking.time') }}</dt>
                 <dd>{{ $wizard['start_time'] }}</dd>
             </div>
             <div class="summary-row">
-                <dt>{{ $isFr ? 'Cliente' : 'Client' }}</dt>
+                <dt>{{ __('booking.client') }}</dt>
                 <dd>{{ $customerName }}</dd>
             </div>
             @if(!empty($wizard['customer']['phone']))
                 <div class="summary-row">
-                    <dt>{{ $isFr ? 'Téléphone' : 'Phone' }}</dt>
+                    <dt>{{ __('booking.phone') }}</dt>
                     <dd>{{ $wizard['customer']['phone'] }}</dd>
                 </div>
             @endif
             @if(!empty($wizard['customer']['email']))
                 <div class="summary-row">
-                    <dt>Email</dt>
+                    <dt>{{ __('booking.email') }}</dt>
                     <dd>{{ $wizard['customer']['email'] }}</dd>
                 </div>
             @endif
             <div class="summary-row summary-row-price">
-                <dt>{{ $isFr ? 'Prix' : 'Price' }}</dt>
+                <dt>{{ __('booking.price') }}</dt>
                 <dd>{{ $price }}</dd>
             </div>
         </dl>
@@ -67,25 +62,17 @@
         @csrf
 
         <section class="confirmation-panel" aria-labelledby="confirmation-title">
-            <h2 id="confirmation-title" class="confirmation-title">{{ $isFr ? 'Confirmation' : 'Confirmation' }}</h2>
-            <p class="confirmation-copy">
-                {{ $isFr
-                    ? 'En confirmant, vous validez ces informations et autorisez Skin by Noor à finaliser votre réservation.'
-                    : 'By confirming, you verify these details and allow Skin by Noor to finalize your booking.' }}
-            </p>
+            <h2 id="confirmation-title" class="confirmation-title">{{ __('booking.confirm') }}</h2>
+            <p class="confirmation-copy">{{ __('booking.confirmation_copy') }}</p>
 
             <label class="confirm-check-row" for="confirm-booking">
                 <input id="confirm-booking" type="checkbox" name="confirm" value="1" required>
-                <span>{{ $isFr ? 'Je confirme ce rendez-vous.' : 'I confirm this appointment.' }}</span>
+                <span>{{ __('booking.confirm_checkbox') }}</span>
             </label>
         </section>
 
         <div class="review-footer">
-            <p class="review-assurance">
-                {{ $isFr
-                    ? 'Votre demande sera transmise immédiatement après confirmation.'
-                    : 'Your request will be submitted immediately after confirmation.' }}
-            </p>
+            <p class="review-assurance">{{ __('booking.review_assurance') }}</p>
             <button class="btn review-submit" type="submit">{{ __('booking.confirm') }}</button>
         </div>
     </form>

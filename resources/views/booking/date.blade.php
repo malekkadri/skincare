@@ -4,15 +4,15 @@
 <div class="card booking-step-date" style="max-width:680px;" data-step-date>
     <div class="step-intro date-step-intro">
         <p class="step-kicker">{{ __('booking.step_date') }}</p>
-        <h1 class="title step-title">Choose your preferred date</h1>
-        <p class="subtitle step-subtitle">Pick a day that feels right for you. We’ll check available times instantly so you can continue with confidence.</p>
+        <h1 class="title step-title">{{ __('booking.date_heading') }}</h1>
+        <p class="subtitle step-subtitle">{{ __('booking.date_subtitle') }}</p>
     </div>
 
     <form method="POST" action="{{ route('booking.date.save') }}" data-date-form>
         @csrf
 
         <div class="date-selection-shell">
-            <label for="appointment_date">Date</label>
+            <label for="appointment_date">{{ __('booking.date_label') }}</label>
             <input
                 type="date"
                 id="appointment_date"
@@ -27,7 +27,7 @@
                 <p class="field-error">{{ $message }}</p>
             @enderror
 
-            <p id="date-reassurance" class="date-reassurance">Appointments are confirmed only after your final review. You can still adjust the time in the next step.</p>
+            <p id="date-reassurance" class="date-reassurance">{{ __('booking.date_reassurance') }}</p>
 
             <p id="selected_date_summary" class="selected-date-summary" aria-live="polite"></p>
 
@@ -42,7 +42,7 @@
         </div>
 
         <div class="date-step-footer">
-            <p class="date-footer-note">Need flexibility? Choose the closest date now—you can explore available time slots right after this.</p>
+            <p class="date-footer-note">{{ __('booking.date_footer_note') }}</p>
             <button class="btn date-continue" type="submit" data-date-continue>{{ __('booking.continue') }}</button>
         </div>
     </form>
@@ -218,7 +218,7 @@
             summary.textContent = '';
             summary.classList.remove('is-visible');
             continueButton.disabled = true;
-            setHint('Choose a date to preview availability.', 'idle');
+            setHint(@json(__('booking.date_hint_idle')), 'idle');
             return;
         }
 
@@ -232,7 +232,7 @@
                 year: 'numeric',
             }).format(date);
 
-        summary.textContent = `Selected date: ${formattedDate}`;
+        summary.textContent = `${@json(__('booking.slot_date_label'))}: ${formattedDate}`;
         summary.classList.add('is-visible');
         continueButton.disabled = false;
     };
@@ -244,7 +244,7 @@
             return;
         }
 
-        setHint('Checking available time slots...', 'loading');
+        setHint(@json(__('booking.date_hint_loading')), 'loading');
 
         try {
             const query = new URLSearchParams({ service_id: String(serviceId), date: dateInput.value });
@@ -253,12 +253,12 @@
             const slots = Array.isArray(payload.slots) ? payload.slots : [];
 
             if (slots.length) {
-                setHint(`${slots.length} slot${slots.length > 1 ? 's' : ''} available on this day.`, 'available');
+                setHint(@json(__('booking.date_hint_available', ['count' => '__COUNT__'])).replace('__COUNT__', String(slots.length)), 'available');
             } else {
-                setHint('No slots available on this day. Try another date.', 'empty');
+                setHint(@json(__('booking.date_hint_empty')), 'empty');
             }
         } catch (error) {
-            setHint('Unable to check slots right now. You can still continue and try the next step.', 'error');
+            setHint(@json(__('booking.date_hint_error')), 'error');
         }
     };
 
