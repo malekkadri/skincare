@@ -67,8 +67,7 @@
     @else
         <div class="faq-categories">
             @foreach($items as $cat => $faqs)
-                <section class="faq-category" aria-labelledby="faq-cat-{{ \\Illuminate\\Support\\Str::slug($cat) }}">
-                    <h2 id="faq-cat-{{ \\Illuminate\\Support\\Str::slug($cat) }}" class="faq-category-title">{{ $cat }}</h2>
+                <section class="faq-category" aria-labelledby="faq-cat-{{ \Illuminate\Support\Str::slug($cat) }}">                    <h2 id="faq-cat-{{ \\Illuminate\\Support\\Str::slug($cat) }}" class="faq-category-title">{{ $cat }}</h2>
                     <div class="faq-list">
                         @foreach($faqs as $faq)
                             <details class="card faq-item">
