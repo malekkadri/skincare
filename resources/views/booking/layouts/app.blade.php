@@ -231,6 +231,28 @@
             box-shadow: none;
         }
 
+        .home-link {
+            display: inline-flex;
+            align-items: center;
+            gap: .45rem;
+            padding: .5rem .72rem;
+            border-radius: 999px;
+            border: 1px solid #e5d7ca;
+            background: rgba(255, 252, 248, .9);
+            color: #5f4f41;
+            text-decoration: none;
+            font-size: .84rem;
+            font-weight: 600;
+            letter-spacing: .02em;
+            transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+        }
+
+        .home-link:hover {
+            transform: translateY(-1px);
+            border-color: #d9c4ae;
+            box-shadow: 0 8px 20px rgba(150, 108, 68, .12);
+        }
+
         .field-error {
             color: var(--danger);
             font-size: .83rem;
@@ -279,6 +301,10 @@
     <div class="hero">
         <div class="topbar">
             <div class="brand-block">
+                <a class="home-link" href="{{ route('home') }}">
+                    <span aria-hidden="true">←</span>
+                    <span>Back to Home</span>
+                </a>
                 <h2>Skin by Noor — {{ __('booking.title') }}</h2>
                 <p>{{ __('booking.step_service') }} → {{ __('booking.step_review') }} · {{ __('booking.success') }}</p>
             </div>
