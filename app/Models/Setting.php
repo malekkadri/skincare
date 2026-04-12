@@ -62,7 +62,7 @@ class Setting extends Model
             'whatsapp_automation_enabled' => false,'send_24h_reminder' => true,'send_2h_reminder' => true,'send_post_appointment_followup' => true,
             'send_consultation_acknowledgement' => false,'reminder_24h_lead_minutes' => 1440,'reminder_2h_lead_minutes' => 120,'followup_lead_minutes' => 720,
             'max_whatsapp_retry_attempts' => 3,'whatsapp_retry_backoff_minutes' => 10,
-            'ai_enabled' => false,'ai_provider' => 'grok','ai_model' => 'grok-2-latest','ai_timeout_seconds' => 25,'ai_temperature' => 0.30,
+            'ai_enabled' => false,'ai_provider' => 'groq','ai_model' => 'llama-3.3-70b-versatile','ai_base_url' => 'https://api.groq.com/openai/v1/chat/completions','ai_timeout_seconds' => 25,'ai_temperature' => 0.30,
             'ai_enable_consultation_summary' => true,'ai_enable_service_recommendation' => true,'ai_enable_admin_content_helper' => true,
             'seo_home_title_fr' => 'Skin by Noor | Soins de la peau', 'seo_home_title_en' => 'Skin by Noor | Skincare in Tunisia',
             'seo_services_title_fr' => 'Services Skin by Noor', 'seo_services_title_en' => 'Skin by Noor Services',

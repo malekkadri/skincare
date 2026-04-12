@@ -44,8 +44,8 @@ class ConsultationSeeder extends Seeder
         ConsultationAiResult::query()->updateOrCreate(
             ['consultation_id' => $consultation->id],
             [
-                'provider' => 'grok',
-                'model' => 'grok-2-latest',
+                'provider' => 'groq',
+                'model' => 'llama-3.3-70b-versatile',
                 'summary_text' => 'Cliente avec peau mixte et sensibilité modérée. Les soins hydratants et éclat peuvent être adaptés, revue manuelle recommandée.',
                 'recommended_services_json' => ['hydra-glow-facial', 'brightening-peel-light'],
                 'risk_flags_json' => ['sensibilité modérée'],

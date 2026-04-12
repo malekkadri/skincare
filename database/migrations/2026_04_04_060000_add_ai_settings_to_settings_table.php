@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::table('settings', function (Blueprint $table) {
             $table->boolean('ai_enabled')->default(false)->after('send_booking_reschedule_whatsapp');
-            $table->string('ai_provider')->default('grok')->after('ai_enabled');
+            $table->string('ai_provider')->default('groq')->after('ai_enabled');
             $table->text('ai_api_key')->nullable()->after('ai_provider');
             $table->string('ai_model')->nullable()->after('ai_api_key');
             $table->string('ai_base_url')->nullable()->after('ai_model');
