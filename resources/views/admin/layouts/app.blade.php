@@ -233,6 +233,7 @@
                     <p class="section-title">Bookings & Calendar</p>
                     @if($user?->hasPermission('manage_appointments'))
                         <a href="{{ route('admin.appointments.index') }}" class="{{ request()->routeIs('admin.appointments.*') ? 'active' : '' }}">Appointments</a>
+                        <a href="{{ route('admin.clients.index') }}" class="{{ request()->routeIs('admin.clients.*') ? 'active' : '' }}">Client Files</a>
                         <a href="{{ route('admin.calendar.index') }}" class="{{ request()->routeIs('admin.calendar.*') ? 'active' : '' }}">Calendar</a>
                     @endif
                     @if($user?->hasPermission('manage_consultations'))

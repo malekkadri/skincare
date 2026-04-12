@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\AvailabilityController as AdminAvailabilityContro
 use App\Http\Controllers\Admin\BlockedDateController;
 use App\Http\Controllers\Admin\BlockedTimeRangeController;
 use App\Http\Controllers\Admin\CalendarController;
+use App\Http\Controllers\Admin\ClientController;
 use App\Http\Controllers\Admin\ConsultationController as AdminConsultationController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\FaqController;
@@ -143,6 +144,13 @@ Route::prefix('admin')->name('admin.')->group(function () {
         });
 
         Route::middleware('permission:manage_appointments')->group(function () {
+            Route::get('clients', [ClientController::class, 'index'])->name('clients.index');
+            Route::get('clients/{client}', [ClientController::class, 'show'])->name('clients.show');
+            Route::put('clients/{client}', [ClientController::class, 'update'])->name('clients.update');
+            Route::post('clients/{client}/photos', [ClientController::class, 'storePhoto'])->name('clients.photos.store');
+            Route::delete('clients/{client}/photos/{photo}', [ClientController::class, 'destroyPhoto'])->name('clients.photos.destroy');
+            Route::get('client-photos/{photo}', [ClientController::class, 'photo'])->name('clients.photos.show');
+
             Route::resource('appointments', AppointmentController::class)->except('destroy');
             Route::patch('appointments/{appointment}/status', [AppointmentController::class, 'updateStatus'])->name('appointments.status');
             Route::post('appointments/{appointment}/resend-confirmation', [AppointmentController::class, 'resendConfirmation'])->name('appointments.resend-confirmation');

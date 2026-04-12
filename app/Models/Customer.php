@@ -15,6 +15,9 @@ class Customer extends Model
         'preferred_language',
         'preferred_currency',
         'notes',
+        'allergies',
+        'skin_notes',
+        'medical_notes',
     ];
 
     public function appointments(): HasMany
@@ -25,6 +28,12 @@ class Customer extends Model
     public function consultations(): HasMany
     {
         return $this->hasMany(Consultation::class);
+    }
+
+
+    public function progressPhotos(): HasMany
+    {
+        return $this->hasMany(CustomerProgressPhoto::class)->latest('captured_on')->latest();
     }
 
     public function getFullNameAttribute(): string
