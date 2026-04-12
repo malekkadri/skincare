@@ -4,17 +4,17 @@
 <div class="card booking-step-service" data-step-service>
     <div class="step-intro">
         <p class="step-kicker">{{ __('booking.step_service') }}</p>
-        <h1 class="title step-title">Choose your treatment</h1>
-        <p class="subtitle step-subtitle">Select the service that best matches your needs. You can review all details before final confirmation.</p>
+        <h1 class="title step-title">{{ __('booking.service_heading') }}</h1>
+        <p class="subtitle step-subtitle">{{ __('booking.service_subtitle') }}</p>
     </div>
 
     <form method="POST" action="{{ route('booking.service.save') }}" data-service-form>
         @csrf
 
         <fieldset class="service-options" aria-describedby="service-help service-selection-error">
-            <legend class="sr-only">Choose your service</legend>
+            <legend class="sr-only">{{ __('booking.service_legend') }}</legend>
 
-            <p id="service-help" class="service-help-text">Not sure which one to start with? Pick the closest option—you can refine the details in the next steps.</p>
+            <p id="service-help" class="service-help-text">{{ __('booking.service_help') }}</p>
 
             <div class="grid grid-2 service-options-grid">
                 @forelse($services as $service)
@@ -37,15 +37,15 @@
                             @endif
                         </span>
 
-                        <span class="service-meta" aria-label="Service duration and price">
+                        <span class="service-meta" aria-label="{{ __('booking.service_meta_aria') }}">
                             <span class="service-pill">{{ $service->duration_minutes }} min</span>
                             <span class="service-price">{{ $service->display_price }}</span>
                         </span>
                     </label>
                 @empty
                     <div class="service-empty" role="status">
-                        <strong>No services currently available.</strong>
-                        <p>Please check back soon for new availability.</p>
+                        <strong>{{ __('booking.service_empty_title') }}</strong>
+                        <p>{{ __('booking.service_empty_copy') }}</p>
                     </div>
                 @endforelse
             </div>
@@ -56,7 +56,7 @@
         @enderror
 
         <div class="service-step-footer">
-            <p class="service-footer-note">Your selection is saved securely and only used to prepare your appointment experience.</p>
+            <p class="service-footer-note">{{ __('booking.service_footer_note') }}</p>
             <button class="btn service-continue" type="submit" @disabled($services->isEmpty())>{{ __('booking.continue') }}</button>
         </div>
     </form>
