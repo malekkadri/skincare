@@ -7,6 +7,13 @@ use Illuminate\Validation\Rule;
 
 class UpdateAiSettingsRequest extends FormRequest
 {
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'ai_provider' => 'groq',
+        ]);
+    }
+
     public function authorize(): bool
     {
         return true;
@@ -16,7 +23,7 @@ class UpdateAiSettingsRequest extends FormRequest
     {
         return [
             'ai_enabled' => ['nullable', 'boolean'],
-            'ai_provider' => ['required', Rule::in(['grok'])],
+            'ai_provider' => ['required', Rule::in(['groq'])],
             'ai_api_key' => ['nullable', 'string', 'max:500'],
             'ai_model' => ['nullable', 'string', 'max:120'],
             'ai_base_url' => ['nullable', 'url', 'max:255'],

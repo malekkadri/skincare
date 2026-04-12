@@ -132,9 +132,9 @@ class AIService
         };
     }
 
-    protected function provider(): GrokService
+    protected function provider(): GroqService
     {
-        return new GrokService(Setting::current());
+        return new GroqService(Setting::current());
     }
 
     protected function activeServicesForPrompt(string $language = 'fr'): array
