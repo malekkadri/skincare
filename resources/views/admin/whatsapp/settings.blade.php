@@ -32,7 +32,7 @@
         <h2>Automation Controls</h2>
         <div class="grid">
             <div><label><input type="checkbox" name="whatsapp_automation_enabled" value="1" @checked(old('whatsapp_automation_enabled', $settings->whatsapp_automation_enabled))> Enable WhatsApp automation</label></div>
-            <div><label>Pause automation until (Africa/Tunis)</label><input type="datetime-local" name="automation_pause_until" value="{{ old('automation_pause_until', optional($settings->automation_pause_until)->timezone('Africa/Tunis')->format('Y-m-d\TH:i')) }}"></div>
+            <div><label>Pause automation until (Africa/Tunis)</label><input type="datetime-local" name="automation_pause_until" value="{{ old('automation_pause_until', optional(optional($settings->automation_pause_until)->timezone('Africa/Tunis'))->format('Y-m-d\TH:i')) }}"></div>
             <div><label><input type="checkbox" name="send_24h_reminder" value="1" @checked(old('send_24h_reminder', $settings->send_24h_reminder))> Send 24-hour reminder</label></div>
             <div><label>24h reminder lead (minutes)</label><input type="number" min="5" max="10080" name="reminder_24h_lead_minutes" value="{{ old('reminder_24h_lead_minutes', $settings->reminder_24h_lead_minutes) }}"></div>
             <div><label><input type="checkbox" name="send_2h_reminder" value="1" @checked(old('send_2h_reminder', $settings->send_2h_reminder))> Send 2-hour reminder</label></div>

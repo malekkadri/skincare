@@ -3,6 +3,7 @@
 namespace App\Models\Concerns;
 
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 
 trait ResolvesPublicFileUrl
@@ -20,6 +21,15 @@ trait ResolvesPublicFileUrl
         $normalizedPath = ltrim($path, '/');
         $normalizedPath = preg_replace('#^(public|storage)/#', '', $normalizedPath) ?: $normalizedPath;
 
-        return Storage::disk('public')->url($normalizedPath);
+        if (File::exists(public_path('storage'))) {
+            return Storage::disk('public')->url($normalizedPath);
+        }
+
+        $encodedPath = collect(explode('/', $normalizedPath))
+            ->filter(fn (string $segment): bool => $segment !== '')
+            ->map(static fn (string $segment): string => rawurlencode($segment))
+            ->implode('/');
+
+        return url('/media/'.$encodedPath);
     }
 }

@@ -36,6 +36,7 @@ use App\Http\Controllers\Admin\WhatsAppTemplateController;
 use App\Http\Controllers\Booking\AvailabilityController;
 use App\Http\Controllers\Booking\BookingWizardController;
 use App\Http\Controllers\Public\ConsultationController;
+use App\Http\Controllers\Public\PublicMediaController;
 use App\Http\Controllers\Public\ServiceRecommenderController;
 use App\Http\Controllers\PublicPreferenceController;
 use App\Http\Controllers\PublicSiteController;
@@ -81,6 +82,7 @@ Route::middleware('public.preferences')->group(function () {
 });
 
 Route::get('/sitemap.xml', SitemapController::class)->name('sitemap');
+Route::get('/media/{path}', [PublicMediaController::class, 'show'])->where('path', '.*')->name('media.public');
 Route::get('/robots.txt', function () {
     return response("User-agent: *\nAllow: /\nDisallow: /admin\n\nSitemap: ".route('sitemap')."\n", 200, ['Content-Type' => 'text/plain']);
 });
