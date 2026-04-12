@@ -8,6 +8,10 @@
         <p class="section-kicker">AI Recommender</p>
         <h1 class="section-title">{{ __('consultation.recommender_title') }}</h1>
         <p class="muted">Receive a refined recommendation guided by your skin profile, sensitivity, goals, and optional face photos.</p>
+        <div class="hero-quick-actions">
+            <a class="btn btn-soft" href="{{ route('home') }}">Back to home</a>
+            <a class="btn" href="{{ route('booking.service') }}">{{ __('consultation.book_now') }}</a>
+        </div>
     </div>
 </section>
 
@@ -22,11 +26,12 @@
                     <option value="en" @selected(old('preferred_language', $submitted['preferred_language'] ?? app()->getLocale()) === 'en')>EN</option>
                 </select>
             </div>
-            <div class="form-field"><label for="skin_type">{{ __('consultation.skin_type') }}</label><input id="skin_type" name="skin_type" value="{{ old('skin_type', $submitted['skin_type'] ?? '') }}"></div>
-            <div class="form-field"><label for="skin_sensitivity_level">{{ __('consultation.skin_sensitivity_level') }}</label><input id="skin_sensitivity_level" name="skin_sensitivity_level" value="{{ old('skin_sensitivity_level', $submitted['skin_sensitivity_level'] ?? '') }}"></div>
-            <div class="form-field"><label for="preferred_goals">{{ __('consultation.preferred_goals') }}</label><input id="preferred_goals" name="preferred_goals" value="{{ old('preferred_goals', $submitted['preferred_goals'] ?? '') }}"></div>
+            <div class="form-field"><label for="skin_type">{{ __('consultation.skin_type') }}</label><input id="skin_type" name="skin_type" placeholder="e.g. Oily, combination, dry" value="{{ old('skin_type', $submitted['skin_type'] ?? '') }}"></div>
+            <div class="form-field"><label for="skin_sensitivity_level">{{ __('consultation.skin_sensitivity_level') }}</label><input id="skin_sensitivity_level" name="skin_sensitivity_level" placeholder="e.g. Mild, moderate, high" value="{{ old('skin_sensitivity_level', $submitted['skin_sensitivity_level'] ?? '') }}"></div>
+            <div class="form-field"><label for="preferred_goals">{{ __('consultation.preferred_goals') }}</label><input id="preferred_goals" name="preferred_goals" placeholder="e.g. Brightening, acne balance, texture" value="{{ old('preferred_goals', $submitted['preferred_goals'] ?? '') }}"></div>
             <div class="form-field form-span-full">
                 <label for="main_concerns">{{ __('consultation.main_concerns') }}</label>
+                <small class="field-help">Share your key concerns, current routine, and any reactions for better recommendations.</small>
                 <textarea id="main_concerns" name="main_concerns" required>{{ old('main_concerns', $submitted['main_concerns'] ?? '') }}</textarea>
             </div>
 
@@ -85,12 +90,102 @@
                 @endif
 
                 <div class="btn-row result-actions">
+                    <a class="btn btn-soft" href="{{ route('home') }}">Back to home</a>
                     <a class="btn" href="{{ route('booking.service') }}">{{ __('consultation.book_now') }}</a>
                 </div>
             </div>
         @endif
     </div>
 </section>
+
+<style>
+    .recommender-hero {
+        background:
+            radial-gradient(130% 160% at 0% 0%, rgba(234, 209, 184, .32) 0%, transparent 60%),
+            linear-gradient(140deg, #fff8f1 0%, #ffffff 62%);
+        border: 1px solid #efdfcf;
+        box-shadow: 0 18px 40px rgba(93, 65, 40, .08);
+    }
+
+    .hero-quick-actions {
+        display: flex;
+        gap: .65rem;
+        margin-top: 1rem;
+        flex-wrap: wrap;
+    }
+
+    .recommender-shell {
+        max-width: 940px;
+        border: 1px solid #eadbc9;
+        background: linear-gradient(180deg, #fffdfb 0%, #fff 100%);
+        box-shadow: 0 20px 42px rgba(93, 65, 40, .08);
+    }
+
+    .recommender-shell .form-field label {
+        font-weight: 600;
+    }
+
+    .recommender-shell input,
+    .recommender-shell select,
+    .recommender-shell textarea {
+        background: #fffcf9;
+        border-radius: 14px;
+        border-color: #e8d8c7;
+        transition: border-color .2s ease, box-shadow .2s ease;
+    }
+
+    .recommender-shell input:focus,
+    .recommender-shell select:focus,
+    .recommender-shell textarea:focus {
+        border-color: #d1ad89;
+        box-shadow: 0 0 0 3px rgba(185, 144, 104, .15);
+        outline: none;
+    }
+
+    .recommender-submit-row {
+        padding-top: .4rem;
+        border-top: 1px dashed #eadac8;
+    }
+
+    .recommender-submit-row .btn {
+        min-width: 230px;
+    }
+
+    .preview-grid .soft-panel {
+        border: 1px solid #ead9c7;
+        border-radius: 14px;
+        background: #fff8f0;
+    }
+
+    .recommender-result {
+        margin-top: 1.15rem;
+        border: 1px solid #eadbc8;
+        background: linear-gradient(180deg, #fffaf4 0%, #fff 100%);
+    }
+
+    .recommender-result .soft-panel {
+        border: 1px solid #e8d7c4;
+        border-radius: 16px;
+        background: #fff;
+    }
+
+    .result-actions {
+        margin-top: 1rem;
+        justify-content: flex-end;
+    }
+
+    @media (max-width: 760px) {
+        .hero-quick-actions .btn,
+        .recommender-submit-row .btn,
+        .result-actions .btn {
+            width: 100%;
+        }
+
+        .result-actions {
+            justify-content: stretch;
+        }
+    }
+</style>
 
 <script>
 const input = document.getElementById('face_images');
