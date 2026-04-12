@@ -6,7 +6,6 @@ use App\Models\Setting;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Http;
-use Throwable;
 
 class GroqService
 {
@@ -58,9 +57,17 @@ class GroqService
 
     protected function client(): PendingRequest
     {
+        $verify = config('services.ai.ssl_verify', true);
+        $caBundlePath = config('services.ai.ca_bundle_path');
+
+        if (is_string($caBundlePath) && trim($caBundlePath) !== '') {
+            $verify = $caBundlePath;
+        }
+
         return Http::asJson()
             ->acceptJson()
             ->withToken((string) $this->settings->ai_api_key)
+            ->withOptions(['verify' => $verify])
             ->timeout((int) ($this->settings->ai_timeout_seconds ?: 25));
     }
 
