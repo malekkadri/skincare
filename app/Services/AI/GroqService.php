@@ -22,7 +22,7 @@ class GroqService
         $settings = $this->settings;
 
         $response = $this->client()
-            ->post($settings->ai_base_url ?: self::DEFAULT_BASE_URL, [
+            ->post($this->resolveEndpoint((string) ($settings->ai_base_url ?: self::DEFAULT_BASE_URL)), [
                 'model' => $settings->ai_model ?: self::DEFAULT_MODEL,
                 'temperature' => (float) ($settings->ai_temperature ?? 0.3),
                 'response_format' => ['type' => 'json_object'],
@@ -69,6 +69,22 @@ class GroqService
             ->withToken((string) $this->settings->ai_api_key)
             ->withOptions(['verify' => $verify])
             ->timeout((int) ($this->settings->ai_timeout_seconds ?: 25));
+    }
+
+
+    protected function resolveEndpoint(string $baseUrl): string
+    {
+        $trimmed = rtrim(trim($baseUrl), '/');
+
+        if (str_ends_with($trimmed, '/chat/completions')) {
+            return $trimmed;
+        }
+
+        if (str_ends_with($trimmed, '/openai/v1')) {
+            return $trimmed.'/chat/completions';
+        }
+
+        return $trimmed;
     }
 
     protected function stripCodeFence(string $content): string
