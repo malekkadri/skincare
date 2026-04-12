@@ -42,4 +42,9 @@ return [
         'store' => env('XAI_STORE', false),
     ],
 
+    'ai' => [
+        'ssl_verify' => env('AI_SSL_VERIFY', true),
+        'ca_bundle_path' => env('AI_CA_BUNDLE_PATH'),
+    ],
+
 ];
