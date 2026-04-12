@@ -2,13 +2,15 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\ResolvesPublicFileUrl;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Support\Facades\Storage;
 
 class Service extends Model
 {
+    use ResolvesPublicFileUrl;
+
     protected $fillable = [
         'category_id',
         'name_fr',
@@ -87,6 +89,6 @@ class Service extends Model
 
     public function getImageUrlAttribute(): ?string
     {
-        return $this->image_path ? Storage::disk('public')->url($this->image_path) : null;
+        return $this->resolvePublicFileUrl($this->image_path);
     }
 }

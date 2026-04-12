@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\ResolvesPublicFileUrl;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
 
 class Setting extends Model
 {
+    use ResolvesPublicFileUrl;
+
     protected $fillable = [
         'site_name','site_tagline_fr','site_tagline_en','logo_path','favicon_path','phone','whatsapp_number','address_fr','address_en',
         'facebook_url','instagram_url','tiktok_url','default_language','supported_languages','default_currency','supported_currencies','timezone',
@@ -39,8 +41,8 @@ class Setting extends Model
 
     protected $hidden = ['whatsapp_api_key', 'ai_api_key'];
 
-    public function getLogoUrlAttribute(): ?string { return $this->logo_path ? Storage::disk('public')->url($this->logo_path) : null; }
-    public function getFaviconUrlAttribute(): ?string { return $this->favicon_path ? Storage::disk('public')->url($this->favicon_path) : null; }
+    public function getLogoUrlAttribute(): ?string { return $this->resolvePublicFileUrl($this->logo_path); }
+    public function getFaviconUrlAttribute(): ?string { return $this->resolvePublicFileUrl($this->favicon_path); }
     public function localized(string $baseField, ?string $locale = null): ?string
     {
         $field = $baseField.'_'.($locale ?: app()->getLocale());
