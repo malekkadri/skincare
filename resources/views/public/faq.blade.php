@@ -1,6 +1,9 @@
 @extends('public.layouts.app')
 
 @section('content')
+@php
+    use Illuminate\Support\Str;
+@endphp
 <style>
     .faq-page { display: grid; gap: clamp(1.75rem, 3vw, 2.7rem); }
     .faq-categories { display: grid; gap: 1.55rem; }
@@ -67,8 +70,7 @@
     @else
         <div class="faq-categories">
             @foreach($items as $cat => $faqs)
-                <section class="faq-category" aria-labelledby="faq-cat-{{ \Illuminate\Support\Str::slug($cat) }}">                    <h2 id="faq-cat-{{ \\Illuminate\\Support\\Str::slug($cat) }}" class="faq-category-title">{{ $cat }}</h2>
-                    <div class="faq-list">
+            <section class="faq-category" aria-labelledby="faq-cat-{{ Str::slug($cat) }}">                    <div class="faq-list">
                         @foreach($faqs as $faq)
                             <details class="card faq-item">
                                 <summary>
