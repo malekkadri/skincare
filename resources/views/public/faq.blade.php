@@ -1,6 +1,8 @@
 @extends('public.layouts.app')
 
 @section('content')
+@include('public.partials.page-hero', ['hero'=>$hero ?? null, 'fallbackTitle'=>__('public.nav.faq')])
+
 @php
     use Illuminate\Support\Str;
 @endphp

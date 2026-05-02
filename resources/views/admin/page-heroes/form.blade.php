@@ -1,0 +1,4 @@
+<div class="card"><form method="POST" action="{{ $action }}" enctype="multipart/form-data">@csrf @if($method==='PUT')@method('PUT')@endif
+<div class="grid"><div><label>Page key</label><input name="page_key" value="{{ old('page_key',$hero->page_key) }}"></div><div><label>Sort</label><input type="number" name="sort_order" value="{{ old('sort_order',$hero->sort_order) }}"></div></div>
+<div class="grid"><div><label>Title FR</label><input name="title_fr" value="{{ old('title_fr',$hero->title_fr) }}"></div><div><label>Title EN</label><input name="title_en" value="{{ old('title_en',$hero->title_en) }}"></div></div>
+<label>Image</label><input type="file" name="image"><label>Mobile image</label><input type="file" name="mobile_image"><label><input type="checkbox" name="is_active" value="1" {{ old('is_active',$hero->is_active ?? true)?'checked':'' }}> Active</label><button class="btn">Save</button></form></div>

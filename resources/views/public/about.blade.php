@@ -3,6 +3,8 @@
 @section('title', $about?->localized_title ?? 'About')
 
 @section('content')
+@include('public.partials.page-hero', ['hero'=>$hero ?? null, 'fallbackTitle'=>__('public.nav.about')])
+
 <style>
     .trust-page { display: grid; gap: clamp(1.8rem, 3vw, 2.8rem); }
     .trust-hero {

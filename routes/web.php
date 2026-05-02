@@ -16,6 +16,8 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\FaqController;
 use App\Http\Controllers\Admin\GalleryItemController;
 use App\Http\Controllers\Admin\HomepageSectionController;
+use App\Http\Controllers\Admin\HomeBannerSlideController;
+use App\Http\Controllers\Admin\PageHeroController;
 use App\Http\Controllers\Admin\Ops\BackupController;
 use App\Http\Controllers\Admin\Ops\HealthController;
 use App\Http\Controllers\Admin\Ops\LaunchReadinessController;
@@ -120,6 +122,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::resource('testimonials', TestimonialController::class)->except('show');
             Route::resource('faq', FaqController::class)->except('show');
             Route::resource('policies', PolicyController::class)->except('show');
+            Route::resource('page-heroes', PageHeroController::class)->except('show');
+            Route::resource('home-banners', HomeBannerSlideController::class)->except('show')->parameter('home-banners','homeBanner');
         });
 
         Route::middleware('permission:manage_whatsapp')->group(function () {

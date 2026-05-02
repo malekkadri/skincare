@@ -3,6 +3,8 @@
 @section('title', __('consultation.recommender_title'))
 
 @section('content')
+@include('public.partials.page-hero', ['hero'=>null, 'fallbackTitle'=>__('public.nav.services')])
+
 <section class="page-section">
     <div class="page-hero reveal recommender-hero">
         <p class="section-kicker">AI Recommender</p>

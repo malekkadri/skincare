@@ -3,6 +3,8 @@
 @section('title', $settings->localized('contact_page_title') ?? 'Contact')
 
 @section('content')
+@include('public.partials.page-hero', ['hero'=>$hero ?? null, 'fallbackTitle'=>__('public.nav.contact')])
+
 <style>
     .contact-page { display: grid; gap: clamp(1.8rem, 3vw, 2.8rem); }
     .contact-layout {

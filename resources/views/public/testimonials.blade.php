@@ -1,6 +1,8 @@
 @extends('public.layouts.app')
 
 @section('content')
+@include('public.partials.page-hero', ['hero'=>$hero ?? null, 'fallbackTitle'=>__('public.nav.testimonials')])
+
 <style>
     .proof-page { display: grid; gap: clamp(1.75rem, 3vw, 2.75rem); }
     .proof-grid {

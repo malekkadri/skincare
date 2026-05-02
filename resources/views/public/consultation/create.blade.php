@@ -3,6 +3,8 @@
 @section('title', __('consultation.title'))
 
 @section('content')
+@include('public.partials.page-hero', ['hero'=>null, 'fallbackTitle'=>__('public.nav.consultation')])
+
 <section class="page-section">
     <div class="page-hero reveal consultation-hero">
         <p class="section-kicker">Consultation</p>
