@@ -20,8 +20,8 @@ class ServiceRecommendationRequest extends FormRequest
             'skin_sensitivity_level' => ['nullable', 'string', 'max:100'],
             'main_concerns' => ['required', 'string', 'max:2000'],
             'preferred_goals' => ['nullable', 'string', 'max:1500'],
-            'face_images' => ['nullable', 'array', 'max:3'],
-            'face_images.*' => ['file', 'image', 'mimes:jpg,jpeg,png,webp', 'mimetypes:image/jpeg,image/png,image/webp', 'max:8192', 'dimensions:min_width=300,min_height=300,max_width=6000,max_height=6000'],
+            'face_images' => ['required', 'array', 'min:1', 'max:1'],
+            'face_images.*' => ['file', 'mimes:jpg,jpeg,png,webp,heic,heif', 'mimetypes:image/jpeg,image/png,image/webp,image/heic,image/heif', 'max:8192', 'dimensions:min_width=300,min_height=300,max_width=6000,max_height=6000'],
         ];
     }
 }
