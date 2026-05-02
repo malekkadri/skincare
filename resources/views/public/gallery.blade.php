@@ -1,6 +1,8 @@
 @extends('public.layouts.app')
 
 @section('content')
+@include('public.partials.page-hero', ['hero'=>$hero ?? null, 'fallbackTitle'=>__('public.nav.gallery')])
+
 <style>
     .gallery-shell {
         display: grid;

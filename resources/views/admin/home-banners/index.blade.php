@@ -1,0 +1,3 @@
+@extends('admin.layouts.app')
+@section('title','Home Banners')
+@section('content')<div class='card'><a class='btn' href='{{ route('admin.home-banners.create') }}'>New Slide</a></div><div class='card'><table class='table'><tr><th>ID</th><th>Title EN</th><th>Active</th><th></th></tr>@foreach($slides as $slide)<tr><td>{{ $slide->id }}</td><td>{{ $slide->title_en }}</td><td>{{ $slide->is_active?'Yes':'No' }}</td><td><a class='btn btn-secondary' href='{{ route('admin.home-banners.edit',$slide) }}'>Edit</a><form method='POST' action='{{ route('admin.home-banners.destroy',$slide) }}' style='display:inline'>@csrf @method('DELETE')<button class='btn btn-danger'>Delete</button></form></td></tr>@endforeach</table></div>@endsection

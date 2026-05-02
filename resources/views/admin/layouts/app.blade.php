@@ -257,6 +257,8 @@
                     @if($user?->hasPermission('manage_cms'))
                         <a href="{{ route('admin.homepage.index') }}" class="{{ request()->routeIs('admin.homepage.*') ? 'active' : '' }}">Homepage</a>
                         <a href="{{ route('admin.about.edit') }}" class="{{ request()->routeIs('admin.about.*') ? 'active' : '' }}">About</a>
+                        <a href="{{ route('admin.page-heroes.index') }}" class="{{ request()->routeIs('admin.page-heroes.*') ? 'active' : '' }}">Page Heroes</a>
+                        <a href="{{ route('admin.home-banners.index') }}" class="{{ request()->routeIs('admin.home-banners.*') ? 'active' : '' }}">Home Banners</a>
                         <a href="{{ route('admin.gallery.index') }}" class="{{ request()->routeIs('admin.gallery.*') ? 'active' : '' }}">Gallery</a>
                         <a href="{{ route('admin.testimonials.index') }}" class="{{ request()->routeIs('admin.testimonials.*') ? 'active' : '' }}">Testimonials</a>
                         <a href="{{ route('admin.faq.index') }}" class="{{ request()->routeIs('admin.faq.*') ? 'active' : '' }}">FAQ</a>

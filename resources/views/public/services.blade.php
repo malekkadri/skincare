@@ -3,6 +3,8 @@
 @section('title', 'Services')
 
 @section('content')
+@include('public.partials.page-hero', ['hero'=>$hero ?? null, 'fallbackTitle'=>__('public.nav.services')])
+
 @php
     $totalServices = $categories->sum(fn($category) => $category->services->count());
 @endphp

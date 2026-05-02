@@ -295,9 +295,21 @@
         .btn-row .btn,
         .btn-row .btn-soft { width: 100%; }
     }
+.home-banner{position:relative;border-radius:30px;overflow:hidden;min-height:420px}.banner-slide{display:none;position:relative}.banner-slide.is-active{display:block}.banner-slide img{width:100%;height:clamp(380px,50vw,620px);object-fit:cover}.banner-overlay{position:absolute;inset:0;background:rgba(30,18,11,.35)}.banner-content{position:absolute;left:2rem;bottom:2rem;color:#fff;max-width:680px}.banner-content h1{color:#fff;font-size:clamp(2rem,4.8vw,3.8rem);margin:0}
 </style>
 
 <div class="home-shell">
+
+<div class="home-banner" data-slider>
+    @php($slides = $homeSlides->count() ? $homeSlides : collect([null]))
+    @foreach($slides as $i => $slide)
+    <article class="banner-slide {{ $i===0 ? 'is-active' : '' }}"> 
+        <img src="{{ $slide?->image_url ?? 'https://images.unsplash.com/photo-1526758097130-bab247274f58?auto=format&fit=crop&w=1800&q=80' }}" alt="{{ $slide?->localized_alt_text ?? 'Skin by Noor' }}">
+        <div class="banner-overlay"></div><div class="banner-content"><h1>{{ $slide?->localized_title ?? ($hero?->localized_title ?? 'Skin by Noor') }}</h1><p>{{ $slide?->localized_subtitle ?? ($hero?->localized_subtitle ?? $settings->localized('site_tagline')) }}</p>@if($slide?->localized_cta_label && $slide?->cta_url)<a href="{{ $slide->cta_url }}" class="btn">{{ $slide->localized_cta_label }}</a>@endif</div>
+    </article>
+    @endforeach
+</div>
+
     <section class="home-hero reveal" aria-label="Hero">
         <div class="hero-grid">
             <div class="hero-copy">
@@ -430,4 +442,5 @@
         </div>
     </section>
 </div>
+<script>document.addEventListener('DOMContentLoaded',()=>{const slides=[...document.querySelectorAll('.banner-slide')];if(slides.length<2)return;let i=0;setInterval(()=>{slides[i].classList.remove('is-active');i=(i+1)%slides.length;slides[i].classList.add('is-active');},5000);});</script>
 @endsection

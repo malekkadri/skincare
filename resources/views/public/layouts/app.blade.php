@@ -241,6 +241,15 @@
         }
         .section-tight-top { padding-top: 0; }
 
+        .sbn-page-hero{position:relative;border-radius:28px;overflow:hidden;min-height:320px;display:grid;align-items:end;box-shadow:var(--shadow-soft);border:1px solid var(--border);} 
+        .sbn-page-hero img{width:100%;height:clamp(320px,45vw,520px);object-fit:cover;display:block;} 
+        .sbn-page-hero .hero-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(36,26,18,.08),rgba(36,26,18,var(--hero-overlay)));}
+        .sbn-page-hero .hero-content{position:absolute;left:clamp(1rem,3vw,2.4rem);bottom:clamp(1rem,3vw,2rem);max-width:min(90%,700px);color:#fff;z-index:2}
+        .sbn-page-hero h1{margin:0 0 .35rem;color:#fff;font-size:clamp(1.8rem,4.2vw,3.2rem)}
+        .sbn-page-hero .subtitle{margin:.25rem 0;font-size:clamp(1rem,2vw,1.25rem)}
+        .sbn-page-hero .description{margin:.2rem 0 1rem;opacity:.95}
+
+
         .form-control,
         select,
         input,
@@ -278,7 +287,7 @@
             padding-top: 1.35rem;
             padding-bottom: 2.4rem;
         }
-        .page-section { padding: clamp(4rem, 8vw, 6.4rem) 0; }
+        .page-section { padding: clamp(2.2rem, 5vw, 4rem) 0; }
         .page-hero {
             border-radius: 32px;
             padding: clamp(2rem, 4.8vw, 4.25rem);
