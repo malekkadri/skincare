@@ -95,7 +95,7 @@
 
     <article class="policy-frame" aria-label="Policy details">
         <header class="policy-frame-head">
-            <p>Skin by Noor Client Policy</p>
+            <p>Skin by Noor Patient Policy</p>
         </header>
         <div class="policy-content">{!! nl2br(e($policy->localized_content)) !!}</div>
     </article>

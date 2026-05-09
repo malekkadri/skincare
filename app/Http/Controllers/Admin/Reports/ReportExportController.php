@@ -18,7 +18,7 @@ class ReportExportController extends Controller
         $period = ReportPeriod::resolve($filters);
         $rows = $service->exportRows($filters, $period);
 
-        return $this->streamCsv($this->filename('appointments', $period), ['ID', 'Date', 'Time', 'Customer', 'Service', 'Status', 'Language', 'Currency', 'Booked Price'],
+        return $this->streamCsv($this->filename('appointments', $period), ['ID', 'Date', 'Time', 'Patient', 'Service', 'Status', 'Language', 'Currency', 'Booked Price'],
             $rows->map(fn ($row) => [
                 $row->id,
                 $row->appointment_date?->format('Y-m-d'),

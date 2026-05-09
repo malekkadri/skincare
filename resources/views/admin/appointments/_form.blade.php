@@ -33,21 +33,21 @@
                 </select>
             </div>
             <div>
-                <label>Select Existing Customer (optional)</label>
+                <label>Select Existing Patient (optional)</label>
                 <select name="customer_id">
-                    <option value="">Create new customer</option>
+                    <option value="">Create new patient</option>
                     @foreach($customers as $customer)
                         <option value="{{ $customer->id }}" @selected((int) old('customer_id', $appointment->customer_id)===$customer->id)>{{ $customer->full_name }} - {{ $customer->phone }}</option>
                     @endforeach
                 </select>
             </div>
-            <div><label>Client Note</label><textarea name="notes">{{ old('notes', $appointment->notes) }}</textarea></div>
+            <div><label>Patient Note</label><textarea name="notes">{{ old('notes', $appointment->notes) }}</textarea></div>
             <div><label>Admin Note</label><textarea name="admin_notes">{{ old('admin_notes', $appointment->admin_notes) }}</textarea></div>
         </div>
     </section>
 
     <section class="card">
-        <h2>New Customer (if not selected above)</h2>
+        <h2>New Patient (if not selected above)</h2>
         <div class="grid">
             <div><label>First Name</label><input type="text" name="customer[first_name]" value="{{ old('customer.first_name') }}"></div>
             <div><label>Last Name</label><input type="text" name="customer[last_name]" value="{{ old('customer.last_name') }}"></div>
@@ -67,7 +67,7 @@
                     <option value="EUR" @selected(old('customer.preferred_currency')==='EUR')>EUR</option>
                 </select>
             </div>
-            <div><label>Customer Notes</label><textarea name="customer[notes]">{{ old('customer.notes') }}</textarea></div>
+            <div><label>Patient Notes</label><textarea name="customer[notes]">{{ old('customer.notes') }}</textarea></div>
         </div>
     </section>
 

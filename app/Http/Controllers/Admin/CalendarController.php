@@ -39,7 +39,7 @@ class CalendarController extends Controller
                 $endAt = Carbon::parse($appointment->appointment_date->toDateString().' '.$appointment->end_time, 'Africa/Tunis');
                 return [
                     'id' => $appointment->id,
-                    'title' => trim(($appointment->service_name_snapshot_en ?: $appointment->service?->name_en).' - '.($appointment->customer?->full_name ?? 'Client')),
+                    'title' => trim(($appointment->service_name_snapshot_en ?: $appointment->service?->name_en).' - '.($appointment->customer?->full_name ?? 'Patient')),
                     'start' => $startAt->toIso8601String(),
                     'end' => $endAt->toIso8601String(),
                     'status' => $appointment->status,
