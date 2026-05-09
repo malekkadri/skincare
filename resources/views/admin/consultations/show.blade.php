@@ -13,7 +13,7 @@
     };
 @endphp
 <div class="card">
-    <h2>Client</h2>
+    <h2>Patient</h2>
     <p><strong>{{ $consultation->full_name }}</strong> · {{ $consultation->phone }} · {{ $consultation->email }}</p>
     <p class="muted">Language: {{ strtoupper($consultation->preferred_language) }}</p>
 </div>

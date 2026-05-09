@@ -1,13 +1,13 @@
 @extends('admin.layouts.app')
 
-@section('title', 'Client Files')
-@section('header', 'Client Files')
+@section('title', 'Patient records')
+@section('header', 'Patient records')
 
 @section('content')
 <section class="card">
     <form method="GET" class="toolbar" style="margin-bottom:1rem;align-items:flex-end;">
         <div style="min-width:320px;">
-            <label for="q">Search client</label>
+            <label for="q">Search patient</label>
             <input id="q" name="q" value="{{ request('q') }}" placeholder="Name, phone, email...">
         </div>
         <button class="btn" type="submit">Search</button>
@@ -19,7 +19,7 @@
     <table class="table">
         <thead>
         <tr>
-            <th>Client</th>
+            <th>Patient</th>
             <th>Phone</th>
             <th>Appointments</th>
             <th>Consultations</th>
@@ -38,10 +38,10 @@
                 <td>{{ $client->appointments_count }}</td>
                 <td>{{ $client->consultations_count }}</td>
                 <td>{{ $client->progress_photos_count }}</td>
-                <td><a class="btn" href="{{ route('admin.clients.show', $client) }}">Open file</a></td>
+                <td><a class="btn" href="{{ route('admin.clients.show', $client) }}">Open record</a></td>
             </tr>
         @empty
-            <tr><td colspan="6">No clients found.</td></tr>
+            <tr><td colspan="6">No patients found.</td></tr>
         @endforelse
         </tbody>
     </table>

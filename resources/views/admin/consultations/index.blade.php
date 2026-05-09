@@ -13,7 +13,7 @@
 @endphp
 <div class="card">
     <table class="table">
-        <thead><tr><th>Date</th><th>Client</th><th>Phone</th><th>Language</th><th>Status</th><th>AI Analysis</th><th></th></tr></thead>
+        <thead><tr><th>Date</th><th>Patient</th><th>Phone</th><th>Language</th><th>Status</th><th>AI Analysis</th><th></th></tr></thead>
         <tbody>
         @forelse($consultations as $consultation)
             @php($aiStatus = $consultation->latestAiResult?->status)

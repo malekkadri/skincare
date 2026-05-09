@@ -1,13 +1,13 @@
 @extends('admin.layouts.app')
 @section('title', 'Consultations Report')
-@section('header', 'Customer & Consultation Insights')
+@section('header', 'Patient & Consultation Insights')
 @section('content')
 @include('admin.reports.partials.nav')
 @include('admin.reports.partials.filters')
 <div class="toolbar" style="margin-bottom:1rem"><a class="btn" href="{{ route('admin.reports.exports.consultations', request()->query()) }}">Export CSV</a></div>
 <div class="kpi-grid">
-    <div class="card kpi"><div class="label">New Customers</div><div class="value">{{ $summary['new_customers'] }}</div></div>
-    <div class="card kpi"><div class="label">Repeat Customers</div><div class="value">{{ $summary['repeat_customers'] }}</div></div>
+    <div class="card kpi"><div class="label">New Patients</div><div class="value">{{ $summary['new_customers'] }}</div></div>
+    <div class="card kpi"><div class="label">Returning Patients</div><div class="value">{{ $summary['repeat_customers'] }}</div></div>
     <div class="card kpi"><div class="label">Consultations</div><div class="value">{{ $summary['consultations_submitted'] }}</div></div>
     <div class="card kpi"><div class="label">Conversion Rate</div><div class="value">{{ $summary['consultation_conversion_rate'] }}%</div></div>
 </div>

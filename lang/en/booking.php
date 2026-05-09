@@ -66,7 +66,7 @@ return [
     'review_details_aria' => 'Appointment details',
     'review_selected_service' => 'Selected service',
     'time' => 'Time',
-    'client' => 'Client',
+    'client' => 'Patient',
     'price' => 'Price',
     'confirmation_copy' => 'By confirming, you verify these details and allow Skin by Noor to finalize your booking.',
     'confirm_checkbox' => 'I confirm this appointment.',

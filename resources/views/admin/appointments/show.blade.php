@@ -13,13 +13,13 @@
     </div>
 
     <div class="grid">
-        <div><label>Customer</label><p>{{ $appointment->customer?->full_name }}<br>{{ $appointment->customer?->phone }}<br>{{ $appointment->customer?->email }}</p></div>
+        <div><label>Patient</label><p>{{ $appointment->customer?->full_name }}<br>{{ $appointment->customer?->phone }}<br>{{ $appointment->customer?->email }}</p></div>
         <div><label>Service</label><p>{{ $appointment->service_name_snapshot_en }} / {{ $appointment->service_name_snapshot_fr }}</p></div>
         <div><label>Date & Time</label><p>{{ $appointment->appointment_date->format('Y-m-d') }} {{ \Illuminate\Support\Str::substr($appointment->start_time, 0, 5) }} - {{ \Illuminate\Support\Str::substr($appointment->end_time, 0, 5) }}</p></div>
         <div><label>Status</label><p><span class="status {{ $appointment->status_badge_class }}">{{ ucfirst(str_replace('_', ' ', $appointment->status)) }}</span></p></div>
         <div><label>Booked Price</label><p>{{ $appointment->display_price }}</p></div>
         <div><label>Language / Currency</label><p>{{ strtoupper($appointment->preferred_language) }} / {{ $appointment->booked_currency }}</p></div>
-        <div><label>Client Notes</label><p>{{ $appointment->notes ?: '-' }}</p></div>
+        <div><label>Patient Notes</label><p>{{ $appointment->notes ?: '-' }}</p></div>
         <div><label>Admin Notes</label><p>{{ $appointment->admin_notes ?: '-' }}</p></div>
     </div>
 </section>

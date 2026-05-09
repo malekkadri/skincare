@@ -53,7 +53,7 @@ class ClientController extends Controller
     {
         $client->update($request->validated());
 
-        return back()->with('success', 'Client information updated.');
+        return back()->with('success', 'Patient information updated.');
     }
 
     public function storePhoto(StoreCustomerProgressPhotoRequest $request, Customer $client): RedirectResponse

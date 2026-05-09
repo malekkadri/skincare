@@ -1,11 +1,11 @@
 @extends('admin.layouts.app')
 
-@section('title', 'Client File')
-@section('header', 'Client File: '.$client->full_name)
+@section('title', 'Patient record')
+@section('header', 'Patient record: '.$client->full_name)
 
 @section('content')
 <section class="card">
-    <h2>Client Profile</h2>
+    <h2>Patient profile</h2>
     <form method="POST" action="{{ route('admin.clients.update', $client) }}">
         @csrf
         @method('PUT')

@@ -69,16 +69,16 @@
     </div>
 
     @if($items->isEmpty())
-        <div class="empty-state">Client testimonials will appear here once published.</div>
+        <div class="empty-state">Patient testimonials will appear here once published.</div>
     @else
-        <div class="proof-grid" aria-label="Client testimonials">
+        <div class="proof-grid" aria-label="Patient testimonials">
             @foreach($items as $t)
                 <article class="card proof-card">
                     <p class="proof-stars" aria-label="{{ $t->rating }} out of 5 stars">{{ str_repeat('★', $t->rating) }}</p>
                     <p class="proof-content">{{ $t->localized_content }}</p>
                     <div>
                         <p class="proof-client">{{ $t->client_name }}</p>
-                        <span class="proof-badge">Client experience</span>
+                        <span class="proof-badge">Patient experience</span>
                     </div>
                 </article>
             @endforeach

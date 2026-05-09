@@ -32,7 +32,7 @@
 <section class="card">
     <p><a href="{{ route('admin.appointments.create') }}" class="btn">New Appointment</a></p>
     <table class="table">
-        <thead><tr><th>Date</th><th>Time</th><th>Customer</th><th>Service</th><th>Status</th><th>Price</th><th>Language</th><th>Currency</th><th>Actions</th></tr></thead>
+        <thead><tr><th>Date</th><th>Time</th><th>Patient</th><th>Service</th><th>Status</th><th>Price</th><th>Language</th><th>Currency</th><th>Actions</th></tr></thead>
         <tbody>
         @forelse($appointments as $appointment)
             <tr>
