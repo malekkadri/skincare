@@ -89,7 +89,7 @@
         }
         .brand-logo {
             display: block;
-            max-height: 58px;
+            max-height: 64px;
             width: auto;
             object-fit: contain;
         }
@@ -391,7 +391,7 @@
         }
         .footer-logo {
             display: block;
-            max-height: 50px;
+            max-height: 56px;
             width: auto;
             object-fit: contain;
         }
@@ -550,7 +550,7 @@
         <div class="site-nav">
             <a class="brand is-gold-focus" href="{{ route('home') }}">
                 @if(filled($settings->logo_url))
-                    <img class="brand-logo" src="{{ $settings->logo_url }}" alt="{{ $settings->site_name ?? 'Asthetika' }}">
+                    <img class="brand-logo" src="{{ $settings->logo_url }}" alt="Asthetika">
                 @else
                     <span class="brand-title">{{ $settings->site_name ?? 'Asthetika' }}</span>
                     <span class="brand-subtitle">Dr Aziz Sahly</span>
@@ -634,7 +634,7 @@
             <div>
                 <a class="footer-brand is-gold-focus" href="{{ route('home') }}">
                     @if(filled($settings->logo_url))
-                        <img class="footer-logo" src="{{ $settings->logo_url }}" alt="{{ $settings->site_name ?? 'Asthetika' }}">
+                        <img class="footer-logo" src="{{ $settings->logo_url }}" alt="Asthetika">
                     @else
                         <span class="brand-title">{{ $settings->site_name ?? 'Asthetika' }}</span>
                         <span class="brand-subtitle">Dr Aziz Sahly</span>

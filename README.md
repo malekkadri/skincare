@@ -1,6 +1,6 @@
 # Asthetika
 
-Asthetika is a Laravel website and admin panel for **Dr Aziz Sahly** (médecine esthétique et soins de la peau), based in Ennasr, Ariana, Tunisie.
+Asthetika is a Laravel website and admin panel for **Dr Aziz Sahly** (médecine esthétique et soins de la peau), based in La Soukra, Ariana, Tunisie.
 
 ## Requirements
 
