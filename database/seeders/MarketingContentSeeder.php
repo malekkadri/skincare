@@ -16,19 +16,19 @@ class MarketingContentSeeder extends Seeder
     {
         foreach ([
             ['key' => 'hero', 'title_fr' => 'Votre peau, votre éclat', 'title_en' => 'Your skin, your glow', 'content_fr' => 'Soins experts à Tunis.', 'content_en' => 'Expert skincare in Tunis.', 'button_text_fr' => 'Réserver', 'button_text_en' => 'Book now', 'secondary_button_text_fr' => 'WhatsApp', 'secondary_button_text_en' => 'WhatsApp', 'secondary_button_url' => '/contact', 'is_active' => true, 'sort_order' => 1],
-            ['key' => 'intro', 'title_fr' => 'Une beauté naturelle et raffinée', 'title_en' => 'Natural, refined beauty', 'content_fr' => 'Chez Skin by Noor, chaque soin est personnalisé.', 'content_en' => 'At Skin by Noor, every treatment is tailored.', 'is_active' => true, 'sort_order' => 2],
-            ['key' => 'benefits', 'title_fr' => 'Pourquoi nous choisir', 'title_en' => 'Why choose us', 'content_fr' => 'Protocoles professionnels, hygiène irréprochable, résultats visibles.', 'content_en' => 'Professional protocols, impeccable hygiene, visible results.', 'is_active' => true, 'sort_order' => 3],
+            ['key' => 'intro', 'title_fr' => 'Une prise en charge esthétique personnalisée', 'title_en' => 'Personalized aesthetic care', 'content_fr' => 'Chez Asthetika, chaque soin est adapté à votre peau, vos besoins et vos objectifs, avec une approche professionnelle et attentive.', 'content_en' => 'At Asthetika, every treatment is adapted to your skin, your needs, and your goals with a professional and attentive approach.', 'is_active' => true, 'sort_order' => 2],
+            ['key' => 'benefits', 'title_fr' => 'Pourquoi choisir Asthetika', 'title_en' => 'Why choose Asthetika', 'content_fr' => 'Protocoles médico-esthétiques personnalisés, hygiène rigoureuse, conseils adaptés et suivi attentif.', 'content_en' => 'Personalized medical-aesthetic protocols, rigorous hygiene, tailored advice, and attentive follow-up.', 'is_active' => true, 'sort_order' => 3],
         ] as $section) {
             HomepageSection::query()->updateOrCreate(['key' => $section['key']], $section);
         }
 
         AboutPage::query()->updateOrCreate(['id' => 1], [
-            'title_fr' => 'À propos de Skin by Noor', 'title_en' => 'About Skin by Noor',
-            'intro_fr' => 'Un institut premium dédié à la santé de la peau.', 'intro_en' => 'A premium studio dedicated to healthy skin.',
-            'story_fr' => 'Fondé à Tunis, Skin by Noor allie expertise dermo-esthétique et douceur.',
-            'story_en' => 'Founded in Tunis, Skin by Noor blends dermo-aesthetic expertise with gentle care.',
-            'philosophy_fr' => 'Des soins ciblés, élégants et durables.', 'philosophy_en' => 'Targeted, elegant, long-lasting care.',
-            'qualifications_fr' => 'Esthétique avancée, hygiène médicale, protocoles certifiés.', 'qualifications_en' => 'Advanced aesthetics, medical hygiene, certified protocols.', 'is_published' => true,
+            'title_fr' => 'À propos d’Asthetika', 'title_en' => 'About Asthetika',
+            'intro_fr' => 'Asthetika est un espace dédié à la médecine esthétique et aux soins de la peau, dirigé par Dr Aziz Sahly.', 'intro_en' => 'Asthetika is a space dedicated to aesthetic medicine and skincare, led by Dr Aziz Sahly.',
+            'story_fr' => 'Situé à Ennasr, Ariana, Asthetika accompagne chaque patient avec des protocoles personnalisés, une écoute attentive et une approche centrée sur la santé de la peau.',
+            'story_en' => 'Located in Ennasr, Ariana, Asthetika supports each patient with personalized protocols, attentive care, and a skin-health-focused approach.',
+            'philosophy_fr' => 'Sublimer la peau avec naturel, précision et sécurité.', 'philosophy_en' => 'Enhancing the skin with natural-looking, precise, and safe care.',
+            'qualifications_fr' => 'Médecine esthétique, protocoles cutanés personnalisés, hygiène médicale et accompagnement professionnel.', 'qualifications_en' => 'Aesthetic medicine, personalized skin protocols, medical hygiene, and professional care.', 'is_published' => true,
         ]);
 
         foreach (range(1, 4) as $i) {
