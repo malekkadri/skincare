@@ -25,8 +25,8 @@ class MarketingContentSeeder extends Seeder
         AboutPage::query()->updateOrCreate(['id' => 1], [
             'title_fr' => 'À propos d’Asthetika', 'title_en' => 'About Asthetika',
             'intro_fr' => 'Asthetika est un espace dédié à la médecine esthétique et aux soins de la peau, dirigé par Dr Aziz Sahly.', 'intro_en' => 'Asthetika is a space dedicated to aesthetic medicine and skincare, led by Dr Aziz Sahly.',
-            'story_fr' => 'Situé à Ennasr, Ariana, Asthetika accompagne chaque patient avec des protocoles personnalisés, une écoute attentive et une approche centrée sur la santé de la peau.',
-            'story_en' => 'Located in Ennasr, Ariana, Asthetika supports each patient with personalized protocols, attentive care, and a skin-health-focused approach.',
+            'story_fr' => 'Situé à La Soukra, Ariana, Asthetika accompagne chaque patient avec des protocoles personnalisés, une écoute attentive et une approche centrée sur la santé de la peau.',
+            'story_en' => 'Located in La Soukra, Ariana, Asthetika supports each patient with personalized protocols, attentive care, and a skin-health-focused approach.',
             'philosophy_fr' => 'Sublimer la peau avec naturel, précision et sécurité.', 'philosophy_en' => 'Enhancing the skin with natural-looking, precise, and safe care.',
             'qualifications_fr' => 'Médecine esthétique, protocoles cutanés personnalisés, hygiène médicale et accompagnement professionnel.', 'qualifications_en' => 'Aesthetic medicine, personalized skin protocols, medical hygiene, and professional care.', 'is_published' => true,
         ]);

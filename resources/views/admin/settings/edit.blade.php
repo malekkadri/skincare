@@ -27,7 +27,11 @@
             <div>
                 <label>Logo</label>
                 <input type="file" name="logo" accept="image/*">
-                @if($settings->logo_url)<p class="muted">Current: <a href="{{ $settings->logo_url }}" target="_blank">View logo</a></p>@endif
+                <p class="muted">Recommended: transparent PNG/SVG/WebP, horizontal logo preferred.</p>
+                @if($settings->logo_url)
+                    <p class="muted">Current: <a href="{{ $settings->logo_url }}" target="_blank">View logo</a></p>
+                    <img src="{{ $settings->logo_url }}" alt="Asthetika" style="display:block;max-height:64px;width:auto;object-fit:contain;margin-top:.5rem;">
+                @endif
                 @error('logo')<div class="error">{{ $message }}</div>@enderror
             </div>
             <div>

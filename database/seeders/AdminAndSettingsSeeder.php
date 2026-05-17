@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Setting;
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 
 class AdminAndSettingsSeeder extends Seeder
@@ -22,16 +23,20 @@ class AdminAndSettingsSeeder extends Seeder
             ]
         );
 
+        $existingSettings = Setting::query()->find(1);
+
+        $defaultFavicon = File::exists(public_path('favicon.ico')) ? 'favicon.ico' : null;
+
         Setting::query()->updateOrCreate(
             ['id' => 1],
             [
                 'site_name' => 'Asthetika',
-                'site_tagline_fr' => 'Médecine esthétique et soins de la peau à Ennasr, Ariana',
-                'site_tagline_en' => 'Aesthetic medicine and skincare in Ennasr, Ariana',
+                'site_tagline_fr' => 'Médecine esthétique et soins de la peau à La Soukra, Ariana',
+                'site_tagline_en' => 'Aesthetic medicine and skincare in La Soukra, Ariana',
                 'phone' => '+216 26 500 507',
                 'whatsapp_number' => '+216 26 500 507',
-                'address_fr' => 'Centre médical Tunisie Médicale, 4e étage, avenue Hédi Nouira, devant la Clinique Amilcar, Ennasr, Ariana, Tunisie',
-                'address_en' => 'Centre médical Tunisie Médicale, 4th floor, Hédi Nouira Avenue, opposite Clinique Amilcar, Ennasr, Ariana, Tunisia',
+                'address_fr' => 'La Soukra, Ariana, Tunisie',
+                'address_en' => 'La Soukra, Ariana, Tunisia',
                 'facebook_url' => 'https://www.facebook.com/Dr.AzizSahLy/',
                 'instagram_url' => 'https://www.instagram.com/dr.azizsahly/',
                 'tiktok_url' => null,
@@ -79,21 +84,21 @@ class AdminAndSettingsSeeder extends Seeder
                 'map_embed_url' => 'https://www.google.com/maps?q=36.8586692,10.1703668&z=15&output=embed',
                 'opening_hours_fr' => 'Consultation et soins sur rendez-vous',
                 'opening_hours_en' => 'Consultations and treatments by appointment',
-                'logo_path' => null,
-                'favicon_path' => 'favicon.ico',
+                'logo_path' => filled($existingSettings?->logo_path) ? $existingSettings->logo_path : null,
+                'favicon_path' => filled($existingSettings?->favicon_path) ? $existingSettings->favicon_path : $defaultFavicon,
 
-                'seo_home_title_fr' => 'Asthetika | Médecine esthétique à Ennasr, Ariana',
-                'seo_home_title_en' => 'Asthetika | Aesthetic medicine in Ennasr, Ariana',
-                'seo_home_description_fr' => 'Asthetika par Dr Aziz Sahly propose des soins médico-esthétiques personnalisés, Hydrafacial et protocoles cutanés à Ennasr, Ariana.',
-                'seo_home_description_en' => 'Asthetika by Dr Aziz Sahly offers personalized aesthetic medicine, Hydrafacial treatments, and skincare protocols in Ennasr, Ariana.',
+                'seo_home_title_fr' => 'Asthetika | Médecine esthétique à La Soukra, Ariana',
+                'seo_home_title_en' => 'Asthetika | Aesthetic medicine in La Soukra, Ariana',
+                'seo_home_description_fr' => 'Asthetika par Dr Aziz Sahly propose des soins médico-esthétiques personnalisés, Hydrafacial et protocoles cutanés à La Soukra, Ariana.',
+                'seo_home_description_en' => 'Asthetika by Dr Aziz Sahly offers personalized aesthetic medicine, Hydrafacial treatments, and skincare protocols in La Soukra, Ariana.',
                 'seo_services_title_fr' => 'Services Asthetika',
                 'seo_services_title_en' => 'Asthetika Services',
                 'seo_services_description_fr' => 'Découvrez les soins Asthetika : Hydrafacial Essentiel, Hydrafacial Détoxifiant et protocoles personnalisés pour la peau.',
                 'seo_services_description_en' => 'Discover Asthetika treatments: Hydrafacial Essential, Hydrafacial Detoxifying, and personalized skincare protocols.',
                 'seo_contact_title_fr' => 'Contact Asthetika',
                 'seo_contact_title_en' => 'Contact Asthetika',
-                'seo_contact_description_fr' => 'Contactez Asthetika par Dr Aziz Sahly à Ennasr, Ariana pour vos rendez-vous et informations.',
-                'seo_contact_description_en' => 'Contact Asthetika by Dr Aziz Sahly in Ennasr, Ariana for appointments and information.',
+                'seo_contact_description_fr' => 'Contactez Asthetika par Dr Aziz Sahly à La Soukra, Ariana pour vos rendez-vous et informations.',
+                'seo_contact_description_en' => 'Contact Asthetika by Dr Aziz Sahly in La Soukra, Ariana for appointments and information.',
                 'ai_enabled' => false,
                 'ai_provider' => 'groq',
                 'ai_api_key' => null,
