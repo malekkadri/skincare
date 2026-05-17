@@ -440,8 +440,13 @@
             align-items: center;
             justify-content: center;
             color: var(--text-primary);
-            font-size: .8rem;
-            font-weight: 700;
+        }
+        .footer-social svg {
+            width: 1.18rem;
+            height: 1.18rem;
+            stroke: currentColor;
+            fill: none;
+            flex: 0 0 auto;
         }
         .lux-divider {
             height: 1px;
@@ -619,6 +624,10 @@
     @yield('content')
 </main>
 
+@php
+    $footerMapUrl = trim((string) ($settings->map_embed_url ?? ''));
+@endphp
+
 <footer class="site-footer">
     <div class="container">
         <div class="footer-grid">
@@ -665,17 +674,27 @@
                 <div class="footer-social" aria-label="{{ __('public.footer.social') }}">
                     @if(filled($settings->instagram_url))
                         <a class="is-gold-focus" href="{{ $settings->instagram_url }}" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"></rect><circle cx="12" cy="12" r="4.2"></circle><circle cx="17.3" cy="6.7" r="1"></circle></svg>
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5" stroke-width="1.8"></rect><circle cx="12" cy="12" r="4.2" stroke-width="1.8"></circle><circle cx="17.3" cy="6.7" r="1"></circle></svg>
+                        </a>
+                    @endif
+                    @if(filled($settings->facebook_url))
+                        <a class="is-gold-focus" href="{{ $settings->facebook_url }}" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 9h3V5h-3c-2.8 0-5 2.2-5 5v3H6v4h3v4h4v-4h3.2l.8-4H13v-2.8c0-.7.3-1.2 1-1.2Z" stroke-width="1.6"></path></svg>
                         </a>
                     @endif
                     @if(filled($settings->phone))
                         <a class="is-gold-focus" href="tel:{{ preg_replace('/\s+/', '', $settings->phone) }}" aria-label="Call Asthetika">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M21 16.2v2.7a2 2 0 0 1-2.2 2 19.7 19.7 0 0 1-8.6-3.1 19.4 19.4 0 0 1-6-6A19.7 19.7 0 0 1 1 3.2 2 2 0 0 1 3 1h2.7a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L6.7 8.7a16 16 0 0 0 6.6 6.6l1.2-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.7.7A2 2 0 0 1 21 16.2z"></path></svg>
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 16.2v2.7a2 2 0 0 1-2.2 2 19.7 19.7 0 0 1-8.6-3.1 19.4 19.4 0 0 1-6-6A19.7 19.7 0 0 1 1 3.2 2 2 0 0 1 3 1h2.7a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L6.7 8.7a16 16 0 0 0 6.6 6.6l1.2-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.7.7A2 2 0 0 1 21 16.2z" stroke-width="1.8"></path></svg>
                         </a>
                     @endif
-                    @if(filled($settings->map_embed_url))
-                        <a class="is-gold-focus" href="{{ $settings->map_embed_url }}" target="_blank" rel="noopener noreferrer" aria-label="Open Asthetika location on Google Maps">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"></path><circle cx="12" cy="10" r="2.7"></circle></svg>
+                    @if(filled($settings->whatsapp_number))
+                        <a class="is-gold-focus" href="https://wa.me/{{ preg_replace('/\D+/', '', $settings->whatsapp_number) }}" target="_blank" rel="noopener noreferrer" aria-label="Message Asthetika on WhatsApp">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11.8c0 4.8-3.9 8.7-8.7 8.7-1.5 0-2.9-.4-4.1-1l-4.2 1.3 1.4-4c-.8-1.4-1.2-3-1.2-4.7C3.2 7.3 7.1 3.4 12 3.4s8 3.9 8 8.4Z" stroke-width="1.6"></path><path d="M8.5 9.2c.3-.6.6-.6.9-.6h.7c.2 0 .4 0 .5.3l.8 1.8c.1.2 0 .4-.1.6l-.4.5c-.1.1-.2.3-.1.5.2.5.8 1.3 1.7 1.9.5.4 1 .6 1.4.8.2.1.4.1.6 0l.6-.5c.2-.1.4-.2.6-.1l1.7.8c.3.1.3.3.3.5v.7c0 .3-.1.6-.6.9-.5.3-1.1.5-1.9.3-1-.2-2.2-.7-3.6-1.9-1.2-1-2.1-2.3-2.5-3.5-.3-.9-.1-1.8.4-2.5Z" stroke-width="1.2"></path></svg>
+                        </a>
+                    @endif
+                    @if(filled($footerMapUrl))
+                        <a class="is-gold-focus" href="{{ $footerMapUrl }}" target="_blank" rel="noopener noreferrer" aria-label="Open Asthetika location on Google Maps">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z" stroke-width="1.8"></path><circle cx="12" cy="10" r="2.7" stroke-width="1.8"></circle></svg>
                         </a>
                     @endif
                 </div>
