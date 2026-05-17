@@ -6,6 +6,9 @@
     <title>{{ $seo->title ?? ($settings->site_name ?? 'Skin by Noor') }}</title>
     <meta name="description" content="{{ $seo->description ?? ($settings->localized('site_tagline') ?? '') }}">
     <link rel="canonical" href="{{ $seo->canonical ?? url()->current() }}">
+    @if(filled($settings->favicon_url))
+        <link rel="icon" href="{{ $settings->favicon_url }}">
+    @endif
     <meta property="og:title" content="{{ $seo->title ?? ($settings->site_name ?? 'Skin by Noor') }}">
     <meta property="og:description" content="{{ $seo->description ?? ($settings->localized('site_tagline') ?? '') }}">
     <meta property="og:type" content="{{ $seo->ogType ?? 'website' }}">
@@ -81,7 +84,8 @@
         .brand {
             display: inline-grid;
             gap: .2rem;
-            align-items: baseline;
+            align-items: center;
+            justify-items: start;
         }
         .brand-logo {
             display: block;
@@ -379,6 +383,19 @@
             grid-template-columns: 1.6fr 1fr 1fr 1.15fr;
             align-items: start;
         }
+
+        .footer-brand {
+            display: inline-grid;
+            gap: .3rem;
+            margin-bottom: .5rem;
+        }
+        .footer-logo {
+            display: block;
+            max-height: 50px;
+            width: auto;
+            object-fit: contain;
+        }
+
         .footer-title {
             font-size: 1.06rem;
             margin-bottom: .55rem;
@@ -531,7 +548,7 @@
                     <img class="brand-logo" src="{{ $settings->logo_url }}" alt="{{ $settings->site_name ?? 'Asthetika' }}">
                 @else
                     <span class="brand-title">{{ $settings->site_name ?? 'Asthetika' }}</span>
-                    <span class="brand-subtitle">{{ __('public.footer.brand_mark') }}</span>
+                    <span class="brand-subtitle">Dr Aziz Sahly</span>
                 @endif
             </a>
 
@@ -606,7 +623,14 @@
     <div class="container">
         <div class="footer-grid">
             <div>
-                <h3>{{ $settings->site_name ?? 'Skin by Noor' }}</h3>
+                <a class="footer-brand is-gold-focus" href="{{ route('home') }}">
+                    @if(filled($settings->logo_url))
+                        <img class="footer-logo" src="{{ $settings->logo_url }}" alt="{{ $settings->site_name ?? 'Asthetika' }}">
+                    @else
+                        <span class="brand-title">{{ $settings->site_name ?? 'Asthetika' }}</span>
+                        <span class="brand-subtitle">Dr Aziz Sahly</span>
+                    @endif
+                </a>
                 <div class="lux-divider"></div>
                 <p class="muted">{{ $settings->localized('site_tagline') ?: __('public.footer.tagline') }}</p>
                 <p class="footer-meta">{{ __('public.footer.brand_assurance') }}</p>
