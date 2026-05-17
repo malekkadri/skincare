@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Models\Service;
 use App\Models\ServiceCategory;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Str;
 
 class ServiceCatalogSeeder extends Seeder
 {
@@ -14,110 +13,57 @@ class ServiceCatalogSeeder extends Seeder
         $facials = ServiceCategory::query()->updateOrCreate(
             ['slug' => 'facials'],
             [
-                'name_fr' => 'Soins du visage',
-                'name_en' => 'Facials',
-                'description_fr' => 'Des protocoles visage premium pour hydrater et illuminer la peau.',
-                'description_en' => 'Premium facial protocols designed to hydrate and brighten the skin.',
+                'name_fr' => 'Hydrafacial',
+                'name_en' => 'Hydrafacial',
+                'description_fr' => 'Protocoles Hydrafacial experts adaptés aux besoins de votre peau.',
+                'description_en' => 'Expert Hydrafacial protocols tailored to your skin needs.',
                 'is_active' => true,
                 'sort_order' => 1,
             ]
         );
 
-        $advanced = ServiceCategory::query()->updateOrCreate(
-            ['slug' => 'advanced-treatments'],
-            [
-                'name_fr' => 'Traitements avancés',
-                'name_en' => 'Advanced Treatments',
-                'description_fr' => 'Traitements ciblés pour texture, taches et éclat global.',
-                'description_en' => 'Targeted treatments for texture, discoloration, and overall glow.',
-                'is_active' => true,
-                'sort_order' => 2,
-            ]
-        );
-
-        $consultations = ServiceCategory::query()->updateOrCreate(
-            ['slug' => 'consultations'],
-            [
-                'name_fr' => 'Consultations',
-                'name_en' => 'Consultations',
-                'description_fr' => 'Évaluation personnalisée et plan de soin adapté.',
-                'description_en' => 'Personalized evaluation with a tailored skincare plan.',
-                'is_active' => true,
-                'sort_order' => 3,
-            ]
-        );
-
         $services = [
             [
+                'slug' => 'hydrafacial-essentiel',
                 'category_id' => $facials->id,
-                'name_fr' => 'Soin Hydratant Intense',
-                'name_en' => 'Hydrating Facial',
-                'short_description_fr' => 'Hydratation profonde pour peaux sèches ou déshydratées.',
-                'short_description_en' => 'Deep hydration treatment for dry or dehydrated skin.',
-                'description_fr' => 'Nettoyage doux, exfoliation légère, masque hydratant et massage relaxant.',
-                'description_en' => 'Gentle cleansing, light exfoliation, hydrating mask, and relaxing massage.',
-                'price_tnd' => 180,
-                'price_eur' => 55,
+                'name_fr' => 'Hydrafacial Essentiel',
+                'name_en' => 'Hydrafacial Essential',
+                'short_description_fr' => 'Nettoyage profond, extraction douce, masque ciblé et LED.',
+                'short_description_en' => 'Deep cleansing, gentle extraction, targeted mask, and LED.',
+                'description_fr' => 'Nettoyage cutané profond associé à une exfoliation contrôlée, suivi d’une extraction douce des comédons ouverts et fermés. Le soin se complète par l’application d’un masque adapté et une séance de photobiomodulation LED afin d’optimiser l’éclat et l’équilibre cutané.',
+                'description_en' => 'Deep skin cleansing with controlled exfoliation, followed by gentle extraction of open and closed comedones. The treatment ends with a targeted mask and LED photobiomodulation session to optimize glow and skin balance.',
+                'price_tnd' => 250,
+                'price_eur' => 75,
                 'duration_minutes' => 60,
                 'buffer_minutes' => 10,
                 'is_featured' => true,
                 'sort_order' => 1,
             ],
             [
+                'slug' => 'hydrafacial-detoxifiant',
                 'category_id' => $facials->id,
-                'name_fr' => 'Soin Purifiant Profond',
-                'name_en' => 'Deep Cleansing Facial',
-                'short_description_fr' => 'Purifie les pores et réduit les imperfections.',
-                'short_description_en' => 'Purifies pores and helps reduce blemishes.',
-                'description_fr' => 'Extraction experte, apaisement et finition équilibrante.',
-                'description_en' => 'Expert extraction, soothing care, and balancing finish.',
-                'price_tnd' => 200,
-                'price_eur' => 62,
-                'duration_minutes' => 75,
+                'name_fr' => 'Hydrafacial Détoxifiant',
+                'name_en' => 'Hydrafacial Detoxifying',
+                'short_description_fr' => 'Soin purifiant intensif avec dermaplaning, masque exfoliant et LED.',
+                'short_description_en' => 'Intensive purifying treatment with dermaplaning, exfoliating mask, and LED.',
+                'description_fr' => 'Soin purifiant intensif visant à désengorger les peaux asphyxiées. Il associe un nettoyage complet, un dermaplaning pour éliminer les cellules mortes et le duvet, une tonification cutanée ainsi qu’un masque exfoliant, suivi d’une luminothérapie LED pour rééquilibrer la peau. Indiqué pour les peaux ternes, obstruées ou sujettes aux imperfections.',
+                'description_en' => 'Intensive purifying treatment designed to decongest suffocated skin. It combines complete cleansing, dermaplaning to remove dead cells and peach fuzz, skin toning, and an exfoliating mask, followed by LED light therapy to rebalance the skin. Recommended for dull, congested, or blemish-prone skin.',
+                'price_tnd' => 300,
+                'price_eur' => 90,
+                'duration_minutes' => 60,
                 'buffer_minutes' => 10,
                 'is_featured' => true,
                 'sort_order' => 2,
-            ],
-            [
-                'category_id' => $consultations->id,
-                'name_fr' => 'Consultation Cutanée',
-                'name_en' => 'Skin Consultation',
-                'short_description_fr' => 'Analyse complète de la peau et routine recommandée.',
-                'short_description_en' => 'Comprehensive skin analysis with routine recommendations.',
-                'description_fr' => 'Diagnostic personnalisé avec conseils produits et plan de suivi.',
-                'description_en' => 'Personalized diagnosis with product guidance and follow-up plan.',
-                'price_tnd' => 90,
-                'price_eur' => 28,
-                'duration_minutes' => 40,
-                'buffer_minutes' => 5,
-                'is_featured' => false,
-                'sort_order' => 3,
-            ],
-            [
-                'category_id' => $advanced->id,
-                'name_fr' => 'Peeling Éclat Doux',
-                'name_en' => 'Glow Peel Treatment',
-                'short_description_fr' => 'Peeling doux pour raviver l\'éclat et lisser le grain de peau.',
-                'short_description_en' => 'Gentle peel to boost glow and smooth texture.',
-                'description_fr' => 'Protocole ciblé anti-terne avec phase apaisante post-traitement.',
-                'description_en' => 'Targeted anti-dullness protocol with soothing post-treatment phase.',
-                'price_tnd' => 260,
-                'price_eur' => 80,
-                'duration_minutes' => 50,
-                'buffer_minutes' => 10,
-                'is_featured' => false,
-                'sort_order' => 4,
             ],
         ];
 
         foreach ($services as $serviceData) {
             Service::query()->updateOrCreate(
-                ['slug' => Str::slug($serviceData['name_en'])],
-                array_merge($serviceData, [
-                    'slug' => Str::slug($serviceData['name_en']),
-                    'is_active' => true,
-                ])
+                ['slug' => $serviceData['slug']],
+                array_merge($serviceData, ['is_active' => true])
             );
         }
+
+        Service::query()->whereNotIn('slug', array_column($services, 'slug'))->update(['is_active' => false]);
     }
 }

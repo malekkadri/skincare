@@ -83,6 +83,12 @@
             gap: .2rem;
             align-items: baseline;
         }
+        .brand-logo {
+            display: block;
+            max-height: 58px;
+            width: auto;
+            object-fit: contain;
+        }
         .brand-title {
             font-family: 'Playfair Display', Georgia, serif;
             font-size: clamp(1.25rem, 2vw, 1.6rem);
@@ -521,8 +527,12 @@
     <div class="container">
         <div class="site-nav">
             <a class="brand is-gold-focus" href="{{ route('home') }}">
-                <span class="brand-title">{{ $settings->site_name ?? 'Skin by Noor' }}</span>
-                <span class="brand-subtitle">{{ __('public.footer.brand_mark') }}</span>
+                @if(filled($settings->logo_url))
+                    <img class="brand-logo" src="{{ $settings->logo_url }}" alt="{{ $settings->site_name ?? 'Asthetika' }}">
+                @else
+                    <span class="brand-title">{{ $settings->site_name ?? 'Asthetika' }}</span>
+                    <span class="brand-subtitle">{{ __('public.footer.brand_mark') }}</span>
+                @endif
             </a>
 
             <button class="menu-toggle is-gold-focus" type="button" data-mobile-toggle aria-expanded="false" aria-controls="mobileNavPanel">
@@ -626,17 +636,23 @@
                     <span class="footer-meta">{{ $settings->localized('address') }}</span>
                 @endif
                 @if(filled($settings->whatsapp_number))
-                    <a class="btn is-gold-focus" target="_blank" rel="noopener" href="https://wa.me/{{ preg_replace('/\D+/', '', $settings->whatsapp_number) }}">{{ __('public.footer.whatsapp') }}</a>
+                    <a class="btn is-gold-focus" target="_blank" rel="noopener noreferrer" href="https://wa.me/{{ preg_replace('/\D+/', '', $settings->whatsapp_number) }}">{{ __('public.footer.whatsapp') }}</a>
                 @endif
                 <div class="footer-social" aria-label="{{ __('public.footer.social') }}">
                     @if(filled($settings->instagram_url))
-                        <a class="is-gold-focus" href="{{ $settings->instagram_url }}" target="_blank" rel="noopener" aria-label="Instagram">IG</a>
+                        <a class="is-gold-focus" href="{{ $settings->instagram_url }}" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"></rect><circle cx="12" cy="12" r="4.2"></circle><circle cx="17.3" cy="6.7" r="1"></circle></svg>
+                        </a>
                     @endif
-                    @if(filled($settings->facebook_url))
-                        <a class="is-gold-focus" href="{{ $settings->facebook_url }}" target="_blank" rel="noopener" aria-label="Facebook">FB</a>
+                    @if(filled($settings->phone))
+                        <a class="is-gold-focus" href="tel:{{ preg_replace('/\s+/', '', $settings->phone) }}" aria-label="Call Asthetika">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M21 16.2v2.7a2 2 0 0 1-2.2 2 19.7 19.7 0 0 1-8.6-3.1 19.4 19.4 0 0 1-6-6A19.7 19.7 0 0 1 1 3.2 2 2 0 0 1 3 1h2.7a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L6.7 8.7a16 16 0 0 0 6.6 6.6l1.2-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.7.7A2 2 0 0 1 21 16.2z"></path></svg>
+                        </a>
                     @endif
-                    @if(filled($settings->tiktok_url))
-                        <a class="is-gold-focus" href="{{ $settings->tiktok_url }}" target="_blank" rel="noopener" aria-label="TikTok">TT</a>
+                    @if(filled($settings->map_embed_url))
+                        <a class="is-gold-focus" href="{{ $settings->map_embed_url }}" target="_blank" rel="noopener noreferrer" aria-label="Open Asthetika location on Google Maps">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"></path><circle cx="12" cy="10" r="2.7"></circle></svg>
+                        </a>
                     @endif
                 </div>
             </div>
