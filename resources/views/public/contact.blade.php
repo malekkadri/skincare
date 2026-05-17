@@ -75,7 +75,7 @@
 
     <div class="contact-layout">
         <article class="card contact-card" aria-label="Contact details">
-            <h2>Visit or call Skin by Noor</h2>
+            <h2>{{ app()->getLocale() === 'fr' ? 'Visitez ou contactez Asthetika' : 'Visit or contact Asthetika' }}</h2>
 
             <div class="contact-line">
                 <span class="contact-label">Address</span>
@@ -97,12 +97,29 @@
                 </div>
             @endif
 
-            <p class="contact-note">Every inquiry is reviewed with care. We typically respond promptly during regular studio hours.</p>
+            <p class="contact-note">{{ app()->getLocale() === 'fr' ? 'Chaque demande est traitée avec attention. Les consultations et soins sont organisés sur rendez-vous.' : 'Every inquiry is handled with care. Consultations and treatments are organized by appointment.' }}</p>
         </article>
 
         <article class="card map-card" aria-label="Studio location map">
-            @if($settings->map_embed_url)
+            @php
+                $mapUrl = trim((string) $settings->map_embed_url);
+                $isEmbeddableGoogleMap = filled($mapUrl) && str_contains($mapUrl, 'google.') && (str_contains($mapUrl, '/maps/embed') || str_contains($mapUrl, 'output=embed'));
+            @endphp
+
+            @if($isEmbeddableGoogleMap)
                 <iframe class="map-frame" src="{{ $settings->map_embed_url }}" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            @elseif(filled($mapUrl))
+                <div class="empty-state" style="height:100%;display:grid;place-items:center;padding:2rem;">
+                    <a
+                        class="btn btn-soft"
+                        href="{{ $mapUrl }}"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="Open Asthetika location on Google Maps"
+                    >
+                        {{ app()->getLocale() === 'fr' ? 'Ouvrir l’adresse sur Google Maps' : 'Open location on Google Maps' }}
+                    </a>
+                </div>
             @else
                 <div class="empty-state" style="height:100%;display:grid;place-items:center;padding:2rem;">Map details will be available soon.</div>
             @endif
