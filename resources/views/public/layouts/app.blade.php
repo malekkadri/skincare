@@ -3,19 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ $seo->title ?? ($settings->site_name ?? 'Skin by Noor') }}</title>
+    <title>{{ $seo->title ?? ($settings->site_name ?? 'Asthetika') }}</title>
     <meta name="description" content="{{ $seo->description ?? ($settings->localized('site_tagline') ?? '') }}">
     <link rel="canonical" href="{{ $seo->canonical ?? url()->current() }}">
     @if(filled($settings->favicon_url))
         <link rel="icon" href="{{ $settings->favicon_url }}">
     @endif
-    <meta property="og:title" content="{{ $seo->title ?? ($settings->site_name ?? 'Skin by Noor') }}">
+    <meta property="og:title" content="{{ $seo->title ?? ($settings->site_name ?? 'Asthetika') }}">
     <meta property="og:description" content="{{ $seo->description ?? ($settings->localized('site_tagline') ?? '') }}">
     <meta property="og:type" content="{{ $seo->ogType ?? 'website' }}">
     <meta property="og:url" content="{{ $seo->canonical ?? url()->current() }}">
     @if(!empty($seo?->image))<meta property="og:image" content="{{ $seo->image }}">@endif
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="{{ $seo->title ?? ($settings->site_name ?? 'Skin by Noor') }}">
+    <meta name="twitter:title" content="{{ $seo->title ?? ($settings->site_name ?? 'Asthetika') }}">
     <meta name="twitter:description" content="{{ $seo->description ?? ($settings->localized('site_tagline') ?? '') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -702,7 +702,7 @@
         </div>
 
         <div class="footer-note">
-            <span>© {{ now()->year }} {{ $settings->site_name ?? 'Skin by Noor' }}. {{ __('public.footer.rights') }}</span>
+            <span>© {{ now()->year }} {{ $settings->site_name ?? 'Asthetika' }}. {{ __('public.footer.rights') }}</span>
             <span>
                 <a class="footer-link" href="{{ route('policies.show', ['policy' => app()->getLocale()==='fr' ? 'confidentialite' : 'privacy']) }}">{{ __('public.footer.privacy') }}</a>
                 ·

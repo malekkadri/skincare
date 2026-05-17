@@ -32,8 +32,8 @@ class MarketingContentSeeder extends Seeder
         ]);
 
         foreach (range(1, 4) as $i) {
-            GalleryItem::query()->updateOrCreate(['title_en' => "Glow Session {$i}"], [
-                'title_fr' => "Soin Éclat {$i}", 'caption_fr' => 'Résultat lumineux et peau apaisée.', 'caption_en' => 'Radiant, soothed skin result.',
+            GalleryItem::query()->updateOrCreate(['title_en' => "Asthetika Care Session {$i}"], [
+                'title_fr' => "Soin Asthetika {$i}", 'caption_fr' => 'Résultat lumineux et peau apaisée.', 'caption_en' => 'Radiant, soothed skin result.',
                 'image_path' => 'gallery/placeholder-'.$i.'.jpg', 'category' => $i % 2 ? 'facial' : 'hydration', 'is_featured' => $i <= 3, 'is_active' => true, 'sort_order' => $i,
             ]);
         }

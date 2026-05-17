@@ -16,11 +16,11 @@ class SeoService
         $title = $settings->{"seo_{$key}_title_{$locale}"}
             ?: $fallbackTitle
             ?: $settings->site_name
-            ?: 'Skin by Noor';
+            ?: 'Asthetika';
 
         $description = $settings->{"seo_{$key}_description_{$locale}"}
             ?: $settings->localized('site_tagline')
-            ?: 'Skin by Noor skincare in Tunisia.';
+            ?: 'Asthetika skincare clinic in Tunisia.';
 
         return new SeoData($title, $description, $canonical);
     }
@@ -41,8 +41,8 @@ class SeoService
     public function forAbout(?AboutPage $about): SeoData
     {
         return new SeoData(
-            $about?->{"meta_title_".app()->getLocale()} ?: ($about?->localized_title ?: 'About Skin by Noor'),
-            $about?->{"meta_description_".app()->getLocale()} ?: ($about?->localized_intro ?: 'Learn about Skin by Noor.'),
+            $about?->{"meta_title_".app()->getLocale()} ?: ($about?->localized_title ?: 'About Asthetika'),
+            $about?->{"meta_description_".app()->getLocale()} ?: ($about?->localized_intro ?: 'Learn about Asthetika.'),
             route('about')
         );
     }

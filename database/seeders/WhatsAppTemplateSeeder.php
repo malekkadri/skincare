@@ -22,8 +22,8 @@ class WhatsAppTemplateSeeder extends Seeder
             ['key' => 'appointment_reminder_2h', 'language' => 'en', 'message_body' => 'Reminder: your appointment starts in 2 hours ({appointment_time}).'],
             ['key' => 'appointment_followup', 'language' => 'fr', 'message_body' => 'Merci {client_name} 🌸 Nous espérons que votre séance {service_name} vous a plu. Répondez à ce message si vous avez des questions.'],
             ['key' => 'appointment_followup', 'language' => 'en', 'message_body' => 'Thank you {client_name} 🌸 We hope your {service_name} session went well. Reply if you need anything.'],
-            ['key' => 'consultation_acknowledgement', 'language' => 'fr', 'message_body' => 'Bonjour {client_name}, nous avons bien reçu votre demande de consultation Skin by Noor. Nous vous répondrons bientôt.'],
-            ['key' => 'consultation_acknowledgement', 'language' => 'en', 'message_body' => 'Hello {client_name}, we received your Skin by Noor consultation request. We will contact you shortly.'],
+            ['key' => 'consultation_acknowledgement', 'language' => 'fr', 'message_body' => 'Bonjour {client_name}, nous avons bien reçu votre demande de consultation Asthetika. Nous vous répondrons bientôt.'],
+            ['key' => 'consultation_acknowledgement', 'language' => 'en', 'message_body' => 'Hello {client_name}, we received your Asthetika consultation request. We will contact you shortly.'],
         ];
 
         foreach ($defaults as $template) {

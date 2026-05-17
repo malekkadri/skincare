@@ -5,8 +5,8 @@ return [
     'supported_locales' => ['fr', 'en'],
     'supported_currencies' => ['TND', 'EUR'],
     'defaults' => [
-        'site_name' => env('SKINBYNOOR_SITE_NAME', 'Skin by Noor'),
-        'super_admin_email' => env('DEFAULT_SUPER_ADMIN_EMAIL', 'admin@skinbynoor.test'),
+        'site_name' => env('SKINBYNOOR_SITE_NAME', 'Asthetika'),
+        'super_admin_email' => env('DEFAULT_SUPER_ADMIN_EMAIL', 'admin@asthetika.test'),
     ],
     'ops' => [
         'backup_disk' => env('SKINBYNOOR_BACKUP_DISK', 'local'),

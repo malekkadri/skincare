@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Login - Skin by Noor</title>
+    <title>Admin Login - Asthetika</title>
     <style>
         :root {
             --text: #111827;
@@ -121,7 +121,7 @@
 <div class="shell">
     <section class="intro">
         <div>
-            <span class="badge">Skin by Noor · Admin</span>
+            <span class="badge">Asthetika · Admin</span>
             <h1>Welcome back to your operations center.</h1>
             <p>Manage bookings, content, customer touchpoints, and daily performance from one place.</p>
         </div>

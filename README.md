@@ -1,70 +1,49 @@
-# Skin by Noor (Laravel)
+# Asthetika
 
-Production-ready skincare website and admin panel for Skin by Noor.
+Asthetika is a Laravel website and admin panel for **Dr Aziz Sahly** (médecine esthétique et soins de la peau), based in Ennasr, Ariana, Tunisie.
 
-## Setup (Local)
+## Requirements
 
-1. Install dependencies:
+- PHP 8.1+
+- Composer
+- Node.js + npm
+- MySQL
+
+## Local setup
+
+1. Install backend dependencies:
    - `composer install`
-   - `npm install && npm run build` (or `npm run dev`)
-2. Configure env:
+2. Prepare environment:
    - `cp .env.example .env`
    - `php artisan key:generate`
-   - Configure DB + `APP_URL`
-3. Run migrations:
-   - `php artisan migrate`
-4. Seed:
-   - `php artisan db:seed`
-5. Link storage:
-   - `php artisan storage:link`
+   - configure database values in `.env`
+3. Run database setup:
+   - `php artisan migrate --seed`
+4. Install and build frontend assets:
+   - `npm install`
+   - `npm run build`
+5. Start the app:
+   - `php artisan serve`
 
-## Seeder strategy (Module 10)
+## Admin access (local seed default)
 
-- `CoreSeeder`: required operational baseline (admins/settings/permissions/templates).
-- `DemoContentSeeder`: demo/service/marketing/sample consultations.
-- `DatabaseSeeder` always runs `CoreSeeder` and skips `DemoContentSeeder` in production unless:
-  - `SEED_DEMO_DATA_IN_PRODUCTION=true`
+- Email: `admin@asthetika.test`
+- Password: `password123`
 
-## Production deployment checklist
+> Change this password before production.
 
-- Set:
-  - `APP_ENV=production`
-  - `APP_DEBUG=false`
-  - `APP_URL=https://your-domain`
-  - `APP_TIMEZONE=Africa/Tunis`
-  - `QUEUE_CONNECTION` to non-`sync`
-- Build caches:
-  - `php artisan config:cache`
-  - `php artisan route:cache`
-  - `php artisan view:cache`
-- Storage:
-  - `php artisan storage:link`
-- Queue worker:
-  - `php artisan queue:work --tries=3 --timeout=90`
-- Scheduler cron:
-  - `* * * * * php /path/to/artisan schedule:run >> /dev/null 2>&1`
+## Booking preselection example
 
-## Ops & launch readiness
+Use service preselection from public links:
 
-- Admin health dashboard: `/admin/ops/health`
-- Admin launch readiness page: `/admin/ops/launch-readiness`
-- Health endpoint: `/health`
-- Sitemap: `/sitemap.xml`
-- Backup command: `php artisan ops:backup --prefix=manual`
+- `/booking?service=hydrafacial-essentiel`
 
-## Smoke test command
+## Production reminders
 
-Run:
-
-- `php artisan skinbynoor:smoke-test`
-
-This verifies critical routes, writable directories, base settings, service/category presence, storage link, and queue/scheduler hints.
-
-## Recommended post-deploy checks
-
-1. Login to admin and open **Ops → Launch Readiness**.
-2. Confirm at least one active service/category and logo are configured.
-3. Verify booking flow end-to-end with a real test appointment.
-4. Verify consultation submit flow with AI both enabled and disabled.
-5. Run smoke test command and review warnings.
-6. Confirm queue worker and scheduler are running.
+- Set `APP_ENV=production`
+- Set `APP_DEBUG=false`
+- Use secure production DB credentials
+- Run `npm run build`
+- Run `php artisan config:cache route:cache view:cache`
+- Change the seeded admin password
+- Configure mail/WhatsApp integrations if needed

@@ -13,11 +13,11 @@ class SkinByNoorSmokeTestCommand extends Command
 {
     protected $signature = 'skinbynoor:smoke-test';
 
-    protected $description = 'Run lightweight launch smoke checks for Skin by Noor.';
+    protected $description = 'Run lightweight launch smoke checks for Asthetika.';
 
     public function handle(LaunchReadinessService $launchReadinessService): int
     {
-        $this->components->info('Skin by Noor smoke test');
+        $this->components->info('Asthetika smoke test');
 
         $checks = [
             'route_home' => fn () => filled(route('home')),
