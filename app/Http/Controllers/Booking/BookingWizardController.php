@@ -16,6 +16,7 @@ use App\Services\AvailabilityService;
 use App\Services\WhatsAppService;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
@@ -26,8 +27,16 @@ class BookingWizardController extends Controller
     {
     }
 
-    public function service(): View
+    public function service(Request $request): View
     {
+        if ($request->filled('service')) {
+            $service = Service::query()->active()->where('slug', $request->string('service')->toString())->first();
+
+            if ($service) {
+                session(['booking_wizard.service_id' => $service->id]);
+            }
+        }
+
         return view('booking.service', [
             'services' => Service::query()->active()->ordered()->get(),
             'wizard' => $this->wizardData(),

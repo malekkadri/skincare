@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ __('booking.title') }} - Skin by Noor</title>
+    <title>{{ __('booking.title') }} - Asthetika</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
@@ -305,7 +305,7 @@
                     <span aria-hidden="true">←</span>
                     <span>Back to Home</span>
                 </a>
-                <h2>Skin by Noor — {{ __('booking.title') }}</h2>
+                <h2>Asthetika — {{ __('booking.title') }}</h2>
                 <p>{{ __('booking.step_service') }} → {{ __('booking.step_review') }} · {{ __('booking.success') }}</p>
             </div>
 

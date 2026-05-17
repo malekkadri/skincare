@@ -4,9 +4,10 @@
 @php
     $serviceName = app()->getLocale() === 'fr' ? $wizard['service']->name_fr : $wizard['service']->name_en;
     $customerName = trim(($wizard['customer']['first_name'] ?? '').' '.($wizard['customer']['last_name'] ?? ''));
-    $price = ($wizard['currency'] ?? 'TND') === 'EUR'
-        ? number_format((float) $wizard['service']->price_eur, 2).' EUR'
-        : number_format((float) $wizard['service']->price_tnd, 2).' TND';
+    $price = $wizard['service']->display_price;
+    $duration = $wizard['service']->duration_minutes == 60
+        ? __('booking.duration_one_hour')
+        : $wizard['service']->duration_minutes.' '.__('public.common.minutes');
 @endphp
 
 <div class="card booking-step-review" data-step-review>
@@ -30,6 +31,10 @@
             <div class="summary-row">
                 <dt>{{ __('booking.date_label') }}</dt>
                 <dd>{{ $wizard['appointment_date'] }}</dd>
+            </div>
+            <div class="summary-row">
+                <dt>{{ __('booking.duration') }}</dt>
+                <dd>{{ $duration }}</dd>
             </div>
             <div class="summary-row">
                 <dt>{{ __('booking.time') }}</dt>
