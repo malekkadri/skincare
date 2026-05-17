@@ -55,9 +55,9 @@
 
 <section class="page-section trust-page">
     <div class="page-hero trust-hero">
-        <span class="trust-hero-meta">Skin by Noor</span>
+        <span class="trust-hero-meta">Asthetika</span>
         <p class="section-kicker">About</p>
-        <h1 class="section-title">{{ $about?->localized_title ?? 'Skin by Noor' }}</h1>
+        <h1 class="section-title">{{ $about?->localized_title ?? 'Asthetika' }}</h1>
         <p class="muted">{{ $about?->localized_intro }}</p>
     </div>
 

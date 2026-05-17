@@ -11,7 +11,7 @@ class RolePermissionSeeder extends Seeder
     {
         User::query()->where('is_admin', true)->whereNull('role')->update(['role' => 'admin']);
 
-        $defaultEmail = env('DEFAULT_SUPER_ADMIN_EMAIL', 'admin@skinbynoor.test');
+        $defaultEmail = env('DEFAULT_SUPER_ADMIN_EMAIL', 'admin@asthetika.test');
         User::query()->where('email', $defaultEmail)->update([
             'is_admin' => true,
             'is_active' => true,

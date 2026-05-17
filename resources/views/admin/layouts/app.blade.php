@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Admin Panel') - Skin by Noor</title>
+    <title>@yield('title', 'Admin Panel') - Asthetika</title>
     <style>
         :root {
             --bg: #f3f5fb;
@@ -213,7 +213,7 @@
 <div class="layout">
     <aside class="sidebar">
         <div class="brand-wrap">
-            <div class="brand">Skin by Noor</div>
+            <div class="brand">Asthetika</div>
             <div class="brand-sub">Admin workspace</div>
         </div>
 

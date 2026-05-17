@@ -9,7 +9,7 @@ class PromptBuilder
     public function consultationSummaryPrompt(Consultation $consultation, array $services): string
     {
         return json_encode([
-            'brand' => 'Skin by Noor',
+            'brand' => 'Asthetika',
             'market' => 'Tunisia',
             'constraints' => [
                 'No medical diagnosis',
@@ -65,7 +65,7 @@ class PromptBuilder
     public function contentPrompt(array $input, string $type): string
     {
         return json_encode([
-            'brand' => 'Skin by Noor',
+            'brand' => 'Asthetika',
             'style' => 'Elegant, warm, professional, concise, premium skincare business',
             'guardrails' => [
                 'No medical diagnosis',

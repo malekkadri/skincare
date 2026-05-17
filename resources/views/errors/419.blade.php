@@ -1,1 +1,1 @@
-<!doctype html><html><head><title>Session expired - Skin by Noor</title></head><body style='font-family:Inter,system-ui;padding:2rem;'><h1>Session expired</h1><p>Please refresh the page and try again.</p><a href='{{ url()->previous() }}'>Go back</a></body></html>
+<!doctype html><html><head><title>Session expired - Asthetika</title></head><body style='font-family:Inter,system-ui;padding:2rem;'><h1>Session expired</h1><p>Please refresh the page and try again.</p><a href='{{ url()->previous() }}'>Go back</a></body></html>

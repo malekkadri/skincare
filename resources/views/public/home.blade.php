@@ -304,8 +304,8 @@
     @php($slides = $homeSlides->count() ? $homeSlides : collect([null]))
     @foreach($slides as $i => $slide)
     <article class="banner-slide {{ $i===0 ? 'is-active' : '' }}"> 
-        <img src="{{ $slide?->image_url ?? 'https://images.unsplash.com/photo-1526758097130-bab247274f58?auto=format&fit=crop&w=1800&q=80' }}" alt="{{ $slide?->localized_alt_text ?? 'Skin by Noor' }}">
-        <div class="banner-overlay"></div><div class="banner-content"><h1>{{ $slide?->localized_title ?? ($hero?->localized_title ?? 'Skin by Noor') }}</h1><p>{{ $slide?->localized_subtitle ?? ($hero?->localized_subtitle ?? $settings->localized('site_tagline')) }}</p>@if($slide?->localized_cta_label && $slide?->cta_url)<a href="{{ $slide->cta_url }}" class="btn">{{ $slide->localized_cta_label }}</a>@endif</div>
+        <img src="{{ $slide?->image_url ?? 'https://images.unsplash.com/photo-1526758097130-bab247274f58?auto=format&fit=crop&w=1800&q=80' }}" alt="{{ $slide?->localized_alt_text ?? 'Asthetika' }}">
+        <div class="banner-overlay"></div><div class="banner-content"><h1>{{ $slide?->localized_title ?? ($hero?->localized_title ?? 'Asthetika') }}</h1><p>{{ $slide?->localized_subtitle ?? ($hero?->localized_subtitle ?? $settings->localized('site_tagline')) }}</p>@if($slide?->localized_cta_label && $slide?->cta_url)<a href="{{ $slide->cta_url }}" class="btn">{{ $slide->localized_cta_label }}</a>@endif</div>
     </article>
     @endforeach
 </div>

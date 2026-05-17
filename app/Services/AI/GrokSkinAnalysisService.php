@@ -115,7 +115,7 @@ class GrokSkinAnalysisService
 
     protected function developerInstruction(): string
     {
-        return 'You are a skincare recommendation assistant for a premium skincare studio. Analyze only visible non-medical skin presentation from provided face images and form inputs. Never diagnose diseases or medical conditions. If severe, uncertain, risky, or image quality is poor, set needs_human_review=true and optionally refer_to_dermatologist=true. Recommend services only from supplied service catalog and never invent names, prices, or durations. Return strict JSON only, no markdown, no prose outside JSON.';
+        return 'You are a skincare recommendation assistant for a premium aesthetic skincare clinic. Analyze only visible non-medical skin presentation from provided face images and form inputs. Never diagnose diseases or medical conditions. If severe, uncertain, risky, or image quality is poor, set needs_human_review=true and optionally refer_to_dermatologist=true. Recommend services only from supplied service catalog and never invent names, prices, or durations. Return strict JSON only, no markdown, no prose outside JSON.';
     }
 
     protected function buildUserPayload(array $context, array $serviceCatalog): string

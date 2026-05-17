@@ -57,7 +57,7 @@ class Setting extends Model
     public static function current(): self
     {
         return static::query()->firstOrCreate([], [
-            'site_name' => config('skinbynoor.defaults.site_name', 'Skin by Noor'),'default_language' => 'fr','supported_languages' => config('skinbynoor.supported_locales', ['fr', 'en']),'default_currency' => 'TND','supported_currencies' => config('skinbynoor.supported_currencies', ['TND', 'EUR']),
+            'site_name' => config('skinbynoor.defaults.site_name', 'Asthetika'),'default_language' => 'fr','supported_languages' => config('skinbynoor.supported_locales', ['fr', 'en']),'default_currency' => 'TND','supported_currencies' => config('skinbynoor.supported_currencies', ['TND', 'EUR']),
             'timezone' => config('skinbynoor.timezone', 'Africa/Tunis'),'slot_interval_minutes' => 30,'minimum_notice_hours' => 2,'maximum_booking_days_ahead' => 30,'booking_enabled' => true,
             'whatsapp_enabled' => false,'whatsapp_provider' => 'log','whatsapp_default_country_code' => '+216',
             'send_booking_confirmation_whatsapp' => true,'send_booking_cancellation_whatsapp' => true,'send_booking_reschedule_whatsapp' => true,
@@ -66,8 +66,8 @@ class Setting extends Model
             'max_whatsapp_retry_attempts' => 3,'whatsapp_retry_backoff_minutes' => 10,
             'ai_enabled' => false,'ai_provider' => 'groq','ai_model' => 'llama-3.3-70b-versatile','ai_base_url' => 'https://api.groq.com/openai/v1/chat/completions','ai_timeout_seconds' => 25,'ai_temperature' => 0.30,
             'ai_enable_consultation_summary' => true,'ai_enable_service_recommendation' => true,'ai_enable_admin_content_helper' => true,
-            'seo_home_title_fr' => 'Skin by Noor | Soins de la peau', 'seo_home_title_en' => 'Skin by Noor | Skincare in Tunisia',
-            'seo_services_title_fr' => 'Services Skin by Noor', 'seo_services_title_en' => 'Skin by Noor Services',
+            'seo_home_title_fr' => 'Asthetika | Médecine esthétique et soins de la peau', 'seo_home_title_en' => 'Asthetika | Aesthetic medicine and skincare in Tunisia',
+            'seo_services_title_fr' => 'Services Asthetika', 'seo_services_title_en' => 'Asthetika Services',
         ]);
     }
 }
