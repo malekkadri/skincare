@@ -304,8 +304,8 @@
     @php($slides = $homeSlides->count() ? $homeSlides : collect([null]))
     @foreach($slides as $i => $slide)
     <article class="banner-slide {{ $i===0 ? 'is-active' : '' }}"> 
-        <img src="{{ $slide?->image_url ?? 'https://images.unsplash.com/photo-1526758097130-bab247274f58?auto=format&fit=crop&w=1800&q=80' }}" alt="{{ $slide?->localized_alt_text ?? 'Skin by Noor' }}">
-        <div class="banner-overlay"></div><div class="banner-content"><h1>{{ $slide?->localized_title ?? ($hero?->localized_title ?? 'Skin by Noor') }}</h1><p>{{ $slide?->localized_subtitle ?? ($hero?->localized_subtitle ?? $settings->localized('site_tagline')) }}</p>@if($slide?->localized_cta_label && $slide?->cta_url)<a href="{{ $slide->cta_url }}" class="btn">{{ $slide->localized_cta_label }}</a>@endif</div>
+        <img src="{{ $slide?->image_url ?? 'https://images.unsplash.com/photo-1526758097130-bab247274f58?auto=format&fit=crop&w=1800&q=80' }}" alt="{{ $slide?->localized_alt_text ?? ($settings->site_name ?? 'Asthetika') }}">
+        <div class="banner-overlay"></div><div class="banner-content"><h1>{{ $slide?->localized_title ?? ($hero?->localized_title ?? ($settings->site_name ?? 'Asthetika')) }}</h1><p>{{ $slide?->localized_subtitle ?? ($hero?->localized_subtitle ?? $settings->localized('site_tagline')) }}</p>@if($slide?->localized_cta_label && $slide?->cta_url)<a href="{{ $slide->cta_url }}" class="btn">{{ $slide->localized_cta_label }}</a>@endif</div>
     </article>
     @endforeach
 </div>
@@ -325,16 +325,16 @@
                     <a class="btn btn-soft" href="{{ route('services.index') }}">{{ __('public.nav.services') }}</a>
                 </div>
                 <div class="hero-trust-list" aria-label="Trust indicators">
-                    <span class="hero-trust-pill">Licensed Studio</span>
-                    <span class="hero-trust-pill">Skin-first Rituals</span>
-                    <span class="hero-trust-pill">Private 1:1 Care</span>
+                    <span class="hero-trust-pill">{{ app()->getLocale() === 'fr' ? 'Médecine esthétique' : 'Aesthetic medicine' }}</span>
+                    <span class="hero-trust-pill">{{ app()->getLocale() === 'fr' ? 'Protocoles personnalisés' : 'Personalized protocols' }}</span>
+                    <span class="hero-trust-pill">{{ app()->getLocale() === 'fr' ? 'Rendez-vous dédiés' : 'Dedicated appointments' }}</span>
                 </div>
             </div>
             <div class="hero-image-wrap">
                 <img src="https://images.unsplash.com/photo-1612817288484-6f916006741a?auto=format&fit=crop&w=1200&q=80" alt="{{ __('public.home.cta_title') }}">
                 <div class="hero-note">
-                    <strong>Trusted by returning clients</strong>
-                    <p>Tailored consultations and intentional treatment plans for healthy, radiant skin.</p>
+                    <strong>{{ app()->getLocale() === 'fr' ? 'Accompagnement personnalisé' : 'Personalized care' }}</strong>
+                    <p>{{ app()->getLocale() === 'fr' ? 'Des soins adaptés à votre peau, avec une approche attentive et professionnelle.' : 'Treatments adapted to your skin with an attentive and professional approach.' }}</p>
                 </div>
             </div>
         </div>
@@ -343,13 +343,13 @@
     <section class="page-section" style="padding-top:0; padding-bottom: 0.5rem;">
         <div class="feature-strip reveal">
             @foreach([
-                [__('public.home.feature_quick_booking'), '◌'],
-                [__('public.home.feature_premium_care'), '✦'],
-                [__('public.home.feature_natural_products'), '❋'],
-                [__('public.home.feature_trusted_clients'), '♡'],
+                [__('public.home.feature_quick_booking'), '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M8 2v4"></path><path d="M16 2v4"></path><rect x="3" y="4" width="18" height="18" rx="2"></rect><path d="M3 10h18"></path></svg>'],
+                [__('public.home.feature_premium_care'), '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3 4 7v5c0 5 3.5 8 8 9 4.5-1 8-4 8-9V7z"></path></svg>'],
+                [__('public.home.feature_natural_products'), '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 21c4-2 7-6 7-11V4l-7 3-7-3v6c0 5 3 9 7 11z"></path></svg>'],
+                [__('public.home.feature_trusted_clients'), '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 21s-7-4.4-9-8.5C1.7 9.3 3.3 6 6.7 6c2 0 3.1 1.1 3.9 2.3C11.4 7.1 12.5 6 14.5 6 17.9 6 19.5 9.3 21 12.5 19 16.6 12 21 12 21z"></path></svg>'],
             ] as [$feature, $icon])
                 <article class="feature-pill" aria-label="{{ $feature }}">
-                    <span class="feature-icon" aria-hidden="true">{{ $icon }}</span>
+                    <span class="feature-icon" aria-hidden="true">{!! $icon !!}</span>
                     <span>{{ $feature }}</span>
                 </article>
             @endforeach
@@ -435,7 +435,7 @@
 
     <section class="page-section reveal">
         <div class="final-cta">
-            <p class="section-kicker">Personalized Skin Journey</p>
+            <p class="section-kicker">{{ app()->getLocale() === 'fr' ? 'Parcours de soin personnalisé' : 'Personalized skin journey' }}</p>
             <h2 class="section-title">{{ __('public.home.cta_title') }}</h2>
             <p class="muted">{{ __('public.home.cta_text') }}</p>
             <a class="btn is-gold-focus" href="{{ route('booking.service') }}">{{ __('public.home.cta_button') }}</a>

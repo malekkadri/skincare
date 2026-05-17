@@ -32,9 +32,9 @@ class MarketingContentSeeder extends Seeder
         ]);
 
         foreach (range(1, 4) as $i) {
-            GalleryItem::query()->updateOrCreate(['title_en' => "Glow Session {$i}"], [
-                'title_fr' => "Soin Éclat {$i}", 'caption_fr' => 'Résultat lumineux et peau apaisée.', 'caption_en' => 'Radiant, soothed skin result.',
-                'image_path' => 'gallery/placeholder-'.$i.'.jpg', 'category' => $i % 2 ? 'facial' : 'hydration', 'is_featured' => $i <= 3, 'is_active' => true, 'sort_order' => $i,
+            GalleryItem::query()->updateOrCreate(['title_en' => "Hydrafacial treatment {$i}"], [
+                'title_fr' => "Soin Hydrafacial {$i}", 'caption_fr' => 'Amélioration de l’éclat avec un protocole adapté.', 'caption_en' => 'Glow improvement with a tailored protocol.',
+                'image_path' => 'gallery/asthetika-'.$i.'.jpg', 'category' => $i % 2 ? 'facial' : 'hydration', 'is_featured' => $i <= 3, 'is_active' => true, 'sort_order' => $i,
             ]);
         }
 
@@ -54,7 +54,7 @@ class MarketingContentSeeder extends Seeder
 
         if (\App\Models\Service::query()->exists()) {
             Testimonial::query()->updateOrCreate(['client_name' => 'Sarra B.'], [
-                'title_fr' => 'Peau transformée', 'title_en' => 'Skin transformed', 'content_fr' => 'Résultats visibles dès la première séance.', 'content_en' => 'Visible results from the first session.', 'rating' => 5,
+                'title_fr' => 'Soin professionnel', 'title_en' => 'Professional care', 'content_fr' => 'Résultat visible et accompagnement très professionnel.', 'content_en' => 'Visible result and very professional care.', 'rating' => 5,
                 'service_id' => \App\Models\Service::query()->value('id'), 'is_featured' => true, 'is_active' => true, 'sort_order' => 1,
             ]);
         }

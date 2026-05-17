@@ -65,7 +65,7 @@
     <div class="page-hero">
         <p class="section-kicker">Testimonials</p>
         <h1 class="section-title">Loved by our clients</h1>
-        <p class="muted">Words from clients who trust Skin by Noor for personalized skincare experiences.</p>
+        <p class="muted">{{ app()->getLocale() === 'fr' ? 'Des retours de patients sur leur expérience de soins chez Asthetika.' : 'Feedback from patients about their care experience at Asthetika.' }}</p>
     </div>
 
     @if($items->isEmpty())
