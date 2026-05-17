@@ -79,6 +79,8 @@ class AdminAndSettingsSeeder extends Seeder
                 'map_embed_url' => 'https://www.google.com/maps?q=36.8586692,10.1703668&z=15&output=embed',
                 'opening_hours_fr' => 'Consultation et soins sur rendez-vous',
                 'opening_hours_en' => 'Consultations and treatments by appointment',
+                'logo_path' => null,
+                'favicon_path' => 'favicon.ico',
 
                 'seo_home_title_fr' => 'Asthetika | Médecine esthétique à Ennasr, Ariana',
                 'seo_home_title_en' => 'Asthetika | Aesthetic medicine in Ennasr, Ariana',
