@@ -261,13 +261,13 @@
 
 <section class="page-section services-page">
     <div class="page-hero services-hero">
-        <p class="section-kicker">Services</p>
-        <h1 class="section-title">Signature skincare rituals</h1>
-        <p class="muted">Explore every treatment by concern and category with transparent timing and pricing, so you can choose the ritual that fits your skin goals with confidence.</p>
+        <p class="section-kicker">{{ app()->getLocale() === 'fr' ? 'Services' : 'Services' }}</p>
+        <h1 class="section-title">{{ app()->getLocale() === 'fr' ? 'Soins et protocoles Asthetika' : 'Asthetika treatments and protocols' }}</h1>
+        <p class="muted">{{ app()->getLocale() === 'fr' ? 'Découvrez les soins proposés par Asthetika, avec des durées et tarifs clairs pour vous aider à choisir le protocole adapté à votre peau.' : 'Discover Asthetika treatments with clear durations and pricing to help you choose the protocol best suited to your skin.' }}</p>
         <div class="services-hero-meta" aria-label="Service overview">
-            <span class="services-hero-pill">{{ $categories->count() }} Categories</span>
-            <span class="services-hero-pill">{{ $totalServices }} Services</span>
-            <span class="services-hero-pill">Tailored treatment paths</span>
+            <span class="services-hero-pill">{{ $categories->count() }} {{ app()->getLocale() === 'fr' ? 'Catégories' : 'Categories' }}</span>
+            <span class="services-hero-pill">{{ $totalServices }} {{ app()->getLocale() === 'fr' ? 'Soins' : 'Treatments' }}</span>
+            <span class="services-hero-pill">{{ app()->getLocale() === 'fr' ? 'Protocoles personnalisés' : 'Personalized protocols' }}</span>
         </div>
     </div>
 
@@ -276,12 +276,12 @@
             <section class="service-category" aria-labelledby="category-{{ $category->id }}">
                 <div class="service-category-header">
                     <h2 class="service-category-title" id="category-{{ $category->id }}">{{ $category->localized_name }}</h2>
-                    <span class="service-category-count">{{ $category->services->count() }} services</span>
+                    <span class="service-category-count">{{ $category->services->count() }} {{ app()->getLocale() === 'fr' ? 'soins' : 'treatments' }}</span>
                 </div>
 
                 <div class="services-grid">
                     @forelse($category->services as $service)
-                        <a class="service-card reveal is-gold-focus" href="{{ route('services.show', $service->slug) }}" aria-label="View details for {{ $service->localized_name }}">
+                        <a class="service-card reveal is-gold-focus" href="{{ route('services.show', $service->slug) }}" aria-label="{{ app()->getLocale() === 'fr' ? 'Voir le détail de' : 'View details for' }} {{ $service->localized_name }}">
                             <figure class="service-card-media">
                                 <img
                                     src="{{ $service->image_url ?: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=900&q=80' }}"
@@ -306,17 +306,17 @@
                             </div>
 
                             <span class="service-card-cta">
-                                View details
+                                {{ app()->getLocale() === 'fr' ? 'Voir le détail' : 'View details' }}
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14"></path><path d="m13 6 6 6-6 6"></path></svg>
                             </span>
                         </a>
                     @empty
-                        <div class="empty-state form-span-full">Services for this category will be published soon.</div>
+                        <div class="empty-state form-span-full">{{ app()->getLocale() === 'fr' ? 'Les soins de cette catégorie seront bientôt disponibles.' : 'Treatments in this category will be available soon.' }}</div>
                     @endforelse
                 </div>
             </section>
         @empty
-            <div class="empty-state">Services will be published soon.</div>
+            <div class="empty-state">{{ app()->getLocale() === 'fr' ? 'Les soins seront bientôt disponibles.' : 'Treatments will be available soon.' }}</div>
         @endforelse
     </div>
 </section>

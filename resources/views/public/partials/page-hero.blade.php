@@ -7,7 +7,7 @@ $mobileImage = $hero?->mobile_image_url ?? $image;
 $overlay = $hero?->overlay_opacity ?? 0.35;
 @endphp
 <section class="sbn-page-hero" style="--hero-overlay: {{ $overlay }};">
-    <picture><source media="(max-width: 767px)" srcset="{{ $mobileImage }}"><img src="{{ $image }}" alt="{{ $hero?->localized_alt_text ?? $title ?? 'Skin by Noor' }}"></picture>
+    <picture><source media="(max-width: 767px)" srcset="{{ $mobileImage }}"><img src="{{ $image }}" alt="{{ $hero?->localized_alt_text ?? $title ?? 'Asthetika' }}"></picture>
     <div class="hero-overlay"></div>
     <div class="hero-content">
         @if($title)<h1>{{ $title }}</h1>@endif

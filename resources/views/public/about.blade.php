@@ -55,9 +55,9 @@
 
 <section class="page-section trust-page">
     <div class="page-hero trust-hero">
-        <span class="trust-hero-meta">Skin by Noor</span>
-        <p class="section-kicker">About</p>
-        <h1 class="section-title">{{ $about?->localized_title ?? 'Skin by Noor' }}</h1>
+        <span class="trust-hero-meta">Asthetika · Dr Aziz Sahly</span>
+        <p class="section-kicker">{{ app()->getLocale() === 'fr' ? 'À propos' : 'About' }}</p>
+        <h1 class="section-title">{{ $about?->localized_title ?? ($settings->site_name ?? 'Asthetika') }}</h1>
         <p class="muted">{{ $about?->localized_intro }}</p>
     </div>
 
@@ -65,13 +65,13 @@
 
     <div class="editorial-grid">
         <article class="card story-card">
-            <p class="section-kicker">Our Story</p>
-            <h2>Crafted with care, guided by results</h2>
+            <p class="section-kicker">{{ app()->getLocale() === 'fr' ? 'Notre approche' : 'Our approach' }}</p>
+            <h2>{{ app()->getLocale() === 'fr' ? 'Une prise en charge attentive et personnalisée' : 'Attentive and personalized care' }}</h2>
             <p class="muted">{!! nl2br(e($about?->localized_story)) !!}</p>
         </article>
         <article class="card philosophy-card">
-            <p class="section-kicker">Our Philosophy</p>
-            <h2>Personalized rituals, timeless skin health</h2>
+            <p class="section-kicker">{{ app()->getLocale() === 'fr' ? 'Notre philosophie' : 'Our philosophy' }}</p>
+            <h2>{{ app()->getLocale() === 'fr' ? 'Sublimer la peau avec naturel, précision et sécurité' : 'Enhancing the skin with natural-looking, precise, and safe care' }}</h2>
             <p class="muted">{!! nl2br(e($about?->localized_philosophy)) !!}</p>
         </article>
     </div>

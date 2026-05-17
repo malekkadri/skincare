@@ -134,7 +134,7 @@
         <div class="gallery-hero-copy">
             <p class="section-kicker">Gallery</p>
             <h1 class="section-title">Glow moments</h1>
-            <p class="muted">A visual journey of Skin by Noor treatments, ambiance, and client care rituals.</p>
+            <p class="muted">{{ app()->getLocale() === 'fr' ? 'Un aperçu des soins Asthetika, du cadre de prise en charge et de l'accompagnement professionnel.' : 'A visual overview of Asthetika treatments, care setting, and professional support.' }}</p>
             <div class="gallery-support-row" aria-hidden="true">
                 <span class="gallery-support-pill">Treatment Rituals</span>
                 <span class="gallery-support-pill">Studio Ambience</span>
@@ -151,7 +151,7 @@
                 <article class="card gallery-card">
                     <div class="gallery-media-wrap">
                         <img
-                            src="{{ $item->image_url ?: 'https://via.placeholder.com/600x400?text=Skin+by+Noor' }}"
+                            src="{{ $item->image_url ?: 'https://via.placeholder.com/600x400?text=Asthetika' }}"
                             alt="{{ $item->localized_title }}"
                             class="gallery-image"
                         >

@@ -89,13 +89,13 @@
         <div class="policy-hero-copy">
             <p class="section-kicker">Policy</p>
             <h1 class="section-title">{{ $policy->localized_title }}</h1>
-            <p class="muted" style="margin:0;">Please review this policy before your appointment to ensure a smooth and comfortable Skin by Noor experience.</p>
+            <p class="muted" style="margin:0;">Please review this policy before your appointment to ensure a smooth and comfortable Asthetika experience.</p>
         </div>
     </div>
 
     <article class="policy-frame" aria-label="Policy details">
         <header class="policy-frame-head">
-            <p>Skin by Noor Patient Policy</p>
+            <p>Asthetika Patient Policy</p>
         </header>
         <div class="policy-content">{!! nl2br(e($policy->localized_content)) !!}</div>
     </article>
