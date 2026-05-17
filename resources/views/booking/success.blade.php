@@ -8,6 +8,9 @@
         : ($appointment->service_name_snapshot_en ?: $appointment->service_name_snapshot_fr);
     $dateLabel = $appointment->appointment_date?->format('Y-m-d');
     $timeLabel = \Illuminate\Support\Str::substr((string) $appointment->start_time, 0, 5);
+    $duration = $appointment->service?->duration_minutes === 60
+        ? __('booking.duration_one_hour')
+        : ($appointment->service?->duration_minutes ? $appointment->service->duration_minutes.' '.__('public.common.minutes') : null);
 @endphp
 
 <div class="card booking-step-success" data-step-success>
@@ -22,8 +25,8 @@
         <h1 id="success-title" class="success-title">{{ __('booking.success') }}</h1>
         <p class="success-subtitle">
             {{ $isFr
-                ? 'Merci de votre confiance. Votre rendez-vous Skin by Noor est confirmé et préparé avec attention.'
-                : 'Thank you for your trust. Your Skin by Noor appointment is confirmed and being prepared with care.' }}
+                ? 'Merci de votre confiance. Votre rendez-vous est confirmé et préparé avec attention.'
+                : 'Thank you for your trust. Your appointment is confirmed and being prepared with care.' }}
         </p>
     </header>
 
@@ -42,12 +45,16 @@
 
         <dl class="success-details" aria-label="{{ $isFr ? 'Résumé du rendez-vous' : 'Appointment summary' }}">
             <div class="success-detail-row success-detail-featured">
-                <dt>{{ $isFr ? 'Soin' : 'Service' }}</dt>
+                <dt>{{ __('booking.review_selected_service') }}</dt>
                 <dd>{{ $serviceName }}</dd>
             </div>
             <div class="success-detail-row">
                 <dt>{{ $isFr ? 'Date' : 'Date' }}</dt>
                 <dd>{{ $dateLabel }}</dd>
+            </div>
+            <div class="success-detail-row">
+                <dt>{{ __('booking.duration') }}</dt>
+                <dd>{{ $duration ?? '—' }}</dd>
             </div>
             <div class="success-detail-row">
                 <dt>{{ $isFr ? 'Heure' : 'Time' }}</dt>
@@ -60,8 +67,8 @@
         <h2 id="next-steps-title" class="next-title">{{ $isFr ? 'Et ensuite ?' : 'What happens next?' }}</h2>
         <p class="next-copy">
             {{ $isFr
-                ? 'Skin by Noor reviendra vers vous si une précision est nécessaire. En attendant, votre rendez-vous est bien enregistré.'
-                : 'Skin by Noor will contact you if any additional detail is needed. In the meantime, your appointment is securely recorded.' }}
+                ? 'Asthetika reviendra vers vous si une précision est nécessaire. En attendant, votre rendez-vous est bien enregistré.'
+                : 'Asthetika will contact you if any additional detail is needed. In the meantime, your appointment is securely recorded.' }}
         </p>
     </section>
 

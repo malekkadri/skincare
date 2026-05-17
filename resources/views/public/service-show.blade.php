@@ -264,52 +264,52 @@
 
 <section class="page-section service-detail-page">
     <header class="page-hero service-detail-hero">
-        <p class="section-kicker">Service details</p>
+        <p class="section-kicker">{{ __('public.service_show.details') }}</p>
         <h1 class="section-title">{{ $service->localized_name }}</h1>
         <p class="service-detail-lead">{{ $service->localized_description }}</p>
 
-        <div class="service-detail-grid" aria-label="Service quick facts">
+        <div class="service-detail-grid" aria-label="{{ __('public.service_show.quick_facts') }}">
             <article class="service-detail-meta">
-                <p class="service-detail-meta-label">Investment</p>
+                <p class="service-detail-meta-label">{{ __('public.service_show.price') }}</p>
                 <p class="service-detail-meta-value">{{ $service->display_price }}</p>
             </article>
             <article class="service-detail-meta">
-                <p class="service-detail-meta-label">Treatment time</p>
-                <p class="service-detail-meta-value">{{ $service->duration_minutes }} min</p>
+                <p class="service-detail-meta-label">{{ __('public.service_show.duration') }}</p>
+                <p class="service-detail-meta-value">{{ $service->duration_minutes == 60 ? __('public.service_show.duration_one_hour') : $service->duration_minutes.' '.__('public.common.minutes') }}</p>
             </article>
         </div>
 
         <div class="service-detail-actions">
-            <a class="btn service-detail-cta is-gold-focus" href="{{ route('booking.service') }}">Book now</a>
-            <p class="service-detail-assurance">Begin your booking in under a minute. You can review and confirm your appointment details before final submission.</p>
+            <a class="btn service-detail-cta is-gold-focus" aria-label="{{ __('public.service_show.book_cta') }}" href="{{ route('booking.service', ['service' => $service->slug]) }}">{{ __('public.service_show.book_cta') }}</a>
+            <p class="service-detail-assurance">{{ __('public.service_show.book_note') }}</p>
         </div>
     </header>
 
-    <section class="service-detail-visual reveal" aria-label="Service image">
+    <section class="service-detail-visual reveal" aria-label="{{ __('public.service_show.image') }}">
         <img
             src="{{ $service->image_url ?: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=1400&q=80' }}"
             alt="{{ $service->localized_name }}"
         >
-        <span class="service-detail-visual-caption">Personalized service</span>
+        <span class="service-detail-visual-caption">{{ __('public.service_show.personalized') }}</span>
     </section>
 
     <section class="service-detail-content" aria-label="Service information">
         <article class="service-detail-body">
-            <h2>What to expect</h2>
+            <h2>{{ __('public.service_show.expect') }}</h2>
             <p class="service-detail-copy">{{ $service->localized_description }}</p>
         </article>
 
-        <aside class="service-detail-support" aria-label="Booking support">
+        <aside class="service-detail-support" aria-label="{{ __('public.service_show.booking_support') }}">
             <div>
-                <h2>Your next step</h2>
+                <h2>{{ __('public.service_show.next_step') }}</h2>
                 <ul class="service-detail-list">
-                    <li>Choose this service in booking and select your preferred date and time.</li>
-                    <li>Arrive a few minutes early so your treatment can begin feeling calm and unrushed.</li>
-                    <li>If you are unsure this is right for you, request guidance during booking for a tailored recommendation.</li>
+                    <li>{{ __('public.service_show.tip_1') }}</li>
+                    <li>{{ __('public.service_show.tip_2') }}</li>
+                    <li>{{ __('public.service_show.tip_3') }}</li>
                 </ul>
             </div>
 
-            <a class="btn btn-soft service-detail-secondary-cta is-gold-focus" href="{{ route('booking.service') }}">Continue to booking</a>
+            <a class="btn btn-soft service-detail-secondary-cta is-gold-focus" aria-label="{{ __('public.service_show.continue_booking') }}" href="{{ route('booking.service', ['service' => $service->slug]) }}">{{ __('public.service_show.continue_booking') }}</a>
         </aside>
     </section>
 </section>

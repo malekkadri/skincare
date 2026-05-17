@@ -38,7 +38,7 @@
                         </span>
 
                         <span class="service-meta" aria-label="{{ __('booking.service_meta_aria') }}">
-                            <span class="service-pill">{{ $service->duration_minutes }} min</span>
+                            <span class="service-pill">{{ $service->duration_minutes == 60 ? __('booking.duration_one_hour') : $service->duration_minutes.' '.__('public.common.minutes') }}</span>
                             <span class="service-price">{{ $service->display_price }}</span>
                         </span>
                     </label>
