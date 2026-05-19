@@ -14,7 +14,7 @@ class StoreCustomerProgressPhotoRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'photo' => ['required', 'image', 'mimes:jpg,jpeg,png,webp', 'max:6144'],
+            'photo' => ['nullable', 'file', 'mimes:png,jpg,jpeg,webp', 'max:4096'],
             'captured_on' => ['nullable', 'date'],
             'title' => ['nullable', 'string', 'max:255'],
             'notes' => ['nullable', 'string', 'max:5000'],

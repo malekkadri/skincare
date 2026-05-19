@@ -72,7 +72,8 @@
         <div class="grid">
             <div>
                 <label>Photo</label>
-                <input type="file" name="photo" accept="image/jpeg,image/png,image/webp" required>
+                <p class="muted">Optional. Recommended formats: PNG, JPG or WebP.</p>
+                <input type="file" name="photo" accept="image/png,image/jpeg,image/webp">
             </div>
             <div>
                 <label>Captured Date</label>

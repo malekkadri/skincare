@@ -71,11 +71,14 @@
 
     <div>
         <label for="image">Service Image</label>
-        <input id="image" type="file" name="image" accept="image/*">
+        <input id="image" type="file" name="image" accept="image/png,image/jpeg,image/webp,image/svg+xml,.svg">
+        <p class="muted">Optional. Recommended formats: PNG, WebP or SVG. Transparent/no-background images are supported.</p>
         @error('image') <div class="error">{{ $message }}</div> @enderror
         @if($service->image_url)
             <p class="muted">Current image:</p>
             <img src="{{ $service->image_url }}" alt="Current image" style="width:96px;height:96px;object-fit:cover;border-radius:.5rem;">
+        @else
+            <p class="muted">No image uploaded</p>
         @endif
     </div>
 </div>

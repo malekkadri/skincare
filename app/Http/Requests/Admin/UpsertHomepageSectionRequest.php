@@ -11,7 +11,7 @@ class UpsertHomepageSectionRequest extends FormRequest
             'content_fr' => ['nullable','string'],'content_en' => ['nullable','string'],
             'button_text_fr' => ['nullable','string','max:255'],'button_text_en' => ['nullable','string','max:255'],'button_url' => ['nullable','string','max:255'],
             'secondary_button_text_fr' => ['nullable','string','max:255'],'secondary_button_text_en' => ['nullable','string','max:255'],'secondary_button_url' => ['nullable','string','max:255'],
-            'image' => ['nullable','image','mimes:jpg,jpeg,png,webp','max:3072'],'is_active' => ['nullable','boolean'],'sort_order' => ['nullable','integer'],
+            'image' => ['nullable','file','mimes:png,jpg,jpeg,webp,svg','max:4096'],'is_active' => ['nullable','boolean'],'sort_order' => ['nullable','integer'],
         ];
     }
 }
