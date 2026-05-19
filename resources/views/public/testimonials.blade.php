@@ -63,22 +63,25 @@
 
 <section class="page-section proof-page">
     <div class="page-hero">
-        <p class="section-kicker">Testimonials</p>
-        <h1 class="section-title">Loved by our clients</h1>
-        <p class="muted">Words from clients who trust Asthetika for personalized skincare experiences.</p>
+        <p class="section-kicker">{{ __('public.testimonials_page.kicker') }}</p>
+        <h1 class="section-title">{{ __('public.testimonials_page.title') }}</h1>
+        <p class="muted">{{ __('public.testimonials_page.description') }}</p>
     </div>
 
     @if($items->isEmpty())
-        <div class="empty-state">Patient testimonials will appear here once published.</div>
+        <div class="empty-state">{{ __('public.testimonials_page.empty') }}</div>
     @else
-        <div class="proof-grid" aria-label="Patient testimonials">
+        <div class="proof-grid" aria-label="{{ __('public.testimonials_page.grid_label') }}">
             @foreach($items as $t)
                 <article class="card proof-card">
-                    <p class="proof-stars" aria-label="{{ $t->rating }} out of 5 stars">{{ str_repeat('★', $t->rating) }}</p>
+                    <p class="proof-stars" aria-label="{{ __('public.testimonials_page.rating_aria', ['rating' => $t->rating]) }}">{{ str_repeat('★', $t->rating) }}</p>
                     <p class="proof-content">{{ $t->localized_content }}</p>
+                    @if($t->localized_title)
+                        <p class="proof-badge">{{ $t->localized_title }}</p>
+                    @endif
                     <div>
                         <p class="proof-client">{{ $t->client_name }}</p>
-                        <span class="proof-badge">Patient experience</span>
+                        <span class="proof-badge">{{ __('public.testimonials_page.client_experience') }}</span>
                     </div>
                 </article>
             @endforeach

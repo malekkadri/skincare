@@ -11,6 +11,7 @@ use App\Models\PageHero;
 use App\Models\Policy;
 use App\Models\Testimonial;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Storage;
 
 class MarketingContentSeeder extends Seeder
 {
@@ -68,11 +69,32 @@ class MarketingContentSeeder extends Seeder
             'qualifications_fr' => 'Médecine esthétique, protocoles cutanés personnalisés, hygiène médicale et accompagnement professionnel.', 'qualifications_en' => 'Aesthetic medicine, personalized skin protocols, medical hygiene, and professional care.', 'is_published' => true,
         ]);
 
-        foreach (range(1, 4) as $i) {
-            GalleryItem::query()->updateOrCreate(['title_en' => "Asthetika Care Session {$i}"], [
-                'title_fr' => "Soin Asthetika {$i}", 'caption_fr' => 'Résultat lumineux et peau apaisée.', 'caption_en' => 'Radiant, soothed skin result.',
-                'image_path' => null, 'category' => $i % 2 ? 'facial' : 'hydration', 'is_featured' => $i <= 3, 'is_active' => true, 'sort_order' => $i,
-            ]);
+        $resolveImagePath = static function (?string $path): ?string {
+            if (blank($path)) {
+                return null;
+            }
+
+            if (file_exists(public_path($path)) || file_exists(public_path('storage/'.$path)) || Storage::disk('public')->exists($path)) {
+                return $path;
+            }
+
+            return null;
+        };
+
+        $galleryItems = [
+            ['title_fr' => 'Soin Hydrafacial', 'title_en' => 'Hydrafacial treatment', 'caption_fr' => 'Un soin complet pour nettoyer, exfolier et accompagner l’éclat de la peau.', 'caption_en' => 'A complete treatment to cleanse, exfoliate, and support skin radiance.', 'category' => 'noor', 'image_path' => null, 'is_before_after' => false, 'is_featured' => true, 'is_active' => true, 'sort_order' => 1],
+            ['title_fr' => 'Hydrafacial Détoxifiant', 'title_en' => 'Detoxifying Hydrafacial', 'caption_fr' => 'Un protocole purifiant pensé pour les peaux ternes, obstruées ou sujettes aux imperfections.', 'caption_en' => 'A purifying protocol designed for dull, congested, or blemish-prone skin.', 'category' => 'noor', 'image_path' => null, 'is_before_after' => false, 'is_featured' => true, 'is_active' => true, 'sort_order' => 2],
+            ['title_fr' => 'Protocole éclat personnalisé', 'title_en' => 'Personalized glow protocol', 'caption_fr' => 'Une approche progressive et adaptée selon les besoins de la peau.', 'caption_en' => 'A progressive approach tailored to the skin’s needs.', 'category' => 'noor', 'image_path' => null, 'is_before_after' => false, 'is_featured' => true, 'is_active' => true, 'sort_order' => 3],
+            ['title_fr' => 'Consultation peau', 'title_en' => 'Skin consultation', 'caption_fr' => 'Un échange pour mieux comprendre les attentes et orienter le protocole adapté.', 'caption_en' => 'A conversation to better understand expectations and guide the suitable protocol.', 'category' => 'dr-aziz', 'image_path' => null, 'is_before_after' => false, 'is_featured' => true, 'is_active' => true, 'sort_order' => 4],
+            ['title_fr' => 'Espace Asthetika', 'title_en' => 'Asthetika space', 'caption_fr' => 'Un cadre calme et professionnel pour accompagner chaque rendez-vous.', 'caption_en' => 'A calm and professional setting for every appointment.', 'category' => 'asthetika', 'image_path' => null, 'is_before_after' => false, 'is_featured' => false, 'is_active' => true, 'sort_order' => 5],
+            ['title_fr' => 'Préparation du soin', 'title_en' => 'Treatment preparation', 'caption_fr' => 'Chaque soin est préparé avec attention, hygiène et précision.', 'caption_en' => 'Each treatment is prepared with care, hygiene, and precision.', 'category' => 'noor', 'image_path' => null, 'is_before_after' => false, 'is_featured' => false, 'is_active' => true, 'sort_order' => 6],
+            ['title_fr' => 'Conseils personnalisés', 'title_en' => 'Personalized advice', 'caption_fr' => 'Des recommandations adaptées à votre peau, votre routine et vos objectifs.', 'caption_en' => 'Recommendations adapted to your skin, routine, and goals.', 'category' => 'dr-aziz', 'image_path' => null, 'is_before_after' => false, 'is_featured' => false, 'is_active' => true, 'sort_order' => 7],
+            ['title_fr' => 'Routine post-soin', 'title_en' => 'Post-treatment routine', 'caption_fr' => 'Des conseils simples pour prolonger le confort et l’équilibre de la peau.', 'caption_en' => 'Simple advice to support comfort and skin balance after treatment.', 'category' => 'asthetika', 'image_path' => null, 'is_before_after' => false, 'is_featured' => false, 'is_active' => true, 'sort_order' => 8],
+        ];
+
+        foreach ($galleryItems as $item) {
+            $item['image_path'] = $resolveImagePath($item['image_path']);
+            GalleryItem::query()->updateOrCreate(['title_en' => $item['title_en']], $item);
         }
 
         foreach ([
@@ -89,11 +111,29 @@ class MarketingContentSeeder extends Seeder
             Policy::query()->updateOrCreate(['slug' => $policy['slug']], $policy + ['is_active' => true]);
         }
 
-        if (\App\Models\Service::query()->exists()) {
-            Testimonial::query()->updateOrCreate(['client_name' => 'Sarra B.'], [
-                'title_fr' => 'Peau transformée', 'title_en' => 'Skin transformed', 'content_fr' => 'Résultats visibles dès la première séance.', 'content_en' => 'Visible results from the first session.', 'rating' => 5,
-                'service_id' => \App\Models\Service::query()->value('id'), 'is_featured' => true, 'is_active' => true, 'sort_order' => 1,
-            ]);
+        $serviceIdsBySlug = \App\Models\Service::query()
+            ->whereIn('slug', ['hydrafacial-essentiel', 'hydrafacial-detoxifiant', 'consultation-dr-aziz', 'consultation-peau-noor', 'suivi-post-soin'])
+            ->pluck('id', 'slug');
+
+        $testimonials = [
+            ['client_name' => 'Cliente Asthetika', 'title_fr' => 'Accompagnement professionnel', 'title_en' => 'Professional care', 'content_fr' => 'Accueil attentif, explications claires et soin adapté à mes besoins.', 'content_en' => 'Attentive welcome, clear explanations, and care adapted to my needs.', 'rating' => 5, 'service_slug' => 'consultation-dr-aziz', 'is_featured' => true, 'sort_order' => 1],
+            ['client_name' => 'Cliente Noor', 'title_fr' => 'Soin agréable', 'title_en' => 'Pleasant treatment', 'content_fr' => 'Un soin agréable avec des conseils utiles pour ma routine.', 'content_en' => 'A pleasant treatment with helpful advice for my routine.', 'rating' => 5, 'service_slug' => 'hydrafacial-essentiel', 'is_featured' => true, 'sort_order' => 2],
+            ['client_name' => 'Patiente Dr Aziz', 'title_fr' => 'Conseils clairs', 'title_en' => 'Clear guidance', 'content_fr' => 'Des conseils clairs et un accompagnement rassurant.', 'content_en' => 'Clear advice and reassuring support.', 'rating' => 5, 'service_slug' => 'consultation-dr-aziz', 'is_featured' => true, 'sort_order' => 3],
+            ['client_name' => 'Cliente Hydrafacial', 'title_fr' => 'Expérience soignée', 'title_en' => 'Thoughtful experience', 'content_fr' => 'Le soin a été réalisé avec douceur, hygiène et beaucoup d’attention.', 'content_en' => 'The treatment was carried out with gentleness, hygiene, and care.', 'rating' => 5, 'service_slug' => 'hydrafacial-detoxifiant', 'is_featured' => false, 'sort_order' => 4],
+            ['client_name' => 'Cliente Consultation', 'title_fr' => 'Orientation utile', 'title_en' => 'Helpful guidance', 'content_fr' => 'J’ai apprécié les explications et l’orientation vers un protocole adapté.', 'content_en' => 'I appreciated the explanations and guidance toward a suitable protocol.', 'rating' => 4, 'service_slug' => 'consultation-peau-noor', 'is_featured' => false, 'sort_order' => 5],
+            ['client_name' => 'Cliente Suivi', 'title_fr' => 'Suivi rassurant', 'title_en' => 'Reassuring follow-up', 'content_fr' => 'Un suivi simple, clair et rassurant après mon rendez-vous.', 'content_en' => 'Simple, clear, and reassuring follow-up after my appointment.', 'rating' => 5, 'service_slug' => 'suivi-post-soin', 'is_featured' => false, 'sort_order' => 6],
+        ];
+
+        foreach ($testimonials as $testimonial) {
+            $serviceSlug = $testimonial['service_slug'];
+            unset($testimonial['service_slug']);
+            $testimonial['service_id'] = $serviceIdsBySlug[$serviceSlug] ?? null;
+            $testimonial['is_active'] = true;
+
+            Testimonial::query()->updateOrCreate(
+                ['client_name' => $testimonial['client_name'], 'title_en' => $testimonial['title_en']],
+                $testimonial,
+            );
         }
     }
 }
