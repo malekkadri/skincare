@@ -43,7 +43,7 @@ class UpdateServiceRequest extends FormRequest
             'price_eur' => ['required', 'numeric', 'min:0'],
             'duration_minutes' => ['required', 'integer', 'min:1'],
             'buffer_minutes' => ['nullable', 'integer', 'min:0'],
-            'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:3072'],
+            'image' => ['nullable', 'file', 'mimes:png,jpg,jpeg,webp,svg', 'max:4096'],
             'is_active' => ['nullable', 'boolean'],
             'is_featured' => ['nullable', 'boolean'],
             'sort_order' => ['nullable', 'integer'],

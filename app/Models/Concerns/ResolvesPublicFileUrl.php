@@ -42,10 +42,6 @@ trait ResolvesPublicFileUrl
         }
 
         if (Storage::disk('public')->exists($normalizedPath)) {
-            if (File::exists(public_path('storage'))) {
-                return Storage::disk('public')->url($normalizedPath);
-            }
-
             $encodedPath = collect(explode('/', $normalizedPath))
                 ->filter(static fn (string $segment): bool => $segment !== '')
                 ->map(static fn (string $segment): string => rawurlencode($segment))
