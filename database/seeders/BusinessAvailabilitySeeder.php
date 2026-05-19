@@ -2,8 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\BlockedDate;
-use App\Models\BlockedTimeRange;
 use App\Models\WeeklyBusinessHour;
 use Illuminate\Database\Seeder;
 
@@ -27,15 +25,5 @@ class BusinessAvailabilitySeeder extends Seeder
                 ['is_open' => $isOpen, 'start_time' => $start, 'end_time' => $end]
             );
         }
-
-        BlockedDate::query()->updateOrCreate(
-            ['blocked_date' => '2026-05-01'],
-            ['reason' => 'Labour Day holiday']
-        );
-
-        BlockedTimeRange::query()->updateOrCreate(
-            ['blocked_date' => '2026-04-15', 'start_time' => '13:00:00', 'end_time' => '15:00:00'],
-            ['reason' => 'Team training']
-        );
     }
 }
