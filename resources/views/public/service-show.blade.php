@@ -286,10 +286,14 @@
     </header>
 
     <section class="service-detail-visual reveal" aria-label="{{ __('public.service_show.image') }}">
-        <img
-            src="{{ $service->image_url ?: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=1400&q=80' }}"
-            alt="{{ $service->localized_name }}"
-        >
+        @if($service->image_url)
+            <img
+                src="{{ $service->image_url }}"
+                alt="{{ $service->localized_name }}"
+            >
+        @else
+            <div class="hero-image-fallback" role="img" aria-label="{{ $service->localized_name }}"></div>
+        @endif
         <span class="service-detail-visual-caption">{{ __('public.service_show.personalized') }}</span>
     </section>
 

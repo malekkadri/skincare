@@ -11,14 +11,25 @@ class ServiceCatalogSeeder extends Seeder
     public function run(): void
     {
         $facials = ServiceCategory::query()->updateOrCreate(
-            ['slug' => 'facials'],
+            ['slug' => 'noor'],
             [
-                'name_fr' => 'Hydrafacial',
-                'name_en' => 'Hydrafacial',
+                'name_fr' => 'Noor',
+                'name_en' => 'Noor',
                 'description_fr' => 'Protocoles Hydrafacial experts adaptés aux besoins de votre peau.',
                 'description_en' => 'Expert Hydrafacial protocols tailored to your skin needs.',
                 'is_active' => true,
                 'sort_order' => 1,
+            ]
+        );
+        ServiceCategory::query()->updateOrCreate(
+            ['slug' => 'dr-aziz'],
+            [
+                'name_fr' => 'Dr Aziz',
+                'name_en' => 'Dr Aziz',
+                'description_fr' => 'Protocoles avancés signés Dr Aziz.',
+                'description_en' => 'Advanced protocols curated by Dr Aziz.',
+                'is_active' => true,
+                'sort_order' => 2,
             ]
         );
 

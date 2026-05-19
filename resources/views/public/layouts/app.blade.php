@@ -171,6 +171,12 @@
             gap: .35rem;
             flex-wrap: wrap;
         }
+        .nav-dropdown { position: relative; }
+        .nav-dropdown-toggle { display: inline-flex; gap: .35rem; align-items: center; }
+        .nav-dropdown-menu { position: absolute; top: calc(100% + .4rem); left: 0; min-width: 320px; background: #fdf8f3; border: 1px solid var(--border-strong); border-radius: 16px; padding: .9rem; box-shadow: var(--shadow-soft); opacity: 0; transform: translateY(6px); pointer-events: none; transition: opacity .2s ease, transform .2s ease; z-index: 30; }
+        .nav-dropdown.is-open .nav-dropdown-menu { opacity: 1; transform: translateY(0); pointer-events: auto; }
+        .nav-dropdown-category { display: grid; gap: .25rem; margin-bottom: .6rem; }
+        .nav-dropdown-service { display: block; color: var(--text-secondary); padding: .2rem 0 .2rem .35rem; }
         .nav-link {
             position: relative;
             color: var(--text-secondary);
@@ -311,6 +317,7 @@
         .sbn-page-hero h1{margin:0 0 .35rem;color:#fff;font-size:clamp(1.8rem,4.2vw,3.2rem)}
         .sbn-page-hero .subtitle{margin:.25rem 0;font-size:clamp(1rem,2vw,1.25rem)}
         .sbn-page-hero .description{margin:.2rem 0 1rem;opacity:.95}
+        .hero-image-fallback { width:100%; min-height: 240px; border-radius: 18px; border:1px solid var(--border); background: linear-gradient(140deg,#f7eee5,#efe2d2); display:grid; place-items:center; color:var(--text-secondary); text-align:center; padding:1rem; }
 
 
         .form-control,
@@ -483,6 +490,11 @@
             gap: .75rem 1.4rem;
             justify-content: space-between;
         }
+        .footer-column { display:grid; gap:.4rem; align-content:start; }
+        .footer-contact-stack { display:grid; gap:.55rem; align-items:start; }
+        .footer-contact-stack .btn { width: fit-content; margin-top:.35rem; }
+        .footer-contact-stack .footer-social { margin-top:.55rem; }
+        .footer-contact-stack .footer-meta { display:block; line-height:1.65; }
         .footer-social {
             display: flex;
             gap: .55rem;
@@ -638,7 +650,24 @@
 
             <nav class="nav-links" aria-label="Primary navigation">
                 <a class="nav-link" href="{{ route('about') }}" @if(request()->routeIs('about')) aria-current="page" @endif>{{ __('public.nav.about') }}</a>
-                <a class="nav-link" href="{{ route('services.index') }}" @if(request()->routeIs('services.index', 'services.show')) aria-current="page" @endif>{{ __('public.nav.services') }}</a>
+                <div class="nav-dropdown" data-nav-dropdown>
+                    <button class="nav-link nav-dropdown-toggle" type="button" aria-expanded="false" aria-haspopup="true">
+                        {{ __('public.nav.services') }} <span aria-hidden="true">⌄</span>
+                    </button>
+                    <div class="nav-dropdown-menu" role="menu">
+                        @foreach(($navServiceCategories ?? collect()) as $category)
+                            <div class="nav-dropdown-category">
+                                <a class="footer-link" href="{{ route('services.index') }}#category-{{ $category->id }}">{{ $category->localized_name }}</a>
+                                @forelse($category->services as $service)
+                                    <a class="nav-dropdown-service" href="{{ route('services.show', $service->slug) }}">{{ $service->localized_name }}</a>
+                                @empty
+                                    <span class="footer-meta">{{ app()->getLocale()==='fr' ? 'Bientôt disponible' : 'Coming soon' }}</span>
+                                @endforelse
+                            </div>
+                        @endforeach
+                        <a class="btn btn-soft" href="{{ route('services.index') }}">{{ app()->getLocale()==='fr' ? 'Voir tous les services' : 'View all services' }}</a>
+                    </div>
+                </div>
                 <a class="nav-link" href="{{ route('recommender.index') }}" @if(request()->routeIs('recommender.index')) aria-current="page" @endif>{{ __('public.nav.ai_recommender') }}</a>
                 <a class="nav-link" href="{{ route('consultation.create') }}" @if(request()->routeIs('consultation.create', 'consultation.success')) aria-current="page" @endif>{{ __('public.nav.consultation') }}</a>
                 <a class="nav-link" href="{{ route('gallery') }}" @if(request()->routeIs('gallery')) aria-current="page" @endif>{{ __('public.nav.gallery') }}</a>
@@ -668,6 +697,14 @@
             <nav class="mobile-nav-links" aria-label="Mobile primary navigation">
                 <a class="nav-link" href="{{ route('about') }}" @if(request()->routeIs('about')) aria-current="page" @endif>{{ __('public.nav.about') }}</a>
                 <a class="nav-link" href="{{ route('services.index') }}" @if(request()->routeIs('services.index', 'services.show')) aria-current="page" @endif>{{ __('public.nav.services') }}</a>
+                @foreach(($navServiceCategories ?? collect()) as $category)
+                    <span class="footer-meta">{{ $category->localized_name }}</span>
+                    @forelse($category->services as $service)
+                        <a class="nav-link" href="{{ route('services.show', $service->slug) }}">{{ $service->localized_name }}</a>
+                    @empty
+                        <span class="footer-meta">{{ app()->getLocale()==='fr' ? 'Bientôt disponible' : 'Coming soon' }}</span>
+                    @endforelse
+                @endforeach
                 <a class="nav-link" href="{{ route('recommender.index') }}" @if(request()->routeIs('recommender.index')) aria-current="page" @endif>{{ __('public.nav.ai_recommender') }}</a>
                 <a class="nav-link" href="{{ route('consultation.create') }}" @if(request()->routeIs('consultation.create', 'consultation.success')) aria-current="page" @endif>{{ __('public.nav.consultation') }}</a>
                 <a class="nav-link" href="{{ route('gallery') }}" @if(request()->routeIs('gallery')) aria-current="page" @endif>{{ __('public.nav.gallery') }}</a>
@@ -705,7 +742,7 @@
 <footer class="site-footer">
     <div class="container">
         <div class="footer-grid">
-            <div>
+            <div class="footer-column">
                 <a class="footer-brand is-gold-focus" href="{{ route('home') }}">
                     @if(filled($settings->logo_url))
                         <img class="footer-logo" src="{{ $settings->logo_url }}" alt="Asthetika - Dr Aziz Sahly">
@@ -718,7 +755,7 @@
                 <p class="muted">{{ $settings->localized('site_tagline') ?: __('public.footer.tagline') }}</p>
                 <p class="footer-meta">{{ __('public.footer.brand_assurance') }}</p>
             </div>
-            <div>
+            <div class="footer-column">
                 <h4 class="footer-title">{{ __('public.footer.quick_links') }}</h4>
                 <a class="footer-link" href="{{ route('home') }}">{{ __('public.footer.home') }}</a>
                 <a class="footer-link" href="{{ route('about') }}">{{ __('public.footer.who_we_are') }}</a>
@@ -726,26 +763,27 @@
                 <a class="footer-link" href="{{ route('testimonials') }}">{{ __('public.nav.testimonials') }}</a>
                 <a class="footer-link" href="{{ route('faq') }}">{{ __('public.nav.faq') }}</a>
             </div>
-            <div>
+            <div class="footer-column">
                 <h4 class="footer-title">{{ __('public.footer.services') }}</h4>
                 <a class="footer-link" href="{{ route('services.index') }}">{{ __('public.nav.services') }}</a>
                 <a class="footer-link" href="{{ route('consultation.create') }}">{{ __('public.nav.consultation') }}</a>
                 <a class="footer-link" href="{{ route('recommender.index') }}">{{ __('public.nav.ai_recommender') }}</a>
                 <a class="footer-link" href="{{ route('booking.service') }}">{{ __('public.footer.book_appointment') }}</a>
             </div>
-            <div>
+            <div class="footer-column">
                 <h4 class="footer-title">{{ __('public.footer.contact') }}</h4>
-                <a class="footer-link" href="{{ route('contact') }}">{{ __('public.footer.contact_page') }}</a>
-                @if(filled($settings->phone))
-                    <a class="footer-link" href="tel:{{ preg_replace('/\s+/', '', $settings->phone) }}">{{ $settings->phone }}</a>
-                @endif
-                @if(filled($settings->localized('address')))
-                    <span class="footer-meta">{{ $settings->localized('address') }}</span>
-                @endif
-                @if(filled($settings->whatsapp_number))
-                    <a class="btn is-gold-focus" target="_blank" rel="noopener noreferrer" href="https://wa.me/{{ preg_replace('/\D+/', '', $settings->whatsapp_number) }}">{{ __('public.footer.whatsapp') }}</a>
-                @endif
-                <div class="footer-social" aria-label="{{ __('public.footer.social') }}">
+                <div class="footer-contact-stack">
+                    <a class="footer-link" href="{{ route('contact') }}">{{ __('public.footer.contact_page') }}</a>
+                    @if(filled($settings->phone))
+                        <a class="footer-link" href="tel:{{ preg_replace('/\s+/', '', $settings->phone) }}">{{ $settings->phone }}</a>
+                    @endif
+                    @if(filled($settings->localized('address')))
+                        <span class="footer-meta">{{ $settings->localized('address') }}</span>
+                    @endif
+                    @if(filled($settings->whatsapp_number))
+                        <a class="btn is-gold-focus" target="_blank" rel="noopener noreferrer" href="https://wa.me/{{ preg_replace('/\D+/', '', $settings->whatsapp_number) }}">{{ __('public.footer.whatsapp') }}</a>
+                    @endif
+                    <div class="footer-social" aria-label="{{ __('public.footer.social') }}">
                     @if(filled($settings->instagram_url))
                         <a class="is-gold-focus" href="{{ $settings->instagram_url }}" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
                             <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5" stroke-width="1.8"></rect><circle cx="12" cy="12" r="4.2" stroke-width="1.8"></circle><circle cx="17.3" cy="6.7" r="1"></circle></svg>
@@ -771,6 +809,7 @@
                             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z" stroke-width="1.8"></path><circle cx="12" cy="10" r="2.7" stroke-width="1.8"></circle></svg>
                         </a>
                     @endif
+                    </div>
                 </div>
             </div>
         </div>
@@ -867,6 +906,18 @@
                 closeMobileMenu();
             }
         });
+
+        const navDropdown = document.querySelector('[data-nav-dropdown]');
+        if (navDropdown) {
+            const trigger = navDropdown.querySelector('.nav-dropdown-toggle');
+            const closeDropdown = () => { navDropdown.classList.remove('is-open'); trigger?.setAttribute('aria-expanded', 'false'); };
+            const openDropdown = () => { navDropdown.classList.add('is-open'); trigger?.setAttribute('aria-expanded', 'true'); };
+            trigger?.addEventListener('click', (e) => { e.stopPropagation(); navDropdown.classList.contains('is-open') ? closeDropdown() : openDropdown(); });
+            navDropdown.addEventListener('mouseenter', openDropdown);
+            navDropdown.addEventListener('mouseleave', closeDropdown);
+            document.addEventListener('click', (e) => { if (!navDropdown.contains(e.target)) closeDropdown(); });
+            document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeDropdown(); });
+        }
     });
 </script>
 </body>
