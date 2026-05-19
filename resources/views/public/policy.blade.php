@@ -87,15 +87,15 @@
 <section class="page-section policy-shell">
     <div class="page-hero policy-hero">
         <div class="policy-hero-copy">
-            <p class="section-kicker">Policy</p>
+            <p class="section-kicker">{{ __('public.policy_page.kicker') }}</p>
             <h1 class="section-title">{{ $policy->localized_title }}</h1>
-            <p class="muted" style="margin:0;">Please review this policy before your appointment to ensure a smooth and comfortable Asthetika experience.</p>
+            <p class="muted" style="margin:0;">{{ __('public.policy_page.description') }}</p>
         </div>
     </div>
 
-    <article class="policy-frame" aria-label="Policy details">
+    <article class="policy-frame" aria-label="{{ __('public.policy_page.details') }}">
         <header class="policy-frame-head">
-            <p>Asthetika Patient Policy</p>
+            <p>{{ __('public.policy_page.shell_title') }}</p>
         </header>
         <div class="policy-content">{!! nl2br(e($policy->localized_content)) !!}</div>
     </article>

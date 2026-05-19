@@ -93,6 +93,30 @@ return [
         'empty' => 'Gallery items will be published soon.',
         'placeholder' => 'Asthetika',
     ],
+
+    'faq_page' => [
+        'kicker' => 'FAQ',
+        'title' => 'Frequently asked questions',
+        'description' => 'Find useful answers before your Asthetika appointment.',
+        'empty' => 'Frequently asked questions will be published soon.',
+        'categories' => [
+            'general' => 'General',
+            'booking' => 'Booking',
+            'noor' => 'Noor',
+            'dr_aziz' => 'Dr Aziz',
+            'services' => 'Services',
+            'location' => 'Location',
+            'medical' => 'Medical',
+            'ai' => 'AI',
+        ],
+    ],
+    'policy_page' => [
+        'kicker' => 'Policy',
+        'description' => 'Please review this information before your appointment to prepare your Asthetika experience in the best conditions.',
+        'shell_title' => 'Asthetika information',
+        'details' => 'Policy details',
+    ],
+
     'testimonials_page' => [
         'kicker' => 'Testimonials',
         'title' => 'Client feedback',

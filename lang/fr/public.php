@@ -92,6 +92,30 @@ return [
         'empty' => 'La galerie sera enrichie prochainement.',
         'placeholder' => 'Asthetika',
     ],
+
+    'faq_page' => [
+        'kicker' => 'FAQ',
+        'title' => 'Questions fréquentes',
+        'description' => 'Retrouvez les réponses utiles avant votre rendez-vous chez Asthetika.',
+        'empty' => 'Les questions fréquentes seront publiées prochainement.',
+        'categories' => [
+            'general' => 'Général',
+            'booking' => 'Réservation',
+            'noor' => 'Noor',
+            'dr_aziz' => 'Dr Aziz',
+            'services' => 'Services',
+            'location' => 'Localisation',
+            'medical' => 'Médical',
+            'ai' => 'IA',
+        ],
+    ],
+    'policy_page' => [
+        'kicker' => 'Politique',
+        'description' => 'Merci de consulter ces informations avant votre rendez-vous afin de préparer votre expérience Asthetika dans les meilleures conditions.',
+        'shell_title' => 'Informations Asthetika',
+        'details' => 'Détails de la politique',
+    ],
+
     'testimonials_page' => [
         'kicker' => 'Témoignages',
         'title' => 'Retours d’expérience',
