@@ -26,17 +26,17 @@
             </div>
             <div>
                 <label>Logo</label>
-                <input type="file" name="logo" accept="image/*">
-                <p class="muted">Recommended: transparent PNG/SVG/WebP, horizontal logo preferred.</p>
+                <input type="file" name="logo" accept="image/png,image/jpeg,image/webp,image/svg+xml,.svg">
+                <p class="muted">Recommended: transparent PNG, SVG or WebP logo, horizontal format preferred.</p>
                 @if($settings->logo_url)
                     <p class="muted">Current: <a href="{{ $settings->logo_url }}" target="_blank">View logo</a></p>
-                    <img src="{{ $settings->logo_url }}" alt="Asthetika" style="display:block;max-height:64px;width:auto;object-fit:contain;margin-top:.5rem;">
+                    <img src="{{ $settings->logo_url }}" alt="Asthetika - Dr Aziz Sahly" style="display:block;max-height:72px;max-width:260px;width:auto;object-fit:contain;margin-top:.6rem;padding:.5rem .75rem;border-radius:16px;background:linear-gradient(145deg,#fffaf3 0%,#f1e3d0 100%);border:1px solid #e5d5c1;box-shadow:0 10px 24px rgba(47,39,34,.1);">
                 @endif
                 @error('logo')<div class="error">{{ $message }}</div>@enderror
             </div>
             <div>
                 <label>Favicon</label>
-                <input type="file" name="favicon" accept="image/*">
+                <input type="file" name="favicon" accept="image/png,image/jpeg,image/webp,image/svg+xml,image/x-icon,.ico,.svg">
                 @if($settings->favicon_url)<p class="muted">Current: <a href="{{ $settings->favicon_url }}" target="_blank">View favicon</a></p>@endif
                 @error('favicon')<div class="error">{{ $message }}</div>@enderror
             </div>
