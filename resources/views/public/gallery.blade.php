@@ -132,19 +132,19 @@
 <section class="page-section gallery-shell">
     <div class="page-hero gallery-hero">
         <div class="gallery-hero-copy">
-            <p class="section-kicker">Gallery</p>
-            <h1 class="section-title">Glow moments</h1>
-            <p class="muted">A visual journey of Asthetika treatments, ambiance, and client care rituals.</p>
+            <p class="section-kicker">{{ __('public.gallery_page.kicker') }}</p>
+            <h1 class="section-title">{{ __('public.gallery_page.title') }}</h1>
+            <p class="muted">{{ __('public.gallery_page.description') }}</p>
             <div class="gallery-support-row" aria-hidden="true">
-                <span class="gallery-support-pill">Treatment Rituals</span>
-                <span class="gallery-support-pill">Studio Ambience</span>
-                <span class="gallery-support-pill">Signature Results</span>
+                <span class="gallery-support-pill">{{ __('public.gallery_page.pill_noor') }}</span>
+                <span class="gallery-support-pill">{{ __('public.gallery_page.pill_atmosphere') }}</span>
+                <span class="gallery-support-pill">{{ __('public.gallery_page.pill_guidance') }}</span>
             </div>
         </div>
     </div>
 
     @if($items->isEmpty())
-        <div class="empty-state">Gallery images will be published soon.</div>
+        <div class="empty-state">{{ __('public.gallery_page.empty') }}</div>
     @else
         <div class="gallery-grid">
             @foreach($items as $item)
@@ -157,7 +157,7 @@
                                 class="gallery-image"
                             >
                         @else
-                            <div class="hero-image-fallback" role="img" aria-label="{{ $item->localized_title }}"></div>
+                            <div class="hero-image-fallback" role="img" aria-label="{{ $item->localized_title }}">{{ __('public.gallery_page.placeholder') }}</div>
                         @endif
                     </div>
                     <div class="gallery-card-body">

@@ -82,4 +82,24 @@ return [
         'cta_button' => 'Start Booking',
         'hero_kicker' => 'Premium Skincare Studio',
     ],
+
+    'gallery_page' => [
+        'kicker' => 'Gallery',
+        'title' => 'The Asthetika experience',
+        'description' => 'A glimpse into Asthetika’s atmosphere, treatments, and approach, without exaggerated claims or misleading before/after promises.',
+        'pill_noor' => 'Noor treatments',
+        'pill_atmosphere' => 'Asthetika atmosphere',
+        'pill_guidance' => 'Dr Aziz guidance',
+        'empty' => 'Gallery items will be published soon.',
+        'placeholder' => 'Asthetika',
+    ],
+    'testimonials_page' => [
+        'kicker' => 'Testimonials',
+        'title' => 'Client feedback',
+        'description' => 'Simple and authentic feedback about the Asthetika experience.',
+        'empty' => 'Client testimonials will be published soon.',
+        'grid_label' => 'Client testimonials',
+        'client_experience' => 'Client experience',
+        'rating_aria' => ':rating out of 5 stars',
+    ],
 ];

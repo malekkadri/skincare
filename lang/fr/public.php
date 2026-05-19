@@ -81,4 +81,24 @@ return [
         'cta_button' => 'Commencer la réservation',
         'hero_kicker' => 'Studio de soins premium',
     ],
+
+    'gallery_page' => [
+        'kicker' => 'Galerie',
+        'title' => 'L’univers Asthetika',
+        'description' => 'Un aperçu de l’ambiance, des soins et de l’approche Asthetika, sans promesses exagérées ni avant/après trompeurs.',
+        'pill_noor' => 'Soins Noor',
+        'pill_atmosphere' => 'Ambiance Asthetika',
+        'pill_guidance' => 'Accompagnement Dr Aziz',
+        'empty' => 'La galerie sera enrichie prochainement.',
+        'placeholder' => 'Asthetika',
+    ],
+    'testimonials_page' => [
+        'kicker' => 'Témoignages',
+        'title' => 'Retours d’expérience',
+        'description' => 'Des retours simples et authentiques sur l’accompagnement Asthetika.',
+        'empty' => 'Les témoignages seront publiés prochainement.',
+        'grid_label' => 'Témoignages clients',
+        'client_experience' => 'Expérience cliente',
+        'rating_aria' => ':rating sur 5 étoiles',
+    ],
 ];
