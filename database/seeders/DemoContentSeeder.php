@@ -9,9 +9,6 @@ class DemoContentSeeder extends Seeder
     public function run(): void
     {
         $this->call([
-            ServiceCatalogSeeder::class,
-            BusinessAvailabilitySeeder::class,
-            MarketingContentSeeder::class,
             ConsultationSeeder::class,
         ]);
     }
