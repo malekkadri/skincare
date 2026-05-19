@@ -20,8 +20,9 @@ trait ResolvesPublicFileUrl
 
         $normalizedPath = ltrim(str_replace('\\', '/', $path), '/');
 
-        // Support legacy values like "public/storage/gallery/file.png".
-        if (Str::startsWith($normalizedPath, 'public/storage/')) {
+        if (Str::startsWith($normalizedPath, 'storage/app/public/')) {
+            $normalizedPath = Str::after($normalizedPath, 'storage/app/public/');
+        } elseif (Str::startsWith($normalizedPath, 'public/storage/')) {
             $normalizedPath = Str::after($normalizedPath, 'public/storage/');
         } elseif (Str::startsWith($normalizedPath, 'storage/')) {
             $normalizedPath = Str::after($normalizedPath, 'storage/');
@@ -40,16 +41,19 @@ trait ResolvesPublicFileUrl
             return asset('storage/'.$normalizedPath);
         }
 
-        // Standard Laravel public disk URL (symlinked /storage path).
-        if (Storage::disk('public')->exists($normalizedPath) && File::exists(public_path('storage'))) {
-            return Storage::disk('public')->url($normalizedPath);
+        if (Storage::disk('public')->exists($normalizedPath)) {
+            if (File::exists(public_path('storage'))) {
+                return Storage::disk('public')->url($normalizedPath);
+            }
+
+            $encodedPath = collect(explode('/', $normalizedPath))
+                ->filter(static fn (string $segment): bool => $segment !== '')
+                ->map(static fn (string $segment): string => rawurlencode($segment))
+                ->implode('/');
+
+            return route('media.public', ['path' => $encodedPath]);
         }
 
-        $encodedPath = collect(explode('/', $normalizedPath))
-            ->filter(static fn (string $segment): bool => $segment !== '')
-            ->map(static fn (string $segment): string => rawurlencode($segment))
-            ->implode('/');
-
-        return url('/media/'.$encodedPath);
+        return null;
     }
 }

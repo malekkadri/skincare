@@ -52,7 +52,7 @@
             min-height: 100vh;
             overflow-x: clip;
         }
-        body.menu-open { overflow: hidden; }
+        body.menu-open { overflow: hidden; touch-action: none; }
         h1, h2, h3, h4 {
             font-family: 'Playfair Display', Georgia, serif;
             letter-spacing: .02em;
@@ -69,27 +69,53 @@
             position: sticky;
             top: 0;
             z-index: 40;
-            backdrop-filter: blur(18px);
-            background: rgba(248, 243, 237, .88);
-            border-bottom: 1px solid rgba(218, 205, 191, .72);
+            backdrop-filter: blur(20px);
+            background: rgba(248, 243, 237, .78);
+            border-bottom: 1px solid rgba(218, 205, 191, .62);
+            transition: background-color .28s ease, box-shadow .28s ease, border-color .28s ease;
+        }
+        .site-header.is-scrolled {
+            background: rgba(251, 247, 242, .94);
+            border-bottom-color: rgba(208, 188, 166, .88);
+            box-shadow: 0 18px 38px rgba(47, 39, 34, .12);
         }
         .site-nav {
-            min-height: 92px;
+            min-height: 96px;
             display: grid;
             grid-template-columns: auto 1fr auto;
             align-items: center;
             gap: 1.5rem;
-            padding: .95rem 0;
+            padding: .9rem 0;
+            transition: min-height .28s ease, padding .28s ease;
         }
         .brand {
             display: inline-grid;
+            position: relative;
             gap: .2rem;
             align-items: center;
             justify-items: start;
         }
-        .brand-logo {
+                .brand-logo-shell {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: .55rem .95rem;
+            border-radius: 999px;
+            border: 1px solid rgba(214, 195, 173, .8);
+            background: linear-gradient(142deg, rgba(255, 252, 246, .97) 0%, rgba(244, 231, 215, .9) 100%);
+            box-shadow: 0 10px 24px rgba(47, 39, 34, .1), inset 0 1px 0 rgba(255,255,255,.8);
+            transition: transform .28s ease, box-shadow .28s ease;
+        }
+        .brand.has-logo:hover .brand-logo-shell {
+            transform: translateY(-1px);
+            box-shadow: 0 16px 28px rgba(47,39,34,.14), inset 0 1px 0 rgba(255,255,255,.9);
+        }
+.brand-logo {
             display: block;
-            max-height: 64px;
+            transition: transform .22s ease, opacity .22s ease;
+            max-height: 72px;
+            max-width: 220px;
+            transition: max-height .28s ease, transform .28s ease;
             width: auto;
             object-fit: contain;
         }
@@ -99,6 +125,9 @@
             letter-spacing: .04em;
             line-height: 1.1;
         }
+        .site-header.is-scrolled .site-nav { min-height: 82px; padding: .58rem 0; }
+        .site-header.is-scrolled .brand-logo { max-height: 58px; transform: scale(.98); }
+
         .brand-subtitle {
             text-transform: uppercase;
             letter-spacing: .23em;
@@ -124,6 +153,9 @@
             display: inline-grid;
             gap: 3px;
         }
+        .menu-toggle.is-open .menu-toggle-lines span:nth-child(1) { transform: translateY(4.5px) rotate(45deg); }
+        .menu-toggle.is-open .menu-toggle-lines span:nth-child(2) { opacity: 0; }
+        .menu-toggle.is-open .menu-toggle-lines span:nth-child(3) { transform: translateY(-4.5px) rotate(-45deg); }
         .menu-toggle-lines span {
             width: 16px;
             height: 1.5px;
@@ -140,6 +172,7 @@
             flex-wrap: wrap;
         }
         .nav-link {
+            position: relative;
             color: var(--text-secondary);
             min-height: 40px;
             display: inline-flex;
@@ -149,7 +182,26 @@
             padding: .55rem .8rem;
             border-radius: 999px;
             border: 1px solid transparent;
-            transition: color .2s ease, background-color .2s ease, border-color .2s ease;
+            transition: color .24s ease, background-color .24s ease, border-color .24s ease;
+        }
+        .nav-link::after {
+            content: "";
+            position: absolute;
+            left: .8rem;
+            right: .8rem;
+            bottom: .4rem;
+            height: 2px;
+            border-radius: 999px;
+            background: linear-gradient(90deg, rgba(185, 144, 104, 0), rgba(185, 144, 104, .95), rgba(185, 144, 104, 0));
+            transform: scaleX(.25);
+            opacity: 0;
+            transition: transform .24s ease, opacity .24s ease;
+        }
+        .nav-link:hover::after,
+        .nav-link:focus-visible::after,
+        .nav-link[aria-current="page"]::after {
+            opacity: .95;
+            transform: scaleX(1);
         }
         .nav-link:hover {
             color: var(--text-primary);
@@ -197,6 +249,7 @@
         }
 
         .btn {
+            position: relative;
             display: inline-flex;
             min-height: 44px;
             align-items: center;
@@ -210,7 +263,7 @@
             letter-spacing: .06em;
             text-transform: uppercase;
             transition: transform .22s ease, box-shadow .22s ease, opacity .2s ease;
-            box-shadow: 0 14px 30px rgba(185, 144, 104, .28);
+            box-shadow: 0 12px 24px rgba(185, 144, 104, .24);
             cursor: pointer;
             background: linear-gradient(135deg, var(--accent) 0%, var(--accent-deep) 100%);
         }
@@ -372,10 +425,11 @@
         }
 
         .site-footer {
+            position: relative;
             margin-top: 2rem;
             border-top: 1px solid var(--border-strong);
             padding: clamp(3.2rem, 7vw, 5rem) 0 1.1rem;
-            background: linear-gradient(180deg, #f2ebe3 0%, #ece3d8 100%);
+            background: linear-gradient(180deg, #efe4d8 0%, #e8dbce 100%);
         }
         .footer-grid {
             display: grid;
@@ -391,7 +445,8 @@
         }
         .footer-logo {
             display: block;
-            max-height: 56px;
+            max-height: 64px;
+            max-width: 220px;
             width: auto;
             object-fit: contain;
         }
@@ -406,6 +461,7 @@
             margin: .3rem 0;
         }
         .footer-link {
+            position: relative;
             color: var(--text-secondary);
             min-height: 34px;
             align-items: center;
@@ -413,7 +469,9 @@
             margin-bottom: .5rem;
             transition: color .2s ease;
         }
-        .footer-link:hover { color: var(--text-primary); }
+        .footer-link::after { content:""; position:absolute; left:0; bottom:.2rem; width:100%; height:1px; background:linear-gradient(90deg, rgba(185,144,104,0), rgba(185,144,104,.9), rgba(185,144,104,0)); transform:scaleX(.2); transform-origin:left; opacity:0; transition:transform .24s ease, opacity .24s ease; }
+        .footer-link:hover, .footer-link:focus-visible { color: var(--text-primary); }
+        .footer-link:hover::after, .footer-link:focus-visible::after { transform:scaleX(1); opacity:1; }
         .footer-note {
             margin-top: 2rem;
             padding-top: 1rem;
@@ -431,6 +489,7 @@
             flex-wrap: wrap;
         }
         .footer-social a {
+            transition: transform .24s ease, box-shadow .24s ease, background-color .24s ease;
             width: 2.5rem;
             height: 2.5rem;
             border-radius: 999px;
@@ -440,6 +499,12 @@
             align-items: center;
             justify-content: center;
             color: var(--text-primary);
+        }
+        .footer-social a:hover,
+        .footer-social a:focus-visible {
+            transform: translateY(-3px);
+            box-shadow: 0 14px 24px rgba(47, 39, 34, .14);
+            background: rgba(255,255,255,.9);
         }
         .footer-social svg {
             width: 1.18rem;
@@ -474,6 +539,14 @@
 
         .mobile-panel {
             display: none;
+            opacity: 0;
+            transform: translateY(-8px) scale(.985);
+            transform-origin: top center;
+            transition: opacity .22s ease, transform .22s ease;
+        }
+        .mobile-panel.is-open {
+            opacity: 1;
+            transform: translateY(0) scale(1);
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -519,6 +592,7 @@
                 gap: .4rem;
             }
             .mobile-nav-links .nav-link {
+            position: relative;
                 border-radius: var(--radius-control);
                 padding: .68rem .85rem;
                 border: 1px solid var(--border);
@@ -545,14 +619,14 @@
     </style>
 </head>
 <body>
-<header class="site-header">
+<header class="site-header" data-site-header>
     <div class="container">
         <div class="site-nav">
-            <a class="brand is-gold-focus" href="{{ route('home') }}">
+            <a class="brand is-gold-focus {{ filled($settings->logo_url) ? "has-logo" : "" }}" href="{{ route('home') }}">
                 @if(filled($settings->logo_url))
-                    <img class="brand-logo" src="{{ $settings->logo_url }}" alt="Asthetika">
+                    <span class="brand-logo-shell"><img class="brand-logo" src="{{ $settings->logo_url }}" alt="Asthetika - Dr Aziz Sahly"></span>
                 @else
-                    <span class="brand-title">{{ $settings->site_name ?? 'Asthetika' }}</span>
+                    <span class="brand-title">Asthetika</span>
                     <span class="brand-subtitle">Dr Aziz Sahly</span>
                 @endif
             </a>
@@ -634,9 +708,9 @@
             <div>
                 <a class="footer-brand is-gold-focus" href="{{ route('home') }}">
                     @if(filled($settings->logo_url))
-                        <img class="footer-logo" src="{{ $settings->logo_url }}" alt="Asthetika">
+                        <img class="footer-logo" src="{{ $settings->logo_url }}" alt="Asthetika - Dr Aziz Sahly">
                     @else
-                        <span class="brand-title">{{ $settings->site_name ?? 'Asthetika' }}</span>
+                        <span class="brand-title">Asthetika</span>
                         <span class="brand-subtitle">Dr Aziz Sahly</span>
                     @endif
                 </a>
@@ -734,6 +808,16 @@
             revealElements.forEach((element) => observer.observe(element));
         }
 
+        const header = document.querySelector('[data-site-header]');
+        const onScroll = () => {
+            if (!header) return;
+            window.requestAnimationFrame(() => {
+                header.classList.toggle('is-scrolled', window.scrollY > 12);
+            });
+        };
+        window.addEventListener('scroll', onScroll, { passive: true });
+        onScroll();
+
         const mobileToggle = document.querySelector('[data-mobile-toggle]');
         const mobilePanel = document.getElementById('mobileNavPanel');
         if (!mobileToggle || !mobilePanel) {
@@ -741,13 +825,21 @@
         }
 
         const closeMobileMenu = () => {
-            mobilePanel.hidden = true;
+            mobilePanel.classList.remove('is-open');
+            mobileToggle.classList.remove('is-open');
             mobileToggle.setAttribute('aria-expanded', 'false');
             document.body.classList.remove('menu-open');
+            window.setTimeout(() => {
+                if (!mobilePanel.classList.contains('is-open')) {
+                    mobilePanel.hidden = true;
+                }
+            }, 220);
         };
 
         const openMobileMenu = () => {
             mobilePanel.hidden = false;
+            requestAnimationFrame(() => mobilePanel.classList.add('is-open'));
+            mobileToggle.classList.add('is-open');
             mobileToggle.setAttribute('aria-expanded', 'true');
             document.body.classList.add('menu-open');
         };
