@@ -62,17 +62,19 @@
 
 <section class="page-section faq-page">
     <div class="page-hero">
-        <p class="section-kicker">FAQ</p>
-        <h1 class="section-title">Frequently asked questions</h1>
-        <p class="muted">Everything you need to know before your appointment.</p>
+        <p class="section-kicker">{{ __('public.faq_page.kicker') }}</p>
+        <h1 class="section-title">{{ __('public.faq_page.title') }}</h1>
+        <p class="muted">{{ __('public.faq_page.description') }}</p>
     </div>
 
     @if($items->isEmpty())
-        <div class="empty-state">FAQs are being prepared and will be published shortly.</div>
+        <div class="empty-state">{{ __('public.faq_page.empty') }}</div>
     @else
         <div class="faq-categories">
             @foreach($items as $cat => $faqs)
-            <section class="faq-category" aria-labelledby="faq-cat-{{ Str::slug($cat) }}">                    <div class="faq-list">
+            <section class="faq-category" aria-labelledby="faq-cat-{{ Str::slug($cat) }}">
+                    <h2 id="faq-cat-{{ Str::slug($cat) }}" class="faq-category-title">{{ __('public.faq_page.categories.'.Str::slug($cat, '_')) }}</h2>
+                    <div class="faq-list">
                         @foreach($faqs as $faq)
                             <details class="card faq-item">
                                 <summary>
