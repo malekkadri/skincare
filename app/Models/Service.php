@@ -80,6 +80,10 @@ class Service extends Model
     {
         $currency = strtoupper((string) session('currency', 'TND'));
 
+        if ((float) $this->price_tnd <= 0.0) {
+            return app()->getLocale() === 'fr' ? 'Tarif sur consultation' : 'Price on consultation';
+        }
+
         if ($currency === 'EUR') {
             return number_format((float) $this->price_eur, 2).' EUR';
         }
