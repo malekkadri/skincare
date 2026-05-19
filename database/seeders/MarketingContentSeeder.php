@@ -69,16 +69,18 @@ class MarketingContentSeeder extends Seeder
             'qualifications_fr' => 'Médecine esthétique, protocoles cutanés personnalisés, hygiène médicale et accompagnement professionnel.', 'qualifications_en' => 'Aesthetic medicine, personalized skin protocols, medical hygiene, and professional care.', 'is_published' => true,
         ]);
 
-        $resolveImagePath = static function (?string $path): ?string {
+        $defaultGalleryImagePath = 'images/gallery/placeholder.webp';
+
+        $resolveImagePath = static function (?string $path) use ($defaultGalleryImagePath): string {
             if (blank($path)) {
-                return null;
+                return $defaultGalleryImagePath;
             }
 
             if (file_exists(public_path($path)) || file_exists(public_path('storage/'.$path)) || Storage::disk('public')->exists($path)) {
                 return $path;
             }
 
-            return null;
+            return $defaultGalleryImagePath;
         };
 
         $galleryItems = [
