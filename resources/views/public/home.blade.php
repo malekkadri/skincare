@@ -298,13 +298,22 @@
 .home-banner{position:relative;border-radius:30px;overflow:hidden;min-height:420px}.banner-slide{display:none;position:relative}.banner-slide.is-active{display:block}.banner-slide img{width:100%;height:clamp(380px,50vw,620px);object-fit:cover}.banner-overlay{position:absolute;inset:0;background:rgba(30,18,11,.35)}.banner-content{position:absolute;left:2rem;bottom:2rem;color:#fff;max-width:680px}.banner-content h1{color:#fff;font-size:clamp(2rem,4.8vw,3.8rem);margin:0}
 </style>
 
+@php
+    $homeHeroImage = $hero?->image_url ?: ($featuredGallery->first()?->image_url);
+    $aboutImage = $hero?->image_url ?: ($featuredGallery->first()?->image_url);
+@endphp
+
 <div class="home-shell">
 
 <div class="home-banner" data-slider>
     @php($slides = $homeSlides->count() ? $homeSlides : collect([null]))
     @foreach($slides as $i => $slide)
     <article class="banner-slide {{ $i===0 ? 'is-active' : '' }}"> 
-        <img src="{{ $slide?->image_url ?? 'https://images.unsplash.com/photo-1526758097130-bab247274f58?auto=format&fit=crop&w=1800&q=80' }}" alt="{{ $slide?->localized_alt_text ?? 'Asthetika' }}">
+        @if($slide?->image_url)
+        <img src="{{ $slide->image_url }}" alt="{{ $slide?->localized_alt_text ?? 'Asthetika' }}">
+        @else
+        <div class="hero-image-fallback" aria-hidden="true"></div>
+        @endif
         <div class="banner-overlay"></div><div class="banner-content"><h1>{{ $slide?->localized_title ?? ($hero?->localized_title ?? 'Asthetika') }}</h1><p>{{ $slide?->localized_subtitle ?? ($hero?->localized_subtitle ?? $settings->localized('site_tagline')) }}</p>@if($slide?->localized_cta_label && $slide?->cta_url)<a href="{{ $slide->cta_url }}" class="btn">{{ $slide->localized_cta_label }}</a>@endif</div>
     </article>
     @endforeach
@@ -331,7 +340,11 @@
                 </div>
             </div>
             <div class="hero-image-wrap">
-                <img src="https://images.unsplash.com/photo-1612817288484-6f916006741a?auto=format&fit=crop&w=1200&q=80" alt="{{ __('public.home.cta_title') }}">
+                @if($homeHeroImage)
+                <img src="{{ $homeHeroImage }}" alt="{{ __('public.home.cta_title') }}">
+                @else
+                <div class="hero-image-fallback" aria-hidden="true"></div>
+                @endif
                 <div class="hero-note">
                     <strong>Trusted by returning clients</strong>
                     <p>Tailored consultations and intentional treatment plans for healthy, radiant skin.</p>
@@ -360,7 +373,11 @@
         <div class="lux-divider"></div>
         <div class="about-grid">
             <div class="about-image-wrap">
-                <img class="about-image" src="https://images.unsplash.com/photo-1522337094846-8a818d7b90d3?auto=format&fit=crop&w=900&q=80" alt="Skincare portrait">
+                @if($aboutImage)
+                <img class="about-image" src="{{ $aboutImage }}" alt="{{ app()->getLocale() === 'fr' ? 'Soin de la peau Asthetika' : 'Asthetika skincare treatment' }}">
+                @else
+                <div class="hero-image-fallback about-image" role="img" aria-label="{{ app()->getLocale() === 'fr' ? 'Asthetika · Soins de la peau' : 'Asthetika · Skincare' }}"><span>{{ app()->getLocale() === 'fr' ? 'Asthetika · Soins de la peau' : 'Asthetika · Skincare' }}</span></div>
+                @endif
             </div>
             <div>
                 <p class="section-kicker">{{ __('public.home.about_kicker') }}</p>
@@ -406,7 +423,7 @@
                     @if($img->image_url)
                         <img src="{{ $img->image_url }}" alt="{{ $img->localized_title }}">
                     @else
-                        <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=900&q=80" alt="Skincare gallery preview">
+                        <div class="hero-image-fallback" role="img" aria-label="Asthetika gallery placeholder"></div>
                     @endif
                 </div>
             @empty

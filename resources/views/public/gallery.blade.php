@@ -150,11 +150,15 @@
             @foreach($items as $item)
                 <article class="card gallery-card">
                     <div class="gallery-media-wrap">
-                        <img
-                            src="{{ $item->image_url ?: 'https://via.placeholder.com/600x400?text=Asthetika' }}"
-                            alt="{{ $item->localized_title }}"
-                            class="gallery-image"
-                        >
+                        @if($item->image_url)
+                            <img
+                                src="{{ $item->image_url }}"
+                                alt="{{ $item->localized_title }}"
+                                class="gallery-image"
+                            >
+                        @else
+                            <div class="hero-image-fallback" role="img" aria-label="{{ $item->localized_title }}"></div>
+                        @endif
                     </div>
                     <div class="gallery-card-body">
                         <h2 class="gallery-title">{{ $item->localized_title }}</h2>

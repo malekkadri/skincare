@@ -283,11 +283,15 @@
                     @forelse($category->services as $service)
                         <a class="service-card reveal is-gold-focus" href="{{ route('services.show', $service->slug) }}" aria-label="View details for {{ $service->localized_name }}">
                             <figure class="service-card-media">
-                                <img
-                                    src="{{ $service->image_url ?: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=900&q=80' }}"
-                                    alt="{{ $service->localized_name }}"
-                                    loading="lazy"
-                                >
+                                @if($service->image_url)
+                                    <img
+                                        src="{{ $service->image_url }}"
+                                        alt="{{ $service->localized_name }}"
+                                        loading="lazy"
+                                    >
+                                @else
+                                    <div class="hero-image-fallback" role="img" aria-label="{{ $service->localized_name }}"></div>
+                                @endif
                             </figure>
                             <div class="service-card-header">
                                 <h3 class="service-card-title">{{ $service->localized_name }}</h3>
